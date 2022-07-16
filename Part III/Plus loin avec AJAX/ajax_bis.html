@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>Plus loin avec AJAX</title>
+   </head>
+<body>
+                                                                               <h1>Plus loin avec AJAX</h1>
+
+﻿﻿Arrivés à ce point dans la lecture du cours, vous savez mettre à jour une partie d'une page Web en utilisant la méthode load(). Nous allons maintenant nous intéresser à des fonctions jQuery complémentaires.
+
+Les méthodes se différencient des fonctions, car elles s'appliquent à des éléments obtenus à travers un sélecteur jQuery. Dans $('sélecteur').meth(paramètres);, meth est une méthode, alors que dans $.fonc(paramètres);, fonc est une fonction.
+
+<h2>
+I./ Charger un script et des données JSON
+</h2>
+1.) La fonction <strong>$.getScript()</strong> permet de charger (de façon asynchrone) puis d'exécuter un fichier JavaScript. Dans sa syntaxe la plus simple,
+il suffit de préciser l'adresse URL du fichier à charger : 
+
+<strong>
+$.getScript('adresse');
+</strong>
+
+Dans la 2e syntaxe, une fonction de retour est précisée en 2 paramètre de la fonction. Cette fonction est exécutée lorsque le code JavaScript a été chargé et
+exécuté : 
+
+<strong>
+$.getScript('adresse', function() {
+	// Code
+});
+</strong>
+
+2.) Charger des données codées en JSON
+
+JSON (JavaScript Object Notation) est un format de données textuel qui permet de représenter des informations structurées. Voici un exemple de données JSON : 
+
+<strong>
+{ 
+  'menu': 'Fichier', 
+  'commande': [ 
+      {
+          'nomCde': 'Nouveau', 
+          'action':'CreateDoc'
+      }, 
+      {
+          'nomCde': 'Ouvrir', 
+          'action': 'OpenDoc'
+      }, 
+      {
+          'nomCde': 'Enregistrer sous',
+          'action': 'SaveAs'
+      },
+      {
+          'nomCde': 'Fermer',
+          'action': 'CloseDoc'
+      }
+   ] 
+}
+</strong>
+
+Pour bien comprendre comment accéder aux données d'un fichier codé en JSON, je vais raisonner sur un exemple simple qui comporte quatre 
+paires 'nom':'valeur' de même valeur :
+
+<strong>
+{
+  "nom": "Pierre Durand",
+  "age": "27",
+  "ville": "Paris",
+  "domaine": "HTML5, CSS3, JavaScript"
+}
+</strong>
+
+Et voici le code HTML/jQuery utilisé pour manipuler ces données :
+
+Réf <a href="exemple1.html" target="_blank">Exemple 1</a>
+
+<h2>
+II./ La fonction $.ajax()
+</h2>
+Tout comme les méthodes et fonctions AJAX étudiées jusqu'ici, <strong>$.ajax()</strong> permet d'envoyer des requêtes HTTP AJAX à un serveur Web. Ce qui
+la différencie de ses "collègues", c'est la finesse des paramètres qui peuvent lui être communiqués. 
+
+Deux syntaxes sont possibles : 
+
+<strong>
+$.ajax(adresse, { options });
+
+$.ajax({ options });
+</strong>
+
+...où :
+
+	-	<strong>adresse</strong> est l'adresse à laquelle la requête doit être envoyée, et <strong>options</strong> correspond à une ou plusieurs des options 
+		suivantes :
+
+			=>	<strong>type</strong> : type de la requête, GET ou POST (GET par défaut)
+			=>	<strong>url</strong> : adresse à laquelle  la requête doit être envoyée
+			=>	<strong>data</strong> : données à envoyer au serveur
+			=>	<strong>dataType</strong> : type de données qui doivent être retournées par le serveur : <strong>xml, html, script, json, text</strong>
+			=>	<strong>success</strong> : fonction à appeler si la fonction aboutit
+			=>	<strong>error</strong> : fonction à appeler si la requête n'aboutit pas
+      =>  <strong>complete</strong> : fonction de rappel à appeler lorsque l'appel AJAX se termine
+			=>	<strong>timeout</strong> : délai maximum (en millisecondes) pour que la requête soit exécutée. Si ce délai est dépassé, la fonction spécifiée dans
+						le paramètre <strong>error</strong> sera exécutée.
+
+Voici comment on passe les paramètres que ce soit pour la méthode POST ou GET :
+
+<strong>
+$.ajax({
+  url: 'cible.php',
+  type: 'POST',
+  data: 'param1=voila&amp;param2=voilavoila',
+  dateType: 'html'
+});
+</strong>
+
+
+Bcp d'autres options peuvent être utilisées. Pour en avoir une liste exhaustive, je peux consulter la <a href="https://api.jquery.com/jQuery.ajax/">documentation
+officielle</a>.
+
+
+Je reprends l'exemple du chapitre précédent pour remplace <strong>$.get()</strong> par <strong>$.ajax()</strong>. Voici le code utilisé : 
+
+Réf <a href="exemple2.html" target="_blank">Exemple 2</a>
+
+Complément: 
+
+Les fonctions de rappel, que ce soit celle de <strong>success</strong>, <strong>error</strong> ou <strong>complete</strong>, acceptent toutes les trois 
+des paramètres :
+
+Les paramètres de la fonction du paramètre <strong>success</strong> : 
+
+  - la réponse renvoyée par le serveur
+  - le statut, ie une chaîne de caractères automatiquement générée par jQuery pour me donner le statut de ma requête
+
+Les paramètres de la fonction du paramètre <strong>error</strong> : 
+
+  - l'objet XMLHttpRequest renvoyé par jQuery
+  - le statut
+  - le texte qui sera passé en argument de l'exception levée, ie le texte qui sera affiché au visiteur et lui expliquant l'erreur
+
+Les paramètres de la fonction du paramètre <strong>complete</strong> : 
+
+  - l'objet XMLHttpRequest renvoyé par jQuery
+  - le statut
+
+Un exemple pour écaircir tout cela : 
+
+<strong>
+$('#more_comm').click(function() {
+  $.ajax({
+    url: 'more_com.php',
+    type: 'GET',
+    dataType: 'html',
+
+    success: function(code_html, statut) {
+      $(code_html).appendTo('#commentares');  // Je passe code_html à jQuery() qui va me créer l'arbre DOM
+    },
+
+    error: function(resultat, statut, erreur) {
+
+    },
+
+    complete: function(resultat, statut) {
+
+    }
+  });
+});
+</strong>
+<h2>
+III./ Evénements associés à une requête AJAX
+</h2>
+Dans la section précédente, j'ai vu la fonction <strong>success()</strong> pour exécuter du code lorsqu'une requête AJAX a abouti, et la fonction 
+<strong>error()</strong> pour exécuter du code lorsqu'une requête AJAX n'a pas abouti. Dans cette section, je vais découvrir une autre technique permettant
+d'exécuter du code à différentes étapes de l'exécution d'une requête AJAX. Cette technique repose sur la mise en place de méthodes de gestion événementielle. Le
+tableau suivant donne un aperçu des méthodes utilisables : 
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MéTHODE                                                                 |   EVENEMENT
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ajaxSend(function(ev, req, options))                        |    Requête sur le point d'être envoyée
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ajaxStart(function())                                       |    Début d'exécution de la requête
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ajaxStop(function())                                        |    Fin de la requête
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ajaxSuccess(function(ev, req, options))                     |    La requête a abouti 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ajaxComplete(function(ev, req, options))                    |    La requête est terminée
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(document).ajaxError(function(ev, req, options, erreur))               |    La requête n'a pas abouti
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+...où : 
+
+	-	<strong>ev</strong> représente l'événement
+	-	<strong>req</strong> représente la requête
+	-	<strong>options</strong> contient les paramètres passés à la requête
+	-	<strong>erreur</strong> est le nom de l'erreur détectée par jQuery
+
+Réf <a href="exemple3.html" target="_blank">Exemple 3</a>
+
+Il est intéressant de noter, grâce à la figure suivante, l'ordre de déclenchement des événements : 
+
+<figure>
+<img src="ajax_events.png" alt="Ordre de déclenchement des événements AJAX" />
+<figcaption>Cette exécution montre l'ordre dans lequel sont levés les événements en rapport avec la requête AJAX</figcaption>
+</figure>
+
+Et si je modifie le nom du fichier  pour faire référence à un fichier inexistant : 
+
+<strong>
+$('#donnees').load('inexistant.htm');
+</strong>
+
+Par conséquent, l'exécution d'événements sera légèrement différente : 
+
+<figure>
+<img src="ajax_events2.png" />
+<figcaption>Le fichier inexistant.htm n'a pas été trouvé, ce qui a déclenché l'événement ajaxError</figcaption>
+</figure>
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

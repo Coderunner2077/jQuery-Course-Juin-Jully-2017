@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 4</title>
+</head>
+<body>
+<form>
+  Laissez aller votre imagination : saisissez quelques mots<br />
+  <textarea id="saisie"></textarea>
+</form><br />
+Caractère saisi : <span id="unelettre"></span>
+
+<script src="jquery.js"></script>
+<script>
+	$('#saisie').keypress(function(e) {
+		var text = $('#unelettre').html();
+		$('#unelettre').html(text + 'Event : ' + e.type + '. Key : ' + e.which + '<br />');
+	});
+
+	$('#saisie').keydown(function(e) {
+		var text = $('#unelettre').html();
+		$('#unelettre').html(text + 'Event : ' + e.type + '. Key : ' + e.which + '<br />');
+	});
+
+</script>
+</body>
+</html>

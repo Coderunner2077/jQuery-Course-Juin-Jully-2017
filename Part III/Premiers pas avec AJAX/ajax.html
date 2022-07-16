@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>Premiers pas avec AJAX</title>
+   </head>
+<body>
+                                                                      <h1>Premiers pas avec AJAX</h1>
+
+
+<h2>
+I./ Charger un fichier
+</h2>
+Voici comment charger des informations stockées sur le serveur et mettre à jour un élément de la page actuelle (et juste cet élément) avec ces informations :
+
+<strong>
+$('sel').load('nom_page', function() {
+	// Une ou plusieurs instructions
+});
+</strong>
+
+...où :
+
+	-	<strong>sel</strong> est un sélecteur jQuery quelconque qui permet d'identifier l'élément (ou les éléments) à mettre à ajour
+	-	<strong>nom_page</strong> est le nom d'une page Web quelconque dont le contenu sera utilsié pour effectuer la mise à jour
+	-	si elle est exécutée, la fonction de rappel est, comme d'hab, exécutée lorsque la méthode a été exécutée, ie lorsque l'élément (ou les éléments) a 
+			(ont) été mis à jour
+
+Réf <a href="exemple1.html" target="_blank">Exemple 1</a>
+
+Et voici le code contenu dans le fichier <strong><a href="maj1.html">maj1.html</a></strong> (la page appelée par la requête AJAX).
+
+Le texte compris entre les balises &lt;body> et &lt;/body> sera utilisé pour mettre à jour la 1re balise &lt;div> de mon document. Le texte original 
+"Lorem ipsum dolor sit amet..." deviendra donc "Ut enim ad minima veniam...".
+
+Lorsque le 2e bouton est cliquée, la même technique met à jour le contenu de la 2e balise &lt;div>, avec le document
+<strong><a href="maj2.html" target="_blank">maj2.html</a></strong>.
+
+<h2>
+II./ Charger une partie d'un fichier
+</h2>
+En modifiant légèrement la syntaxe de la méthode <strong>load()</strong>, il est possible d'utiliser une partie seulement des données auxquelles donnent accès la 
+requête AJAX. POur cela, il suffit de faire suivre le nom du fichier par une espace et par un sélecteur jQuery :
+
+<strong>
+$('sel').load('nom_page sel2', function() {
+	// Code
+});
+</strong>
+
+...où :
+
+	-	<strong>sel</strong> est un sélecteur jQuery quelconque qui permet d'identifier l'élément (ou les éléments) à mettre à jour
+	-	<strong>nom_page</strong> est le nom d'une page Web quelconque dont le contenu sera utilisé pour effectuer la mise à jour
+	-	<strong>sel2</strong> est un sélecteur jQuery quelconque, sans le signe $ ni les parenthèses, qui permettra d'isoler certaines données dans la page 
+				<strong>nom_page</strong>
+	-	Si elle est précisée, la fonction de rappel est, comme toujours, exécutée lorsque la méthode a été exécutée, ie lorsque l'élément (ou les éléments)
+				a (ont) été mis à jour
+
+A titre d'exemple, j'ai regroupé les données de mise à jour qui se trouvaient dans les fichiers <strong>maj1.html</strong> et <strong>maj2.html</strong> de 
+l'exemple précédent, pour les placer dans le fichier <strong><a href="maj.html">maj.html</a></strong> et je leur ai affecté un identifiant pour qu'elles soient
+plus faciles à isoler en jQuery.
+
+Réf <a href="exemple1.html" target="_blank">Exemple 1 (bouton #3)</a>
+
+<h2>
+III./ Passer des paramètres à un programme PHP
+</h2>
+Il existe deux formes de méthode <strong>load()</strong>, l'une pour la méthode GET, et l'autre pour la méthode POST
+
+1.) Pour une requête HTTP GET
+
+Pour passer des paramètres à la suite de l'adresse URL avec la méthode <strong>load()</strong>, voici la syntaxe à utiliser: 
+
+<strong>
+$('sel').load(url, param);
+</strong>
+
+...où :
+
+	-	<strong>sel</strong> est un sélecteur jQuery permettant d'identifier l'élément (ou les éléments) à mettre à jour
+	-	<strong>url</strong> est le nom de la page PHP qui sera utilisée pour faire la mise à jour
+	-	<strong>param</strong> est une chaîne qui contient un ou plusieurs couples paramètres/valeurs. Par exemple, si <strong>param</strong> vaut "id=5, p=12"
+				et <strong>url</strong> vaut http://site.fr/page.php, la page utilisée pour la mise à jour sera http://site.fr/page.php?id=5&amp;p=12
+
+Réf <a href="exemple2.html" target="_blank">Exemple 2</a>
+
+Attention : en raison de la same origine policy, il sera impossible d'afficher des informations provenant d'un autre site. Mon traitement PHP doit donc être sur
+le même hébergement que mon code jQuery.
+
+2.) Pour une requête HTTP POST
+
+Pour passer les paramètres par une requête HTTP POST, il faut de passer un objet en deuxième argument de la méthode <strong>load()</strong>. Par exemple, je pourrais passer deux couples paramètres/valeurs en utilisant l'instruction suivante : 
+
+<strong>
+$('sel').load('http://site.fr/page.php', { id: 50, nom: 'durand' });
+</strong>
+
+<h2>
+IV./ Requêtes GET et POST
+</h2>
+1.) La fonction $.get()
+
+En parallèle de la méthode <strong>load()</strong>, je peux utiliser la fonction jQuery <strong>$.get()</strong> pour obtenir des données envoyées par le 
+serveur en utilisant une requête HTTP GET. Voici les arguments demandés par cette fonction : 
+
+	-	L'URL du fichier appelé
+	-	les données envoyées*
+	-	une fonction qui va gérer le retour (paramètre facultatif)
+	-	le format des données reçues (paramètre facultatif)
+
+Note : L'argument marqué d'une astérisque désigne les données envoyées. Je peux également faire passer des variables en GET avec des URL ayant le bon
+format. "?prenom=lorem&nom=ipsum" en est un exemple. 
+
+
+
+Concrètement, voici la syntaxe de cette fonction : 
+
+<strong>
+$.get(adresse, données, function() {
+	// Code
+});
+</strong>
+
+...où :
+
+	-	<strong>adresse</strong> est le nom d'une page Web quelconque dont le contenu sera récupéré par la fonction <strong>get()</strong>
+	-	<strong>données</strong> représente les données à passer à la page Web par une requête HTTP <strong>GET</strong>
+	-	Si elle est précisée, la fonction de rappel est, comme toujours, exécutée lorsque la méthode a été exécutée, ie lorsque l'élément (ou les éléments)
+				a (ont) été mis à jour
+
+Autre exemple :
+
+<strong>
+$.get(
+	'fichier_cible.php',
+	'false',				// J'utilise false (entre apostrophes), pour dire que je ne vais pas envoyer des données
+	'nom_fonction_retour',  // Je renseigne ici uniquement le nom  de la fonction de retour (entre apostrophes)
+	'text'					// Format des données reçues
+);
+
+function nom_fonction_retour(texte_recu) {
+	// Du code pour gérer le retour de l'appel AJAX
+}
+</strong>
+
+Note : la fonction de retour accepte un argument contenant la réponse renvoyée par le serveur.
+
+Passons à la pratique. A l'aide de la fonction <strong>get()</strong>, je vais modifier le code précédent pour récupérer le code HTML retourné par une page PHP et
+l'afficher dans une boîte de message. Voici les instructions utilisées : 
+
+Réf <a href="exemple3.html" target="_blank">Exemple 3</a>
+
+Lorsque le bouton #action est cliqué, la fonction get() est exécutée. Le premier paramètre de la fonction contient l'adresse de la page à exécuter (ici, une page
+PHP). Le 2e correspond à la fonction de rappel grâce à laquelle les données retournées par la page PHP seront récupérées :
+
+<strong>
+$.get('proverbes.php?num=9', funciton(data) { 
+	alert(data);
+});
+</strong>
+
+2.) La fonction $.post()
+
+La fonction <strong>$.post()</strong> est toute indiquée si j'envoie des données de grande taille et/ou sensibles (il faut entendre par là qui 
+contiennent des mots de passe ou d'autres données du même type) au serveur. Par exemple, j'utiliserai la méthode <strong>post()</strong> pour
+envoyer des données saisies dans un formulaire, qui doivent être stockées dans la base de données du site. Les arguments qu'elle prend sont presque identiques
+à ceux de sa soeur : 
+
+<strong>
+	-	L'URL fichier appelé
+	-	les données envoyées (sous forme d'objet)
+	-	une fonction qui va gérer le retour
+	-	le format des données reçues
+</strong>
+
+Note : Avec POST, il devient obligatoire d'envoyer des variables, c'est la raison d'être même de ce type
+
+
+
+Voici le type d'instruction que je pourrai utiliser : 
+
+<strong>
+$.post('traitementFormulaire.php', { nom: 'Bernard', heure: '2pm', comment: 'Blablable' }, function(data) {
+	alert(data);
+});
+</strong>
+
+Ici, le programme <strong>traitementFormulaire.php</strong> est exécuté. Les données saisies dans le formulaire lui sont transmises, et les éléments affichées par
+le programme PHP sont affichées dans une boîte de message. 
+
+Imaginons l'envoi d'un email en AJAX avec la fonction <strong>$.post()</strong> :
+
+<strong>
+$.post(
+	'send_mail.php',
+	{
+		sujet: $('#sujet').val(), // supposons que ce formulaire existe dans le DOM
+		contenu: $('#contenu').val()
+	},
+	nom_fonction_retour, // Je renseigne uniquement le nom de la fonction de retour 
+	'text'				// Format des données reçues
+);
+
+function nom_fonction_retour(texte_recu) {
+	// Du code pour gérer le retour de l'appel AJAX
+}
+</strong>
+
+Remarque : pour la fonction de retour, le nom entre apostrophes OU PAS ??!
+
+
+<h2>
+V./ Faire patienter l'utilisateur avec une animation
+</h2>
+Certaines requêtes AJAX peuvent demander quelques secondes pour s'exécuter. Pour faire patienter la personne qui en est à l'origine, il est courant d'utiliser une 
+image GIF animée, comme celle présente à la figure suivante : 
+
+<figure>
+<img src="wait.gif" />
+<figcaption>L'image indique au visiteur qu'il doit attendre quelques secondes</figcaption>
+</figure>
+
+Pour gérer l'affichage de cette image, il suffit d'y faire référence lorsque la requête AJAX est déclenchée, puis de l'effacer lorsque l'exécution de la 
+requête est terminée.
+
+A titre d'exemple, voici comment a été modifié le code de l'exemple précédent pour afficher une image d'attente entre le début et la fin de la requête AJAX : 
+
+Réf <a href="exemple4.html" target="_blank">Exemple 4</a>
+
+<h2>
+VI./ Sérialiser mes formulaires
+</h2>
+Un raccourci très sympathique peut être exploité lorsque je gère un appel AJAX de type POST impliquant l'utilisation d'un formulaire. Il s'agit de la 
+<strong>sérialisation</strong>. (?!)
+
+1.) La sérialisation
+a./ La méthode <strong>serialize()</strong> de jQuery
+
+Pour éviter de spécifier chaque valeur du formulaire en paramètres de la méthode <strong>$.post()</strong> (ce qui peut être redondant), il est possible de 
+"sérialiser" les données du formulaire. Cela est rendu possible grâce à la méthode <strong>serialize()</strong> de jQuery. Son but est de transformer  les 
+champs d'un formulaire en chaîne de caractères avec les variables et leur contenu concaténé.
+
+b./ Un exemple d'utilisation
+
+<strong>
+$('#form').submit(function(e) {
+	e.preventDefault();
+
+	var donnees = $($this).serialize();
+
+	$.post('fichier_cible.php', donnees);
+});
+</strong>
+
+Remarque : Ne serait-ce pas un raccourci pour utiliser l'objet FormData de JavaScript ? 
+
+<h2>
+En résumé :
+</h2>
+Pour mettre à jour une zone du document avec une page Web (écrite en HTML ou en PHP par exemple), le plus simple consiste à utiliser la méthode 
+<strong>load()</strong>, en précisant le nom de la page entre parenthèses, éventuellement suivi d'une fonction de rappel. Cette dernière sera appelée
+lorsque les données auront été chargées. 
+En modifiant légèrement la syntaxe de la méthode <strong>load()</strong>, il est possible d'utiliser une partie seulement des données auxquelles donne
+accès la requête AJAX. Pour cela, il suffit de faire suivre le nom du fichier par une espace et par un sélecteur jQuery.
+Un ou plusieurs couples paramètres/valeurs peuvent être passés à la méthode <strong>load()</strong>. Je les indique sous la forme d'une chaîne dans le 
+deuxième paramètre de la fonction.
+Plusieurs fonction jQuery vont me permettre d'aller plus loin avec mes requêtes AJAX. Je peux notamment envoyer des requêtes HTTP GET et POST au serveur
+avec les fonctions <strong>$.get()</strong> et <strong>$.post()</strong>, charger et exécuter un script JavaScript avec la fonction <strong>$.getScript()</strong>
+et des données JSON avec la fonction <strong>$.getJSON()</strong>.
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+
+</pre>
+</body>
+</html>

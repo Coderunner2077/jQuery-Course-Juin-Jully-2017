@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Exemple 1</title>
+   </head>
+<body>
+<button id="charger">Charger et traiter les données</button>
+<div id="r">Cliquez sur "Charger et traiter les données" pour lancer la lecture et le traitement des données JSON</div>
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#charger').click(function() {
+      $.getJSON('fichier.json', function(data) {
+        $('#r').html('<p><b>Nom</b> : ' + data.nom + '</p>');
+        $('#r').append('<p><b>Age</b> : ' + data.age + '</p>');
+        $('#r').append('<p><b>Ville</b> : ' + data.ville + '</p>');
+        $('#r').append('<p><b>Domaine</b> : ' + data.domaine + '</p>');
+      });
+    }); 
+  });
+</script>
+</body>
+</html>

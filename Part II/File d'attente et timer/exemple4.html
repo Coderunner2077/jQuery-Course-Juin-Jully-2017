@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 4</title>
+<style type="text/css">
+  #balle {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border: black 2px solid;
+    border-radius: 10px;
+    position: relative;
+  }
+</style>
+</head>
+<body>
+
+<div id="balle"></div>
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    function bis() {
+        $('#balle').animate({ left: '+=200' }, 'slow')
+                   .animate({ top: '+=200' }, 'slow')
+                   .animate({ left: '-=200' }, 'slow')
+                   .animate({ top: '-=200' }, 'slow', bis);
+    }
+
+    bis();
+  });
+</script>
+
+
+</body>
+</html>

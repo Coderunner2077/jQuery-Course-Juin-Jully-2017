@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Agrandissement au survol</title>
+<style>
+	img {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+	}
+
+	#montagneGrand {
+		display: none;
+	}
+</style>
+</head>
+<body>
+<img id="montagne" src="montagnepetit.jpg" />
+<!-- <img id="montagneGrand" src="montagne.jpg" /> -->
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+	$(function() {
+		/*
+		$('#montagne').mouseover(function() {
+			$(this).attr('src', 'montagne.jpg');
+		});
+
+		$('#montagne').mouseout(function() {
+			$(this).attr('src', 'montagnepetit.jpg');
+		});
+		*/
+
+		/*
+		$('#montagne').mouseover(function() {
+			$(this).fadeOut(1000);
+			$('#montagneGrand').fadeIn(1000);
+		});
+
+		$('#montagneGrand').mouseout(function() {
+			$(this).fadeOut(1000);
+			$('#montagne').fadeIn(1000);
+		})
+		*/
+
+		$('#montagne').mouseover(function() {
+			var img = $(this),
+				file = img.queue();
+			if(file.length == 0) {
+				img.fadeOut().queue(function() {
+					img.attr('src', 'montagne.jpg').fadeIn(1000).dequeue();
+				});
+				img.one('mouseout', function() {
+					img.fadeOut(1000).queue(function() {
+						img.attr('src', 'montagnepetit.jpg').fadeIn('slow').dequeue();
+					})
+				});
+			}
+		});
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Exemple : filter vs find</title>
+  </head>
+  <body>
+  <div class="container">
+    <p>Paragraphe 1</p>
+    <p>Paragraphe 2</p>
+    <p>Paragraphe 3</p>
+    <p>Paragraphe 4</p>
+    <p>Paragraphe 5</p>
+    <div class="container">
+      <p>Paragraphe A</p>
+      <p>Paragraphe B</p>
+      <p>Paragraphe C</p>
+      <div class="container">
+        <p>Paragraphe i</p>
+        <p>Paragraphe ii</p>
+      </div>
+    </div>
+    Texte 6 <br />
+    Texte 7 <br />
+    <p>Paragraphe 8</p>
+    Texte 9 <br />
+  </div>
+    <button id="filter">Filter</button><br />
+    <button id="find">Find</button>
+
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        $('#filter').click(function() {
+          $('div').css('background-color', 'white');
+          $('div').filter('div.container:first').css('background-color', '#ddd');
+        });
+
+        $('#find').click(function() {
+          $('div').css('background-color', 'white');
+          $('div').find('div.container:first').css('background-color', '#00f');
+        });
+      }); 
+    </script>
+  </body>
+</html>

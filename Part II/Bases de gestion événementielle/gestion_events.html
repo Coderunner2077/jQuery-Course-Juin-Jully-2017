@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>Les bases de la gestion événementielle</title>
+</head>
+<body>
+
+                                                                  <h2>Les bases de la gesion événementielle</h2>
+
+<h2>
+I./ La souris
+</h2>
+1.) Avant de commencer
+
+Quel que soit l'événement à gérer, je devrai mettre en place une méthode qui ressemblera à ceci : 
+
+<strong>
+$(sel).mge(function() {
+	// Une ou plusieurs instruction jQuery
+});
+</strong>
+
+...où <strong>sel</strong> est un sélecteur jQuery et <strong>mge</strong> une méthode de gestion événementielle comme celle que je verrai ici.
+
+Voici le tableau des événemnts de la souris : 
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+METHODE                     |   EVENEMENT GERé
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+click()                     |    Clic gauche
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+dblclick()                  |    Double-clic
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mousedown()                 |    Appui sur le bouton gauche ou droit de la souris alors que le pointeur est au-dessus de l'élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mouseenter() ou mouseover() |    Début de survol de l'élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mouseleave() ou mouseout()  |    Arrêt de survol de l'élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mousemove()                 |    Déplacement du pointeur au-dessus de l'élément
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mouseup()                   |    Relâchement du bouton gauche ou droit alors que le pointeur est au-dessus de l'élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+scroll()                    |    Utilisation de la roulette alors que le pointeur se trouve au-dessus d'un élément concerné par ce type d'événement
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+2.) Clics et positionnement de la souris
+
+Réf <a href="exemple1.html" target="_blank">Un exemple d'image de chat qui se déplace...</a>
+
+3.) La méthode scroll()
+
+Pour terminer avec les méthodes événementielles relatives à la souris, il ne reste plus qu'à écrire un peu de code pour utiliser la méthode scroll().
+
+Réf <a href="exemple2.html" target="_blank">exemple2.html</a>
+
+4.) which et type
+
+Dans certains cas particuliers, il peut être nécessaire de savoir quel bouton de la souris a été pressé. Pour cela, je ferai appel à la méthode suivante : 
+
+<strong>
+event.which()
+</strong>
+
+...qui renvoie l'une ds valeurs suivantes : 
+
+	-	1 : bouton gauche pressé
+	-	2 : bouton central pressé
+	-	3 : bouton droit pressé
+
+Pour connaître le type d'événement qui a été levé  par la procédure de gestion événementielle, j'utiliserai la méthode <strong>event.type</strong>. La valeur 
+renvoyée pour être : <strong>click, dblclick, mousedown, mouseenter, mouseover, mouseleave, mouseout, mousemove</strong> ou <strong>mouseup</strong>.
+
+Illustration : 
+
+$('sel').mousedown(function(e) {
+	$('#res').html('Evénement : ' + e.type + '. Bouton pressé : ' + e.which);
+});
+
+<h2>
+II./ Le clavier
+</h2>
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+METHODE                     |   EVENEMENT GERé
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keydown()                   |    Appui sur une touche du clavier
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keyup()                     |    Relâchement d'une touche du clavier préalablement enfoncée
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+keypress()                  |    Maintien d'une touche du clavier enfoncée
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Réf <a href="exemple3.html" target="_blank">exemple3.html</a>
+
+Pour savoir quelle touche du clavier a été pressée, je dois faire appel à la propriété suivante : 
+
+<strong>event.which</strong>
+
+...qui retourne le code ASCII de la touche concernée.
+
+Et pour connaître le type d'événement qui a été levé par la procédure de gestion événementielle, j'utiliserai la propriété suivante : 
+
+<strong>event.type</strong>
+
+...qui renvoie <strong>keydown, keypress</strong> ou <strong>keyup</strong>, en fonction de la méthode événementielle utilisée. 
+
+Réf <a href="exemple4.html" target="_blank">Exemple4.html</a>
+
+Et si je veux obtenir non pas le code ASCII mais le caractère lui-même, je m'assure d'utiliser la méthode <strong>keypress</strong> : 
+
+<strong>$('#saisie').keypress(function(e) { </strong>
+
+Et je remplace la ligne suivante par : 
+
+<strong>
+var c = String.fromCharCode(e.which);
+$('#unelettre').text(c);
+</strong>
+
+<h2>
+III./ Les éléments
+</h2>
+1.) Tableau des événements
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+METHODE                     |   EVENEMENT GERé
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+focus()                     |    Réception de focus par l'élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+blur()                      |    Perte de focus par l'élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+focusin()                   |    Réception de focus par l'élément ou l'un de ses enfants
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+focusout()                  |    Perte de focus par l'élément ou l'un de ses enfants
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+resize()                    |    Redimensionner un élément
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+change()                    |    Modification d'un élément 
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+2.) Distinction entre focus()/blur() et focusin()/focusout()
+
+Réf <a href="exemple5.html" target="_blank">exemple5.html</a>
+
+Contrairement à l'événement focus/blur (que ce soit celui de jQuery ou de JavaScript), l'événement levé par la méthode focusin()/focusout() se propage aux
+enfants.
+
+3.) resize()
+
+Voici l'instruction pour vérifier les nouvelles dimensions de la fenêtre après un redimensionnement : 
+
+<strong>
+$(window).resize(function() {
+	var taille = 'Taille de la fenêtre ' + $(window).width() + 'px x ' + $(window).height + 'px';
+	$('#resultat').text(taille);	// #resultat est un id d'un span
+});
+</strong>
+
+4.) change()
+
+Cette méthode peut être utilisée sur les balises &lt; input>, &lt; textarea> et &lt; select>.
+
+Voilà l'instruction pour détecter les modifications dans une liste déroulante : 
+
+<strong>
+$('select').change(function() {
+	$('#resultat').text('Voilà l\'option choisie : "' + $(this).val() +'"');
+});
+</strong>
+
+<h2>
+IV./ Les pages
+</h2>
+Il y a deux méthodes à connaître : 
+
+	-	<strong>load()</strong>
+	-	<strong>unload()</strong>
+
+Appliquée à l'élément <strong>window</strong>, la méthode événementielle <strong>load()</strong> permet de tester le complet chargement d'une page, en 
+incluant les textes, images et autres objets qui la composent. Qualnt à la méthode <strong>unload()</strong>, elle est déclenchée lorsque l'internaute
+a demandé un changement de page.
+
+La méthode <strong>unload()</strong> est toujours appliquée à l'élément <strong>window</strong>, ie à la fenêtre du navigateur. Par contre, la méthode 
+<strong>load()</strong> peut être appliquée à un autre élément auquel est associée une URL : une balise &lt; img>, &lt; script>, &lt; frame> ou &lt; iframe>.
+Dans ce cas, le code associé à cette méthode est exécuté lorsque l'élément correspondant et ses enfants (s'ils existent) sont entièrement chargés.
+
+Par exemple, j'utiliserai les instructions suivantes pour afficher les dimensions d'une image après son chargement complet : 
+
+<strong>
+$('#image').load(function() {
+	alert(this.width + ' x ' + this.height);
+});
+</strong>
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+
+</body>
+</html>

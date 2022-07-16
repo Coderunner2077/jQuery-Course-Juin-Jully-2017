@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mise en forme</title>
+    <style type="text/css">
+      #contenu
+      {
+        width: 500px;
+        height: 450px;
+        border: 1px black solid;
+        float: left;
+        margin-right: 10px;
+        overflow-y: auto;
+      }
+      #controles
+      {
+        width: 300px;
+        height: 450px;
+        border: 1px black solid;
+        float: left;
+      }
+      #controles div{
+        margin-bottom: 10px;
+      padding: 5px;
+      }
+      label{
+        float: left;
+        width: 140px;
+      }
+      #image
+      {
+        width: 110px;
+        height: 110px;
+        margin-left: 100px;
+      }
+      p 
+      { 
+        padding-left: 5px; 
+        padding-right: 5px; 
+        font-family: 'Times New Roman';
+      }
+    </style>
+  </head>
+  <body>
+    <div id="contenu">
+      <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. </p>
+    <div id="image"><img src="zozor.png"></div>
+      <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. </p>
+      <p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </p>
+    </div>
+    <div id="controles">
+      <div>
+        <label for="couleur-fond">Couleur de fond</label>
+        <select id="couleur-fond">
+          <option value="#FFFFFF">Blanc</option>
+          <option value="#9FFEF1">Bleu</option>
+          <option value="#9FFECE">Vert</option>
+          <option value="#FAFE9F">Jaune</option>
+        </select>
+      </div>
+    
+      <div>
+        <label for="texte">Texte</label>
+          <select id="texte">
+            <option value="Normal">Normal</option>
+            <option value="Gras">Gras</option>
+            <option value="Italique">Italique</option>
+            <option value="Souligne">Souligné</option>
+          </select>
+      </div>
+      
+      <div>
+        <label for="police">Police</label>
+        <select id="police">
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Courier New">Courier New</option>
+          <option value="Arial">Arial</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="police-prem-phrase">Police 1e phrase</label>
+        <select id="police-prem-phrase">
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Courier New">Courier New</option>
+          <option value="Arial">Arial</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="prem-car-phrases">Prem caract phrases</label>
+        <select id="prem-car-phrases">
+          <option value="Normal">Normal</option>
+          <option value="Gras">Gras</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="mot">Mot en rouge</label>
+        <input type="text" id="mot" size="2">
+        <button id="couleurMot">OK</button>
+      </div>
+
+      <div>
+        <label for="bordure-images">Bordure images</label>
+        <select id="bordure-images">
+          <option value="Rien">Rien</option>
+          <option value="Simple">Simple</option>
+          <option value="Double">Double</option>
+        </select>
+      </div>
+
+      <div>
+        <button id="raz">RAZ formulaire</button>
+      </div>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+
+      var div = $('#contenu');
+
+      $('#couleur-fond').change(function() {
+        div.css('background-color', $(this).val());
+      });
+
+      $('#texte').change(function() {
+        $('u').each(function() {
+          var u = $(this);
+          u.replaceWith(u.html());
+        });
+
+        var selected = $(this).prop('selectedIndex');
+        switch(selected) {
+          case 0:
+            div.css('font-style', 'normal').css('font-weight', 'normal');
+            break;
+          case 1:
+            div.css('font-weight', 'bold').css('font-style', 'normal');
+            break;
+          case 2:
+            div.css('font-style', 'italic').css('font-weight', 'normal');
+            break;
+          case 3:
+            div.css('font-weight', 'normal').css('font-style', 'normal');
+            $('#contenu p').wrap('<u></u>');
+            break;
+        }
+        //div.css('font-decoration', $(this).val());
+      });
+
+      $('#police').change(function() {
+        $('#contenu p').css('font-family',  $(this).val());
+        if($('#police-prem-phrase').val() != 'Times New Roman')
+          $('#contenu p:first').css('font-family', $('#police-prem-phrase').val());
+      });
+
+      $('#police-prem-phrase').change(function() {
+        $('#contenu p:first').css('font-family', $(this).val());
+      });
+
+      $('#prem-car-phrases').change(function() {
+        var graisse = $(this).val();
+        if(graisse == 'Normal') {
+          $('b').each(function() {
+            var b = $(this);
+            b.replaceWith(b.text());
+          });
+        }
+        else {
+          $('p').each(function() {
+            var parag = $(this),
+                texte = parag.html(),
+                frases = texte.split('. '),
+                i = 0;
+                frases = $.map(frases, function(elem, i) {
+                  if(elem[0] != null)
+                     return '<b>' + elem[0] + '</b>' + elem.substr(1);
+                });
+                parag.html(frases.join('. '));                
+          });
+          /*
+          $('p').each(function() {
+            var parag = $(this);
+            var texte = parag.html();
+            var frases = texte.split('. ');
+            for(var i = 0, length = frases.length; i < length; i++) {
+              if(frases[i].length > 1) {
+                var phrase = '<b>' + frases[i].charAt(0) + '</b>' + frases[i].substr(1, frases[i].length);     
+                frases[i] = phrase;           
+              }
+            }
+            frases = frases.join('. ');
+            parag.html(frases);
+          });
+          */
+        }
+      });
+
+      $('#couleurMot').click(function() {
+        var colored = $('font').html();
+        $('font').replaceWith(colored);
+
+        var index = $('#mot').val();
+        if(index > 0) {
+          var texte = $('#contenu p:first').html();
+          texte = texte.split(' ');
+          var length = texte.length;
+          if(index < length) {
+            texte[index - 1] = '<font color="red">' + texte[index -1] + '</font>';
+            texte = texte.join(' ');
+            $('#contenu p:first').html(texte);
+          }
+        }        
+      });
+
+      $('#bordure-images').change(function() {
+        var selected = $(this).prop('selectedIndex');
+        switch(selected) {
+          case 0: 
+            $('#image').css('border', '2px solid white');
+            break;
+          case 1:
+            $('#image').css('border', '2px solid black');
+            break;
+          case 2:
+            $('#image').css('border', '5px double black');
+            break;
+        }
+      });
+
+      $('#raz').click(function() {
+        /*
+        $('select').prop('selectedIndex', 0).trigger('change');
+        $('#mot').val('');
+        $('#couleurMot').trigger('click');
+        */
+        location.reload();
+      });
+
+
+      });
+     
+    </script> 
+  </body>
+</html>

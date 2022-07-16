@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 3</title>
+</head>
+<body>
+
+<button id="ajouter">Ajouter animation</button>
+<button id="annuler">Annuler la file d'attente</button><br />
+<button id="remplacer">Remplacer la file d'attente</button>
+<button id="retour">Ajouter une fonction de retour</button><br />
+<img src="bon.png" id="bon" style="position: relative;">
+<img src="mauvais.jpg" id="mauvais" style="position: relative;">
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#ajouter').click(function() {
+        $('#bon').dequeue();
+        $('#bon').toggle(5000)
+                 .queue(function() {
+                    $('#mauvais').animate({ left: '+=200' }, 'slow')
+                                 .animate({ top: '+=200' }, 'slow')
+                                 .animate({ left: '-=200' }, 'slow')
+                                 .animate({ top: '-=200' }, 'slow');
+                                
+                 });
+
+        /*
+        $('#mauvais').animate({ left: '+=200' }, { duration: 'slow', queue: true })
+                     .animate({ top: '+=200' }, { duration: 'slow', queue: true })
+                     .animate({ left: '-=200' }, { duration: 'slow', queue: true })
+                     .animate({ top: '-=200' }, {duration: 'slow', queue: true });
+        */
+    });
+
+    $('#annuler').click(function() {
+        $('img').clearQueue();
+    });
+
+    $('#remplacer').click(function() {
+        /*
+        // ici, je fais exécuter directement cette fonction, à la suite de quoi l'autre fonction de la en attente va s'exécuter
+        $('#mauvais').queue(function() {
+                        $(this).animate({ left: '200', top: '200)' }, 'slow')
+                               .animate({ top: '-=200' }, 'slow')
+                               .animate({ top: '+=200', left: '-=200' }, 'slow')
+                               .animate({ top: '-=200' }, 'slow').dequeue();
+                     });
+        */
+        
+        var result = $('#bon').queue();
+        result.pop(); // j'enlève la dernière fonction de la file d'attente
+        
+        // et je la remplace par celle-là
+        $('#bon').queue(function() {
+                $("#mauvais").animate({ left: '200', top: '200' }, 'fast')
+                             .animate({ top: '-=200' }, 'slow')
+                             .animate({ top : '+=200', left: '-=200' }, 'slow')
+                             .animate({ top: '-=200' }, 'slow');
+         });
+         
+     });
+
+    $('#retour').click(function() {
+        $('img').queue(function(){
+            alert('Animation terminée');
+            $(this).dequeue();
+        });
+    });
+  });
+</script>
+
+
+</body>
+</html>

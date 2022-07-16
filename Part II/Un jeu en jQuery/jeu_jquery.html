@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Un jeu en jQuery</title>
+<style type="text/css">
+	#jeu {
+		width: 400px;
+		height: 400px;
+		border: 2px black solid;
+		position: absolute;
+		overflow: hidden;
+	}
+
+	.fond {
+		margin-bottom: -5px;
+		z-index: 10;
+		position: absolute;
+	}
+
+	#vj {
+		z-index: 80;
+		position: absolute;
+		top: -200px;
+		left: 70px;
+	}
+
+	#vr {
+		z-index: 100;
+		position: absolute;
+		top: 240px;
+		left: 160px;
+	}
+
+	#vr_crash, #vj_crash {
+		z-index: 100;
+		position: absolute;
+		display: none;
+	}
+
+	#panel {
+		display: flex;
+		justify-content: space-between;
+		width: 396px;
+		background-color: #222;
+		color: #fff;
+		border: 4px red solid;
+	}
+
+	#panel div {
+		display: inline-block;
+	}
+
+	
+</style>
+</head>
+<body>
+<div id="panel">
+	<div>Collisions : <span id="collisions">0</span></div>
+	<div>Time : <span id="time">00:00</span></div>
+	<div>Tour : <span id="tour">1</span></div>
+</div>
+	<div id="jeu">
+	<img id="fond" class="fond" src="route.png">
+	<img id="fond1" class="fond" src="route.png">
+	<img id="fond2" class="fond" src="route.png">
+	<img id="vj" src="vj.png"><!-- La voiture jaune -->
+	<img id="vr" src="vr.png"><!-- La voiture rouge -->
+	<img id="vj_crash" src="vj_right.png">
+	<img id="vr_crash" src="vr_left.png">
+</div>
+<audio preload="auto" id="son">
+	<source src="beep.mp3" type="audio/mp3">
+	<source src="beep.ogg" type="audio/ogg">
+</audio>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+	var crash = false,
+		start = new Date(),
+		time = Date.now();
+
+	function temps() {
+		if(crash == false) {
+			var end = Date.now();
+			end = Math.floor((end - time) / 1000);
+			var minutes = Math.floor(end / 60),
+				seconds = Math.floor(end % 60);
+
+			if(minutes < 10) 
+				minutes = '0' + minutes;
+			if(seconds < 10) 
+				seconds = '0' + seconds;
+
+			$('#time').text(minutes + ':' + seconds);
+		}
+		else {
+			time += 1000;
+			start += 1000;
+		}
+
+		setTimeout(temps, 1000);
+	}
+
+	var relancerVj = true;
+	function deplace(duree, vitesse)
+	{	 
+		var collisions = parseInt($('#collisions').text(), 10);
+		if(collisions > 2) {
+			$('.fond').stop(true);
+			$('#jeu').append('<div id="over">GAME OVER</div>');
+			$('#over').css('position', 'absolute').css('top', 150).css('left', 70).css('z-index', 120).css('font-weight', 'bold')
+					  .css('color', '#f33').css('font-size', 40).css('border', '5px black double').css('background-color', '#fff');
+		}
+
+		var end = new Date();
+		if((end - start) > 10000 && crash == false) {
+			if(duree > 200)
+				duree -= 100;
+			start = end;
+			vitesse -= 200;
+			$('#tour').text(parseInt($('#tour').text(), 10) + 1);
+		}
+		console.log('dureeFond : ' + duree + ', vitesseVoiture : ' + vitesse);
+		if(crash == false && parseInt($('#vj').css('opacity'), 10) == 1 && relancerVj == true)  {
+			relancerVj = false;
+			//$('#vj').clearQueue();
+			$('#vj').animate({ top: '+=600' }, { easing: 'linear', duration: vitesse, complete: function() {
+				var vjX = Math.floor(Math.random() * 194) + 70;
+				var vjY = -150;
+				$('#vj').css('top', vjY).css('left', vjX);
+				relancerVj = true;
+			}});
+		}
+		
+		$('#fond').css('top', -740);
+		$('#fond1').css('top', -360);
+		$('#fond2').css('top', 20);
+
+
+		$('#fond').animate({ top: '+=380' }, { 
+ 		 	easing: 'linear', duration: duree, queue: false, 
+ 		 	
+ 		});
+
+		$('#fond1').animate({ top: '+=380' }, { 
+ 		 	easing: 'linear', duration: duree, queue: false, 
+ 		});
+
+ 		$('#fond2').animate({ top: '+=380' }, { 
+ 		 	easing: 'linear', duration: duree, queue: false, 
+ 		 	complete: function() {
+ 		 		if(collisions < 3)
+  					deplace(duree, vitesse);
+ 		 	}
+ 		});
+	}
+
+
+	$(document).keydown(function(e) {
+		if(e.which == 37) {
+			pressed = true;
+			var vrX = parseInt($('#vr').css('left'), 10);
+			if(vrX > 80)
+				$('#vr').animate({'left': vrX - 30 }, 50, 'linear');
+			else if(vrX < 80 && vrX > 65)
+				$('#vr').animate({'left': vrX - 15}, 25, 'linear');
+		}
+		else if(e.which == 39) {
+			var vrX = parseInt($('#vr').css('left'), 10);
+			if(vrX < 255)
+				$('#vr').animate({left: vrX + 30}, 50, 'linear');
+			else if(vrX >= 255 && vrX < 275)
+				$('#vr').animate({'left': vrX + 15}, 25, 'linear');
+		}
+	});
+
+	function collision() {
+		if(crash == false) {
+			var vrX = parseInt($('#vr').css('left'), 10),
+			vrY = 240,
+			vjX = parseInt($('#vj').css('left'), 10),
+			vjY = parseInt($('#vj').css('top'), 10),
+			ok = 1,
+			vrRight = false,
+			vjRight = false;
+
+			if(vrX > vjX && vrX < (vjX + 66) && vrY > vjY && vrY < (vjY + 150) && ok == 1) {
+				vrRight = true;
+				ok = 0;
+				$('#vj_crash').attr('src', 'vj_left.png').show();
+				$('#vr_crash').attr('src', 'vr_right.png').show();
+			}
+			else if(vjX > vrX && vjX < (vrX + 66) &&  vrY > vjY && vrY < (vjY + 150) && ok == 1) {
+				vjRight = true;
+				ok = 0;
+				$('#vj_crash').attr('src', 'vj_right.png').show();
+				$('#vr_crash').attr('src', 'vr_left.png').show();
+			} 
+			else if(vrX > vjX && vrX < (vjX + 66) && vrY < vjY && vjY < (vrY + 150) && ok == 1) {
+				vrRight = true;
+				ok = 0;
+				$('#vj_crash').attr('src', 'vj_left.png').fadeIn('fast');
+				$('#vr_crash').attr('src', 'vr_right.png').fadeIn('fast');
+			} 
+			else if(vjX > vrX && vjX < (vrX + 66) && vrY < vjY && vjY < (vrY + 150) && ok == 1) {
+				vjRight = true;
+				ok = 0;
+				$('#vj_crash').attr('src', 'vj_right.png').fadeIn('fast');
+				$('#vr_crash').attr('src', 'vr_left.png').fadeIn('fast');
+			} 
+			
+			if(ok == 0) {
+				var collision = parseInt($('#collisions').text(), 10) + 1;
+				$('#collisions').text(collision);
+				$('#son')[0].play();
+				crash = true;
+				$('#vj').hide().clearQueue();
+				$('#vr').hide();
+				$('#vj_crash').css('top', vjY).css('left', vjX);
+				$('#vr_crash').css('top', vrY).css('left', vrX);
+				if(vrRight == true && vjRight == false) {
+					$('#vj_crash').animate({ top: '+=150', left: '-150'}, {easing: 'linear', duration: 2000, queue: false});
+					$('#vr_crash').animate({ top: '-=150', left: '+=150'}, {easing: 'linear', duration: 2000, queue: false,
+						complete: function() {
+							if(collision < 3) {
+								$('#vr').fadeIn(3000);
+								$('#vj').fadeIn(3000, function() {
+									crash = false;
+									$(this).queue('fx', []);
+								});
+								$('#vj_crash').fadeOut(1000);
+								$('#vr_crash').fadeOut(1000);
+							}
+						}});
+				}
+				else if(vrRight == false && vjRight == true) {
+					$('#vj_crash').animate({ top: '+=150', left: '+=150'}, {easing: 'linear', duration: 2000, queue: false});
+					$('#vr_crash').animate({ top: '-=150', left: '-=150'}, {easing: 'linear', duration: 2000, queue: false,
+						complete: function() {
+							if(collision < 3) {
+								$('#vr').fadeIn(3000);
+								$('#vj').fadeIn(3000, function() {
+									crash = false;
+								});
+								$('#vj_crash').fadeOut(1000);
+								$('#vr_crash').fadeOut(1000);
+							}
+						}});
+				}
+			} 
+		}
+	}
+
+	setInterval(collision, 20);
+	deplace(1000, 2500);
+	temps();
+});
+</script>
+</body>
+</html>

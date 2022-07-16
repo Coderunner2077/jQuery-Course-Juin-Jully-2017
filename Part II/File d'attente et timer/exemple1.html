@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 1</title>
+</head>
+<body>
+
+<button id="enchainer">Enchaîner les animations</button>
+<button id="nePasEnchainer">Ne pas enchaîner les animations</button><br />
+<button id="executerEnMemeTemps">Exécuter les animations en même temps</button>
+<button id="etatInitial">État initial</button><br /><br />
+<img src="logo.png" style="border: 2px black solid;">
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#enchainer').click(function() {
+    	$('img').animate({ 'border-width': '100' }, 1500)
+    			.animate({ 'width': '-=100' }, 1500);
+    });
+
+    $('#nePasEnchainer').click(function() {
+    	$('img').animate({ borderWidth: '100'}, 1500)
+                .animate({ width: '-=100'}, { queue: false, duration: 1500});
+        /* // produira le même effet ici
+        $('img').animate({ borderWidth: '100'}, { queue: false, duration: 1500})
+                .animate({ width: '-=100'}, 1500);
+        */
+    });
+
+    $('#executerEnMemeTemps').click(function() {
+    	$('img').animate({ 'border-width': '100', 'width': '-=100' }, 1500);
+    });
+
+    $('#etatInitial').click(function() {
+    	$('img').animate({ 'border-width': '2', 'width': '200'}, 1500);
+    	//$('img').css({ 'border-width': '2px', width: '200'});
+    });
+  });
+</script>
+
+</body>
+</html>

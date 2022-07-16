@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <title>TP - Redimensionnement du texte avec le plugin WiteText</title>
+    <style>
+    	#texteAdaptatif {
+    		background-color: #eee;
+    		display: inline-block;
+    		white-space: nowrap; 
+    	}
+    </style>
+  </head>
+
+  <body>
+    <span id="texteAdaptatif">Ce texte s’adapte à la largeur de la page</span>
+  </body>
+
+<script src="widetext.js"></script>
+<script>
+	$(function() {
+		$('#texteAdaptatif').wideText();
+	});
+</script>
+
+</html>

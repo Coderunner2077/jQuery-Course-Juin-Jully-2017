@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sélecteurs CSS</title>
+  </head>
+  <body>
+    <div id="listes">
+      <a href="http://api.jquery.com">API jQuery</a><br>
+      <a href="http://docs.jquery.com">Documentation jQuery</a><br>
+      <a href="modifier_element.html">Retour au cours</a>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        var test = $('a').attr('href');
+        //document.write(test);
+        alert('La méthode getter attr() renvoie seulement la valeur du premier élément sélectionné, ici : ' + test);
+        alert($('a').attr('class')); // renvoie undefined
+        alert($('a').text());
+        alert($('a').html());
+        $('a').html(function(index, value) {
+            alert('Dans le callback de html(), index : ' + index + ', value : ' + value);
+        });
+      }); 
+    </script>
+  </body>
+</html>

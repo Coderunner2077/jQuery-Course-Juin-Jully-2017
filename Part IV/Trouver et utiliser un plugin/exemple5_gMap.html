@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Exempe 5 : gMap</title>
+</head>
+<body>
+<div id="map1" style="width: 800px; height: 600px; border: 1px solid #777; overflow: hidden;">
+</div>
+
+
+
+<script src="jquery.js"></script>
+<script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2sCIOUrWaL2-Fmt4-G2zJGt87FtczId8&amp;callback=initMap"></script>
+<script type="text/javascript" src="jQuery-gMap-master/jquery.gmap.min.js"></script>
+<script>
+    function initMap() {
+      var uluru = { lat: -33.863893, lng: 151.205212 };
+      var map = new google.maps.Map(document.getElementById('map1'), {
+        center: uluru,
+        zoom: 10
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+    }
+  $(function() {
+    /*
+    $('#map1').gMap({ markers: [{
+      latitude: 43.92,
+      longitude: 2.14,
+      html: 'Ici Albi',
+      popup: true }],
+      maptype: 'TERRAIN',
+      zoom: 10
+    });
+    */
+  });
+</script>
+</body>
+</html>

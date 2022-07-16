@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Dernier exemple</title>
+<style type="text/css">
+  #balle {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border: black 2px solid;
+    border-radius : 10px;
+    position: relative;
+  }
+
+  #container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+  }
+</style>
+</head>
+<button id="go">GO</button><button id="stop">STOP</button>
+<body>
+  <div id="container">
+  <div id="balle"></div>
+  </div>
+  <script src="jquery.js"></script>
+  <script>
+    $(function() {
+    	function bis() {
+        var time = 0;
+       $('#balle').queue(function() {
+            var pos = $(this).position(),
+                x = pos.left,
+                y = pos.top;
+           
+            if(y == 0) {
+              $(this).animate({ left: ('+=' + (200 - x))  }, 'slow')
+                   .animate({ top: '+=200' }, 'slow')
+                   .animate({ left: '-=200' }, 'slow')
+                   .animate({ top: '-=200' }, 'slow')
+                   .dequeue();
+                   time = 3 * 600 + ((200 - x) * 600 / 200);
+            }
+            else {
+              if(x == 200) {
+                $(this).animate({ top: '+=' + (200 - y) }, 'slow')
+                       .animate({ left: '-=200' }, 'slow')
+                       .animate({ top: '-=200' }, 'slow')
+                       .dequeue();
+                time = ((200 - y) * 600 / 200) + 1200;
+              }
+              else {
+                 $(this).animate({ left: '-=' + x }, 'slow')
+                        .animate({ top: '-=' + y }, 'slow')
+                        .dequeue();
+                 time = (x * 600 / 200) + (y * 600 / 200);
+              }
+
+            }
+        });
+
+        return time;
+      }
+
+    	var timer1, timer;
+
+      $('#go').click(function() {
+        if(!timer ) {
+          var time = bis();
+          timer1 = setTimeout(bis, time);
+          timer = setInterval(bis, 2400);
+        }
+      });
+      
+      $('#stop').click(function() {
+          $('#balle').stop(true, false);
+          clearTimeout(timer1);
+          clearInterval(timer);
+          timer = null;
+      });
+    });
+  </script>
+</body>
+</html>

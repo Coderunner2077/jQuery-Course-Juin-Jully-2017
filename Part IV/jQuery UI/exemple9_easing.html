@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 9 : Modèles de progression</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css"><!-- !! imporatant !! -->
+</head>
+<body>
+
+<button id="easeOutElastic">Effet easeOutElastic</button>
+<button id="easeInOutBack">Effet easeInOutBack</button><br />
+<img src="balle.jpg" style="position: relative;">
+
+
+<script src="jquery.js"></script>
+<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script> 
+<script>
+  $(function() {
+    $('#easeOutElastic').click(function() {
+      $('img').css('left', '0px');
+      $('img').animate({ left: '+=500' }, 3000, 'easeOutElastic');
+    });
+
+    $('#easeInOutBack').click(function() {
+      $('img').css('left', '0px');
+      $('img').animate({ left: '+=500' }, 3000, 'easeInOutBack');
+    });
+  });
+</script>
+
+</body>
+</html>

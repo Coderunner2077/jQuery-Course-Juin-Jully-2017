@@ -1,0 +1,358 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>Plus loin dans la sélection d'éléments</title>
+</head>
+<body>
+
+                                                                           Plus loin dans la sélection d'éléments
+
+<h2>
+I./ Sélecteurs d'attributs
+</h2>
+Le tableau suivant dresse la liste des sélecteurs d'attributs évolués auxquels je vais m'intéresser : 
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECTEUR            |    ELEMENTS SELECTIONNéS
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[nom*="valeur"]      |    Eléments qui possèdent un attribut nom qui contient (partiellement ou totalement) la valeur spécifiée
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[nom~="valeur"]      |    Eléments qui possèdent un attribut nom qui contient la valeur spécifiée, délimitée par des limites de mot
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[nom$="valeur"]      |    Eléments qui possèdent un attribut nom qui se termine par la valeur spécifiée
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[nom!="valeur"]      |    Eléments qui ne possèdent pas l'attribut nom, ou qui possèdent un attribut nom différent de la valeur spécifiée
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[nom^="valeur"]      |    Eléments qui possèent un attribut nom qui commence par la valeur spécifiée
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+<h2>
+II./ Sélecteurs hiérarchiques
+</h2>
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECTEUR      |    ELEMENTS SELECTIONNéS
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+('p > e')      |    Eléments e directement descendants d'éléments p
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+('p + e')      |    Eléments e directement précédés d'un élément p
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+('p ~ e')      |    Eléments e précédés d'un élément p
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:empty         |    Eléments qui n'ont pas d'enfant
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:first-child   |    Premier enfant
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:first         |    Premier élement
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:last-child    |    Dernier enfant
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:last          |    Dernier élément    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:nth-child()   |    Elément qui est l'énième enfant de son parent
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:only-child    |    Eléments qui sont enfants uniques de leur parent
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+Exemple : 
+
+Réf <a href="exemple1.html" target="_blank">Exemple 1</a>
+
+Je vais afficher en rouge certains éléments de ces listes imbriquées en utilisant la méthode jQuery <strong>css()</strong> suivante : 
+
+<strong>
+$(function() {
+	$('sel').css('color', 'red');
+});
+</strong>
+
+...où <strong>sel</strong> est un sélecteur CSS du tableau suivant :
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CRITèRE                                                                           |    Sélecteur                |    Elément modifié
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments ul directement descendants d'éléments li                                 |    $('li > ul')             |    2, 3
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments li directement précédés d'un élément li                                  |    $('li + li')             |    3, 4, 5, 6
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Premier élément li enfant                                                         |    $('li:first-child')      |    1, 2, 3
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Premier élément li                                                                |    $('li:first')            |    1, 2, 3
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Dernier élément li                                                                |    $('li:last')             |    6
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Dernier élément li enfant                                                         |    $('li:last-child')       |    3, 6
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments li enfants uniques de leur parent                                        |    $('li:only-child')       |    aucun
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Deuxième enfant                                                                   |    $('li:nth-child(2)')     |    3, 4
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Attention: Les sélecteurs $('li:first') et $('li:first-child')  donnent le même résultat visuel. Cependant, les causes de ces résultats diffèrent : 
+
+	-	Dans le cas de $('li:first-child'), le premier li se voit affecter une propriété CSS color initialisée à red. De même pour le premier enfant de ce
+			primier li. Par contre, le deuxième enfant du premier li hérite de cette propriété
+	-	Dans le deuxième cas, le premier li se voit affecter une propriété CSS color initialisée à red, et ses deux enfants héritent de cette propriété
+
+
+<h2>
+III./ Pseudo-sélecteurs d'éléments sélectionnés
+</h2>
+Lorsque j'utilise un sélecteur CSS, un ou plusieurs éléments sont sélectionnés dans le DOM. En ajoutant un pseudo-sélecteur au sélecteur, je vais pouvoir
+filtrer la sélection en ne conservant que les éléments pairs, impairs, ayant un certain index, etc. 
+
+Voici le tableau de ces pseudo-sélecteurs : 
+
+<pre>
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECTEUR      |    ELEMENTS SELECTIONNéS
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:even          |    Eléments pairs
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:odd           |    Eléments impairs
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:eq()          |    Eléments dont l'index est spécifié
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:gt()          |    Eléments dont l'index est supérieur à (greater than) l'index spécifié
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:lt()          |    Eléments dont l'index est inférieur à (lower than) l'index spécifié
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Exemple 2 : 
+
+Réf <a href="exemple2.html" target="_blank">Exemple 2</a>
+
+<pre>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CRITèRE                                                                           |    Sélecteur                |    Elément modifié
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments p pairs                                                                  |    $('p:even')              |    1, 2, 3
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments p impairs                                                                |    $('p:odd')               |    2, 4
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments p après le deuxième                                                      |    $('p:gt(1)')             |    3, 4, 5
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments p d'index 4                                                              |    $('p:eq(3)')             |    4
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eléments p avant le quatrième                                                     |    $('p:lt(3)')             |    1, 2, 3
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+<h2>
+IV./ Sélecteurs d'éléments particuliers
+</h2>
+Cette action s'intéresse à des sélecteurs propres à certaines balises ou difficilement classables dans les autres catégories.
+
+Voici le tableau de ces pseudo-sélecteurs : 
+
+<pre>
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECTEUR      |    ELEMENTS SELECTIONNéS
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:header        |    Tous les titres de h1 à h6
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:hidden        |    Eléments cachés
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:visible       |    Eléments visibles
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:not()         |    Eléments qui ne correspondent pas au sélecteur spécifié
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Affichage des éléments cachés :
+
+<strong>$('div:hidden').show();</strong> : L'élément div qui avait été caché est affiché
+
+Dissimulation de tous les titres sauf le titre h1 : 
+
+<strong>$(':header:not(h1)').hide();</strong> : Toutes les balises de titre sont cachées, à l'exception de la balise <strong>h1</strong>.
+
+<h2>
+V./ Pseudo-sélecteurs spécifiques aux formulaires
+</h2>
+Les formulaires ont leur propre jeu de pseudo-sélecteurs CSS. En les utilisant, il est très simple de s'adresser à un élément ou un type d'élément en 
+particulier. 
+
+Voici le tableau : 
+
+<pre>
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECTEUR        |    ELEMENTS SELECTIONNéS
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:input           |    Tous les éléments de type input, textarea, select  et button
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:button          |    Eléments de type button
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:checkbox        |    Eléments de type checkbox
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:checked         |    Eléments cochés
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:radio           |    Eléments de type radio
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:reset           |    Eléments de type reset
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:image           |    Tous les boutons de type image
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:submit          |    Eléments de type submit
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:text            |    Eléments de type text
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:password        |    Eléments de type password
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:selected        |    Eléments sélectionnés
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:focus           |    Sélectionne l'élément qui a le focus
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:enabled         |    Eléments validés
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Réf <a href="exemple3.html" target="_blank">Exemple 3</a>
+
+<h2>
+VI./ Sélecteurs utilisés dans les tableaux
+</h2>
+Si les tableaux n'ont pas de sélecteurs spécifiques, plusieurs sélecteurs  évoqués  dans les sections précédentes  sont cependant bien pratiques pour
+mettre en forme rapidement des tableaux HTML. 
+
+<pre>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECTEUR        |    ELEMENTS SELECTIONNéS
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:first           |    Premier élément
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:last            |    Dernier élément
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:eq()            |    Elément dont l'index est spécifié
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:gt()            |    Eléments dont l'index est supérieur à l'index spécifié
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:lt()            |    Eléments dont l'index est inférieur à l'index spécifié
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:even            |    Eléments d'index pair
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:odd             |    Eléments d'index impair
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:empty           |    Eléments qui n'ont pas d'enfant
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+:not()           |    Eléments qui ne correspondent pas au sélecteurs spécifié
+__________________________________________________________________________________________________________________________________________________________________
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Exemples : 
+
+Sélection des lignes d'index supérieur à 1, et, dans le sous-ensemble correspondant, des lignes d'index inférieur à 5 => 
+
+<strong>$('tr:gt(0):lt(4)')</strong>
+
+Sélection des cellules d'index supérieur à 5, et, dans le sous-ensemble correspondant, des cellules d'index inférieur à 11 ==> 
+
+<strong>$('td:gt(4):li(10)')</strong>
+
+Sélection de toutes les lignes à l'exception de la dernière ==>
+
+<strong>$('tr:not(tr:last)')</strong>
+
+<h2>
+VII./ Parcourir les éléments sélectionnés
+</h2>
+Il existe une méthode qui permet d'appliquer une action spécifique sur chacun des éléments sélectionnés : c'est la méthode <strong>each()</strong>.
+
+Cette méthode passe en revue les éléments sélectionnés par une requête jQuery et permet de les modifier en utilisant des instructions JavaScript. La
+syntaxe de la méthode <strong>each()</strong> est la suivante : 
+
+<strong>
+$('sel').each(function(index) {
+	// Une ou plusieurs instructions JavaScript
+});
+</strong>
+
+le paramètre "index" est une variable JavaScript qui représente la position de l'élément dans la sélection. Il aura pour valeurs  consécutives 0, 1, 2, 
+etc. jusqu'à ce que tous les éléments  aient été passés en revue. 
+
+Exemple : 
+
+Voilà l'inscrution pour modifier l'attribut src des balies &lt;img> : 
+
+<strong>
+$('img').each(function(index) {
+	this.src = 'images2/' + (index+1) + '.jpg';
+});
+</strong>
+
+<h2>
+VIII./ Conversion jQuery/DOM
+</h2>
+1.) Conversion d'un élément du DOM en un objet jQuery
+
+Un sélecteur jQuery convertit un élément (ou un ensemble d'éléments) du DOM en un objet jQuery. Ainsi, par exemple l'instruction <strong>$('div')</strong>
+retourne un objet jQuery qui donne accès à toutes les balises div du document. 
+
+Remarque : je pense que l'objet jQuery est un wrapper, une surcouche pour les éléments du DOM sélectionnés.
+
+2.) Conversion d'une variable JavaScript en un objet jQuery
+
+jQuery et JavaScript font bon ménage ensemble, et il est fréquent d'entremêler des instructions jQuery et des instructions JavaScript. Fatalement, un 
+jour ou l'autre, je voudrai convertir une variable JavaScript en un objet jQuery pour pouvoir lui appliquer  les puissantes méthodes de ce langage. 
+Eh bien, il n'y a rien de plus simple : 
+
+var variableJS = 'un simple texte';
+var variableJQ = $(variableJS);
+
+3.) Conversion d'un objet jQuery en un élément du DOM
+
+Il est parfois nécessaire d'appliquer un traiement JavaScript à un objet jQuery. Etant donné que seules les méthodes jQuery peuvent être appliquées aux
+objets jQuery, une conversion jQuery vers DOM  est alors nécessaire. POur cela, j'appliquerai la méthode <strong>get()</strong> à un sélecteur jQuery. 
+
+Par exemple, si un document contient plusieurs balises span, il est possible de les convertir en un tableau JavaScript avec l'instruction suivante : 
+
+<strong>
+var spans = $('span').get();
+</strong>
+
+Ici, le tableau est stocké dans la variable JavaScript <strong>spans</strong>. Je peux maintenant appliquer les méthodes comme : 
+
+spans[0].innerHTML = 'tadam';
+spans[1].innerHTML = 'voilà !';
+
+
+<h2>
+En résumé
+</h2>
+Il est possible d'affiner la sélection d'éléments grâce aux sélecteurs d'attributs, aux pseudo-sélecteurs et aux sélecteurs hiérarchiques.
+Les formulaires ont leur propre jeu de pseudo-sélecteurs. Faciles à mémoriser, ils ont le nom des balises correspondantes précédés d'un ":".
+En utilisant un sélecteur jQuery, on obtient un objet jQuery qui contient zéro, un ou plusieurs éléments du DOM. On peut appliquer un traitement 
+global à ces éléments en leur appliquant une méthode jQuery. Lorsque le traitement global n'est pas suffisant, on utilise une boucle <strong>each</strong>.
+Avec une boucle <strong>each</strong>, les différents éléments sélectionnés sont parcourus un à un. Ils sont reperés par leurs index, dont le nom est
+spécifié  en paramètre de la fonction. Le traitement est réalisé par une ou plusieurs instructions JavaScript.
+Il est parfois utile de convertir des objets jQuery en éléments du DOM et inversement. La transformation DOM vers jQuery se fait en utilisant un sélecteur, et 
+éventuellement en le limitant à des éléments retournés. Quant à la transformation jQuery vers DOM, elle repose sur l'utilisation de la méthode 
+<strong>get()</strong>.
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

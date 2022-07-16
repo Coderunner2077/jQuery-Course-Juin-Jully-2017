@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 2</title>
+</head>
+<body>
+Cliquer sur l'image <br />
+<img src="canard.jpg"><br />
+<span id="message"></span>
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		$('img').one('click', function() {
+			$('#message').text('VOus avez cliqué sur l\'image. Désormais, je resterai insensible aux clics').fadeIn(1000).fadeOut(5000);
+		});
+	});
+</script>
+</body>
+</html>

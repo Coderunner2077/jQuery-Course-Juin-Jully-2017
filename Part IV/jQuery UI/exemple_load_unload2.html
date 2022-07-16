@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple Load Unload</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css"><!-- !! imporatant !! -->
+<style>
+	.from-left, .from-right, .from-top, .from-bottom, .trans-center {
+		display: none;
+	}
+	p {
+		width: 50%;
+	}
+</style>
+</head>
+
+<body>
+<div id="container">
+
+<img src="miniPaysage1.jpg" class="redim from-left to-left">
+<img src="miniPaysage2.jpg" class="from-top to-top">
+<img src="miniPaysage1.jpg" class="redim from-left to-left">
+<img src="miniPaysage3.jpg" class="from-right to-left">
+<p class="from-left to-right">
+	Un wiki fonctionne grâce à un moteur de wiki : c'est un logiciel installé sur le système hôte du site web.
+
+Identification des visiteurs
+Un wiki n'est pas forcément modifiable par tout le monde ; il peut exiger que les visiteurs s'inscrivent avant d'être autorisés à modifier les pages. Dans le cas des wikis qui sont complètement ouverts au public, diverses procédures techniques et sociales sont mises en œuvre pour limiter et annuler les modifications indésirables.
+
+Lorsqu'un wiki autorise des visiteurs anonymes à modifier les pages, c'est l'adresse IP de ces derniers qui les identifie ; les utilisateurs inscrits peuvent quant à eux se connecter sous leur nom d'utilisateur.
+</p>
+<div class="trans-center">
+	Un wiki fonctionne grâce à un moteur de wiki : c'est un logiciel installé sur le système hôte du site web.
+
+Identification des visiteurs
+Un wiki n'est pas forcément modifiable par tout le monde ; il peut exiger que les visiteurs s'inscrivent avant d'être autorisés à modifier les pages. Dans le cas des wikis qui sont complètement ouverts au public, diverses procédures techniques et sociales sont mises en œuvre pour limiter et annuler les modifications indésirables.
+
+Lorsqu'un wiki autorise des visiteurs anonymes à modifier les pages, c'est l'adresse IP de ces derniers qui les identifie ; les utilisateurs inscrits peuvent quant à eux se connecter sous leur nom d'utilisateur.
+</div>
+<a href="exemple_load_unload.html">Page Suivante</a>
+<div class="from-bottom to-bottom">
+Quelques wikis proposent, au lieu du wikitexte, une interface d'édition WYSIWYG, citons par exemple Confluence et XWiki, ainsi que Wikipédia depuis juillet 2013.
+
+Liens et création de pages
+Les wikis favorisent la création d'hyperliens en simplifiant l'écriture et en n'imposant aucune contrainte organisationnelle. Ainsi, chaque page web contient de nombreux liens qui la relient à d'autres pages, sans structure hiérarchique apparente. Il existe des fonctionnalités pour classer, ou plus précisément retrouver les pages, mais elles ne sont pas indispensables. Le wiki devient donc un foisonnement de pages mises au même niveau et reliées les unes aux autres, selon la logique propre au contenu de chacune d'entre elles.
+
+Originellement, les wikis utilisaient des MotsWiki (comme « CompteUtilisateur ») pour générer automatiquement des liens vers d'autres pages. Certains wikis ont des règles syntaxiques distinctes pour la création de liens, à l'exemple de MediaWiki où l'utilisateur emploie les crochets.
+
+L'apparence des liens (par exemple leur couleur) varie selon qu'ils mènent à une page existante ou à une page encore inexistante, que l'utilisateur a, toutefois, la possibilité de créer.
+</div>
+
+</div>
+<button id="info">Info sur les dimensions</button>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.js"></script>
+<script>
+$(function() {
+	/*
+	var isAnimating = false;
+	$('main').on('click', '[data-type="page-transition"]', function(event) {
+		event.preventDefault();
+		//detect which page has been selected
+		var newPage = $(this).attr('href');
+		if(!isAnimating)
+			changePage(newPage, true);
+	});
+
+	function changePage(url, bool) {
+		isAnimating = true;
+		// trigger page animation
+		$('body').addClass('page-is-changing');
+		// ...
+		loadNewContent(url, bool);
+	}
+
+	function loadNewContent(url, bool) {
+		var newSectionName = 'cd-' + url.replace('.html', ''),
+			section = $('<div class="cd-main-content ' + newSectionName + '"></div>');
+
+		section.load(url + ' .cd-main-content > *', function(event) {
+			// Load new content and replace <main> content with the new one
+			$('main').html(section);
+			// ...
+			$('body').removeClass('page-is-changing');
+			//...
+
+			if(url != window.location) {
+				// add the new page to the window.history
+				window.history.pushState({path: url}, '', url);
+			}
+		});
+	}
+
+	$(window).on('popstate', function() {
+		var newPageArray = location.pathname.split('/'),
+			// this is the url of the page to be loaded
+			newPage = newPageArray[newPageArray.length - 1];
+		if(!isAnimating)
+			changePage(newPage);
+	})
+	*/
+	
+	$('a').on('click', function(e) {
+		e.preventDefault();
+		$('.trans-center').hide('explode', 'slow');
+		$('.to-top').animate({ 'top': '-50', 'width': 'hide'}, 'slow', 'linear');
+		$('.to-right').animate({ 'left': $(window).outerWidth(true), 'width': 'hide' }, 'slow', 'linear');
+		$('.to-bottom').animate({ 'top': $(window).outerHeight(true) + 200, 'width': 'hide'}, 'slow', 'linear');
+		$('.to-left').animate({ 'left': '-50', 'width': 'hide' }, 'slow', 'linear', function() {
+			location.href = e.target.href;
+		});
+	});
+
+	$('.from-left').each(function() {
+		var initPos = $(this).position(),
+			offs = $(this).offset();
+		offs.left = -50;
+			console.log('before, elemPos : ' + initPos.left + 'x' + initPos.top);
+		$(this).offset(offs);
+		console.log('before this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		$(this).animate({ 'left': initPos.left, 'width': 'show' }, 'slow', 'linear', function() {
+			console.log('after this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		});
+	});
+
+	$('.from-right').each(function() {
+		var initPos = $(this).position(),
+			offs = $(this).offset();
+		offs.left = $(window).outerWidth(true);
+			console.log('before, elemPos : ' + initPos.left + 'x' + initPos.top);
+		$(this).offset(offs);
+		console.log('before this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		$(this).animate({ 'left': initPos.left, 'width': 'show' }, 'slow', 'linear', function() {
+			console.log('after this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		});
+	});
+
+	$('.from-top').each(function() {
+		var elem = $(this),
+			initPos = elem.position(),
+			offs = elem.offset();
+		offs.top = -50;
+		console.log('before, elemPos : ' + initPos.left + 'x' + initPos.top);
+		elem.offset(offs);
+		console.log('before this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		elem.animate({ 'top': initPos.top, 'width': 'show'}, 'slow', 'linear', function() {
+			console.log('after this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		});
+
+	})
+
+
+	$('.from-bottom').each(function() {
+		var elem = $(this),
+			initPos = elem.position(),
+			offs = elem.offset();
+		offs.top = $(window).outerHeight(true);
+		console.log('before, elemPos : ' + initPos.left + 'x' + initPos.top);
+		elem.offset(offs);
+		console.log('before this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		elem.animate({ 'top': initPos.top, 'width': 'show'}, 'slow', 'linear', function() {
+			console.log('after this : ' + $(this).css('left') + 'x' + $(this).css('top'));
+		});
+
+	});
+
+	$('.trans-center').show('explode', null, 'slow');
+
+	//$('.redim').resizable();
+	$('#info').on('click', function() {
+		//alert($('.redim:first').width() + ' x ' + $('.redim:first').height());
+		$('#container').append($('.redim:first').clone());
+	});
+	
+
+});
+</script>
+</body>
+</html>

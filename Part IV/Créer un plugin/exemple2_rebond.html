@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Exemple 2 : rebond()</title>
+</head>
+<style>
+	img { position: absolute; }
+	#balle { left: 100px; top: 400px; }
+</style>
+<body>
+
+<img src="balle.jpg" id="balle" />
+
+<button id="action">Cliquez ici pour utiliser le plugin gis</button>     
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="rebond.js"></script>
+<script>
+$(function() {
+	$('#action').click(function() {
+		$('#balle').rebond(0, 400);
+	});
+});
+</script>
+</body>
+</html>

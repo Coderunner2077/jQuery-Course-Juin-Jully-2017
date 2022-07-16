@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<title>jQuery UI</title>
+</head>
+<body>
+                                                                           <h1>jQuery UI</h1>
+
+Si jQuery offre de très nombreuses méthodes pour gérer le DOM, les propriétés CSS, AJAX et la gestion événementielle, jQuery UI le complète parfaitement en
+offrant des méthods additionnelles appliquées à la réalisation de l'interface utilisateur ("UI" est l'abrégé pour User Interface). jQuery UI est en quelque sorte un
+vaste assemblage de plugins accessibles à travers un seul fichier JavaScript.
+
+<h2>I./ De quoi est capable jQuery UI ?</h2>
+
+Pour avoir un aperçu des possibilités offertes par jQuery UI, je me rends sur le <a href="https://jqueryui.com/demos/" target="_blank">site officiel</a> et je 
+teste les différentes fonctionnalités proposés.
+
+Pour utiliser cette bibliothèque, il me suffit d'y faire référence avec une balise <strong>script</strong> qui pointe sur le CDN Google : 
+
+	-	<a href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.js" target="_blank">Version non minimisée</a>
+	-	<a href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js" taget="_blank">Version minimisée</a>
+
+Pour améliorer le rendu, la mise en forme des éléments manipulés par jQuery peut s'appuyer sur un thème CSS, auquel je fais référence via une balise
+<strong>link</strong>, dans l'en-tête du document. Tous les thèmes sont accessibles, en cliquant <a href="https://github.com/jquery/jquery-ui/tree/master/themes/base">ici</a>.
+
+Ce chapitre n'est qu'une introduction à jQuery UI. Pour en savoir plus, je peux lire le cours suivant :
+<a href="https://openclassrooms.com/courses/decouvrez-la-puissance-de-jquery-ui" target="_blank">Découvrez la puissance de jQuery UI</a>.
+
+<h2>II./ Déplacer et redimensionner des élémens.</h2>
+
+1.) Déplacement
+
+La méthode <strong>draggable()</strong> permet à n'importe quel élément du DOM d'être librement déplacé dans la page. Supposons qu'une page Web soit composée des 
+éléments suivants : un div et  trois images. Après avoir fait référence aux bibliothèques jQuery et jQuery UI, il suffit d'une instruction jQuery pour rendre 
+mobiles toutes les balises <strong>div</strong> et <strong>img</strong> : 
+
+Réf <a href="exemple1_draggable.html" target="_blank">Exemple 1 : draggable()</a>
+
+2.) Redimensionnement
+
+La méthode <strong>resizable()</strong> permet de redimensionner un objet quelconque. Bien qu'elle soit utilisable sur tous les objets du DOM, je l'utiliserai 
+surtout pour permettre à l'utilisateur de redimensionner des images. Une fois encore, jQuery UI brille par sa simplicité : pour rendre un élément redimensionnable,
+je lui applique simplement la méthode <strong>resizable()</strong> :
+
+Réf <a href="exemple2_resizable.html" target="_blank">Exemple 2 : resizable()</a>
+
+Attention: cela ne marchera pas si je n'inclus pas la feuille de style <strong>jquery-ui.css</strong> (soit téléchargé avec jQuery UI, soit inclus depuis ce
+<a href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/base/jquery-ui.css" target="_blank">lien</a>)
+
+<h2>III./ Un accordéon</h2>
+
+Un accordéon ? C'est un empilement de balises &lt; div> dont le contenu d'une seule est visible à la fois, et c'est ce que permet la méthode suivante :
+
+<strong>
+$('sel').accordion()
+</strong>
+
+Pour mettre en oeuvre cette méthode, je commence par définir une balise &lt; div> conteneur composée de plusieurs balises de titre &lt; h3> associées à des balises
+&lt; div> dans lesquelles je placerai le contenu à afficher. 
+
+Je fais référence à un fichier CSS <strong>jquery-ui-css</strong> sur le CDN Google, puis j'exécute la méthode jQuery <strong>accordion()</strong> sur le 
+&lt; div> conteneur, comme dans le code suivant : 
+
+Réf <a href="exemple3_accordion.html" target="_blank">Exemple 3 : accordion()</a>
+
+Note : je peux également changer radicalement le rendu de l'accrodéon en changeant les thèmes disponibles.
+
+<h2>IV./ Sélection de data</h2>
+
+La méthode <strong>datepicker()</strong> transforme une simple zone de texte &lt; input type="text"> en un calendrier dans lequel l'utilisateur peut choisir une 
+date. La date choisie est alors copiée dans la zone de texte. Pour utiliser cette méthode, il suffit de l'appliquer à une zone de texte quelconque, après avoir fait
+référence à un thème et aux bibliothèques jQuery et jQuery UI :
+
+Réf <a href="exemple4_datepicker.html" target="_blank">Exemple 4 : datepicker()</a>
+
+C'est plutôt sympa. Mais je peux également faire en sorte d'avoir un calendrier français, en initialisant le tableau suivant :
+
+<strong>
+$.datepicker.regional['fr']
+</strong>
+
+...comme ceci :
+
+<strong>
+$.datepicker.regional['fr'] = {
+	closeText: 'Fermer',
+	prevText: 'Précédent',
+	nextText: 'Suivant',
+	currentText: 'Aujourd\'hui',
+	monthNames: [
+		'Janvier', 'Février', 'Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'
+	],
+	monthNamesShort: [
+		'Janv.', 'Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'
+	],
+	dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+	dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+	dayNamesMin: ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S'],
+	weekHeader: 'Sem.',
+	dateFormat: 'dd/mm/yy',
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ''
+}
+</strong>
+
+Et pour indiquer que je veux utiliser ces données dans la méthode <strong>datepicker()</strong>, je fais :
+
+<strong>
+$.datepicker.setDefaults($.datepicker.regional['fr']);
+</strong>
+
+Ces instructions doivent être placées juste au-dessus de l'appel à la méthode <strong>datepicker()</strong>. Me voilà avec un calendrier en français !
+
+<h2>V./ Des boîtes de dialogue</h2>
+
+La méthode <strong>dialog()</strong> permet de créer des boîtes de dialogue de bien meilleur aspect que celles affichées avec la fonction JavaScript
+<strong>alert()</strong>. Voici comment la mettre en oeuvre : 
+
+<strong>
+	-	Créer une balise &lt;div>
+	-	Définir le titre de la boîte de dialogue dans son attribut &lt;title>
+	-	Appliquer la méthode <strong>dialog()</strong> à la balise &lt;div>
+</strong>
+
+L'instruction  suivante crée une instance de la boîte de dialogue et l'ouvre : 
+
+<strong>
+$('sel').dialog()
+</strong>
+
+Si la boîte de dialogue doit être ouverte  et fermée plusieurs fois, j'utiliserai d'autres instructions : 
+
+<strong>
+$('sel').dialog({ autoOpen: false }); 	// Crée une instance de la boîte de dialogue sans l'ouvrir
+$('sel').dialog('open');			// Ouvre la boîte de dialogue
+$('sel').dialog('close');			// Ferme la boîte de dialogue
+</strong>
+
+Voici qulques autres options utilisables dans les paramètres de la méthode <strong>dialog()</strong> :
+
+<strong>
+	-	height et width : Hauteur et largeur de la boîte de dialogue à l'ouverture
+	-	modal : Initialisé à true, rend la boîte de dialogue modale (ie interdissant l'accès à la page). La valeur par défaut est false
+	-	position : Position de la boîte de dialogue sur la page (elle est centrée par défaut)
+	-	zindex : Z-index de la boîte de dialogue (1000 par défaut)
+	-	buttons: Un ou plusieurs boutons affichés dans la boîte de dialogue
+</strong>
+
+Voici un exemple basique dans lequel une balise &lt; div> est transformée en une boîte de dialogue non modale, centrée et dont les dimensions sont celle 
+par défaut : 
+
+Réf <a href="exemple5_dialog.html" target="_blank">Exemple 5 : dialog()</a>
+
+Supposons maintenant que je veux créer une boîte de dialogue modale comportant deux boutons (<strong>Oui</strong> et <strong>Non</strong>) et positionnée
+en <strong>(100,100)</strong>. Voici le code à utiliser : 
+
+Réf <a href="exemple5_dialog.html" target="_blank">Exemple 5 : dialog()</a>
+
+<h2>VI./ Afficher des onglets</h2>
+
+En utilisant des onglets, je peux afficher un grand nombre d'informations dans un espace réduit. Pour visualiser l'ensemble de ces informations, il me suffit
+de basculer d'onglet en onglet.
+
+Pour définir des onglets, je dois imbriquer plusiers &lt; div> enfants (une par onglet) dans une &lt; div> parent. L'identifiant et l'intitulé des différents onglets
+sont définis dans une liste à puces insérée dans la balise &lt; div> parent. Ensuite, j'applique la méthode <strong>tabs()</strong> à la balise &lt; div> parent
+(ici #onglets) : 
+
+<strong>
+$('#onglets').tabs();
+</strong>
+
+jQuery UI se charge alors du reste. 
+
+Réf <a href="exemple6_tabs.html" target="_blank">Exemple 6 : tabs()</a>
+
+Le contenu des différents onglets peut également être obtenus en AJAX. Pour cela, je précise l'adresse URL des pages à afficher dans l'attribut
+<strong>href</strong> des différents onglets. Ici, par exemple, le premier onglet est obtenu à partir de la balise &lt; div> enfant #onglet-1, le 2e 
+de la page distante page2.htm et le troisième à partir du programme PHP page3.php :
+
+<strong>
+&lt;ul>
+	&lt;li>&lt;a href="#onglet-1">Titre de l'onglet 1&lt;/a>&lt;/li>
+	&lt;li>&lt;a href="http://www.site.com/page2.htm">Titre de l'onglet 2&lt;/a>&lt;/li>
+	&lt;li>&lt;a href="http://www.site.com/page3.htm">Titre de l'onglet 3&lt;/a>&lt;/li>
+&lt;/ul>
+</strong>
+
+<h2>VII./ Animation: reboot</h2>
+
+Je vais ici revoir des méthodes qui me sont (normalement) familières, comme <strong>show(), hide()</strong> et <strong>toggle()</strong>. Voici la syntaxe à
+utiliser :
+
+<strong>
+show(effet, options, vitesse, retour);
+hide(effet, options, vitesse, retour);
+toggle(effet, options, vitesse, retour);
+</strong>
+
+...où :
+
+	-	<strong>effet</strong> : est l'un des effets suivants : <strong>blind, clip, drop, explode, fold, puff, slide, scale, size</strong> et <strong>pulsate.
+			</strong>
+	-	<strong>options</strong> : représente les options à appliquer à l'effet. Ce paramètre est optionnel. 
+	-	<strong>vitesse</strong> : est la vitesse d'exécution de l'effet : <strong>slow, normal</strong> (valeur par défaut, 400ms),<strong>fast</strong> ou
+			un nombre qui représente une durée en millisecondes. Ce paramètre est optionnel.
+	-	<strong>retour</strong> : est une fonction de retour, exécutée lorsque l'effet est terminé. Ce paramètre est optionnel.
+
+Voici un exemple pratique d'utilisation de la méthode jQuery UI <strong>show()</strong> avec l'effet <strong>explode</strong> :
+
+Réf <a href="exemple7_animations_re.html" target="_blank">Exemple 7 : Animations (show, hide..)</a>
+
+Note : Pour appliquer un effet à un élément sans le faire apparaître ou disparaître, je passe par la méthode <strong>effect()</strong>, en utilisant la même
+syntaxe que pour les méthodes <strong>show(), hide()</strong> et <strong>toggle()</strong>.
+
+<h2>VIII./ Animations de couleurs</h2>
+
+jQuery UI étend les possibilités de la méthode <strong>animate()</strong> que j'ai vu dans les précédents chapitres : je peux désormais animer la couleur des 
+éléments ! Les propriétés sur lesquelles je peux agir sont les suivantes : 
+
+<strong>
+	-	backgroundColor
+	-	borderBottomColor
+	-	borderLeftColor
+	-	borderRightColor
+	-	borderRightColor
+	-	borderTopColor
+	-	color
+	-	outlineColor
+</strong>
+
+La syntaxe de la méthode animate() ne change pas : 
+
+<strong>
+$('sel').animate({ prop1: val1, prop2: val2, etc. }, duree, modèle, function() {
+	// Du code
+});
+</strong>
+
+Pour illustrer l'animation des couleurs, je vais modifier progressivement la couleur d'arrière-plan et la couleur du texte dans une balise &lt; div>, tout en
+combinant ces animations avec une modification de la largeur et de la position horizontale de la balise.
+
+Réf <a href="exemple8_color_animations.html" target="_blank">Exemple 8 : Animer les couleurs</a>
+
+<h2>IX./ Modèles de progression</h2>
+
+Avec jQuery, je n'ai accès qu'à deux modèles de progression pour mes animations (swing et linear). La bibliothèque jQuery UI propose un bien plus grand 
+nombre de modèles de progression :
+
+<figure>
+	<img src="modeles_progression.png" alt="Modèles de progression" />
+	<figcaption>Différents modèles de progression proposés par jQuery UI</figcaption>
+</figure>
+
+Après avoir fait référence à la bibliothèque jQuery UI, je peux les utiliser dans toutes les méthodes d'animation : 
+
+<strong>show(), hide(), fadeIn(), fadeOut(), fadeTo(), slideUp(), slideDown()</strong> et <strong>animate()</strong>.
+
+Pour avoir une idée de l'effet des modèles de progression, voici leur représentation graphique :
+
+<figure>
+	<img src="modeles_progression_graph.png" />
+	<figcaption>Représentation graphique des modèles de progression proposés par jQuery UI</figcaption>
+</figure>
+
+Réf <a href="exemple9_easing.html" target="_blank">Exemple 9 : Modèles de progression</a>
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

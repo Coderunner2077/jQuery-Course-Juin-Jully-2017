@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>Textes et imagess</title>
+</head>
+<body>
+                                                                             <h1>Textes et images</h1>
+
+<h2>
+I./ Les chaînes de caractères
+</h2>
+1.) Supprimer des espaces dans une chaîne
+
+La fonction <strong>$.trim()</strong> supprime les espaces au début et à la fin d'une chaine de caractères.
+
+Réf <a href="exemple1.html" target="_target">Exemple 1</a>
+
+Remarque: cette fonction renvoie la copie éventuellement transformée de la chaîne qu'on lui passe en paramètre.
+
+2.) Position d'un caractère dans une chaîne
+
+Rappel :
+
+<strong>
+var unCaractere = chaine.charAt(position);
+</strong>
+
+3.) Recharche et remplacements de textes
+
+Pour sélectionner le ou les éléments qui contiennent un mot ou un texte particulier, j'utiliserai le pseudo-sélecteur <strong>:contains</strong>.
+
+Exemple : 
+
+<strong>
+$('div:contains("rouge")').css('background-color', 'red');
+</strong>
+
+Il est également possible de remplacer un texte par un autre ou un élément par un autre en utilisant la méthode <strong>replaceWith()</strong>, dont voici la
+syntaxe : 
+
+<strong>
+$('sel').replaceWith('contenu');
+</strong>
+
+Réf <a href="exemple1.html" target="_target">Exemple 1 (toujours)</a>
+
+Note : <strong>replaceWith()</strong> remplace l'élément par un nouveau noeud si on lui fournit du code HTML. Par contre, si on lui fournit un objet jQuery,
+l'élément représenté par ce dernier va être déplacé pour effectuer le remplacement.
+
+<h2>
+II./ Les images
+</h2>
+1.) Agrandissement au survol 
+
+Cet exemple est un très grand classique
+
+Réf <a href="exemple2.html" target="_target">Exemple 2</a>
+
+2.) Agrandissement avec animation au survol
+
+Réf Exemple 2
+
+3.) Galéries d'images
+
+Réf <a href="exemple3_galerie.html" target="_target">Exemple 3 : Gélarie d'images</a>
+
+4.) Diaporama automatique
+
+Réf <a href="diaporama_automatique.html" target="_target">Diaporama automatique</a>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

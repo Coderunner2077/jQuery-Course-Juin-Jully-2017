@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 6 : tabs()</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css"><!-- !! imporatant !! -->
+</head>
+<body>
+
+<div id="onglets">
+  <ul>
+    <li><a href="#onglet-1">Titre de l'onglet 1</a></li>
+    <li><a href="#onglet-2">Titre de l'onglet 2</a></li>
+    <li><a href="#onglet-3">Titre de l'onglet 3</a></li>
+    <li><a href="exemple1_draggable.html">Exemple 1 : draggable</a></li>
+  </ul>
+  <div id="onglet-1">
+    Contenu 1
+  </div>
+  <div id="onglet-2">
+    Contenu 2
+  </div>
+  <div id="onglet-3">
+    Contenu 3
+  </div>
+</div>
+
+<script src="jquery.js"></script>
+<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script> 
+<script>
+  $(function() {
+   $('#onglets').tabs();
+  });
+</script>
+
+</body>
+</html>

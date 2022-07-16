@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">    
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Insérer et remplacer des éléments dans le DOM</title>
+  </head>
+<body>
+
+                                                                   <h1>Insérer et remplacer des éléments dans le DOM</h1>
+
+<h2>
+I./ Insérer du contenu
+</h2>
+Toutes les méthodes passées en revue dans cette section seront testées sur le code suivant : 
+
+Réf <a href="exemple.html" target="_blank">exemple.html</a>
+
+Plusieurs méthodes très pratiques permettent d'insérer du contenu dans ou en dehors de la sélection (ie des éléments retournés par le sélecteur jQuery) : 
+
+	-	<strong>append()</strong> : insère du contenu à la fin de la sélection
+	-	<strong>prepend()</strong> : insère du contenu au début de la sélection
+	-	<strong>before()</strong> : insère du contenu avant la sélection
+	-	<strong>after()</strong> : insère du contenu après la sélection
+
+Voici quelques exemples d'utilisation de ces méthodes.
+
+<strong>Ajout d'une espace et de trois astérisques à la suite de chaque titre &lt; h2> : 
+
+$('h2').append(' ***');
+
+Ajout de trois astérisques et d'une espace au début de chaque titre : 
+
+$('h2').before('*** ');
+
+Ajout d'une ligne de séparation horizontale avant le titre &lt; h2>#trois : 
+
+$('#trois').before('&lt; hr>');
+
+Insertion de deux sauts de ligne après chaque balise &lt; hr> : 
+
+$('hr').after('&lt; br>&lt; br>');
+</strong>
+
+<h2>
+II./ Remplacer des éléments
+</h2>
+Pour remplacer la sélection, j'utilise la méthode <strong>replaceWith()</strong> en précisant le nouvel élément entre les parenthèses. Par exemple,
+pour remplacer les balises &lt; hr> par des sauts de ligne, j'utilise l'instruction suivante :
+
+$('hr').replaceWith('&lt; br>');
+
+Et pour remplacer tous les titres &lt; h2> du document par des titres &lt; h3>, je ne fais surtout pas ça : 
+
+<span style="text-decoration: line-through">$('h2').replaceWith('&lt; h3>');</span>
+
+Pourquoi ? Parce que cela remplace le contenu des balises &lt; h2> par une balise &lt; h3> sans balise fermante, ce qui provoque leur disparition.
+
+Il faut faire appel à la méthode <strong>each()</strong> pour répondre à notre besoin : 
+
+<strong>
+$('h2').each(function() {
+	var elemH2 = $(this);
+	elemH2.replaceWith('&lt; h3>' + elemH2.text() + '&lt; /h3>');
+});
+</strong>
+
+<h2>
+III./ Insérer des éléments
+</h2>
+Voyons maintenant comment insérer des éléments dans l'arborescence du DOM. Les méthodes utilisées sont les suivantes : 
+
+	-	<strong>eai.appendTo(cible)</strong> : insère un élément à la fin de la cible
+	-	<strong>eai.prependTo(cible)</strong> : insère un élément au début de la cible
+	-	<strong>eai.insertBefore(cible)</strong> : insère un élément avant la cible
+	-	<strong> eai.insertAfter(cible)</strong> : insère un élément après la cible
+
+<strong>eai</strong> représente ici l'élément à insérer et cible représente l'élément avant ou après lequel doit se faire l'insertion.
+
+Note : pour décrire <strong>eai</strong>, je peux utiliser un sélecteur jQuery, un nom d'élément, une chaîne HTML ou un objet jQuery.
+
+Clarification : <strong>appendTo()</strong> insère un élément à la fin de la cible, tout en restant à l'intérieur de cette dernière. En gros,
+c'est une méthode pour ajouter un élément enfant à la fin, comme la méthode append() de JavaScript que je connais. D'autre part, <strong>insertAfter()</strong>
+insère un élément après la cible. 
+Situation analogique pour <strong>prependTo()</strong> et <strong>insertBefore()</strong>. 
+
+Petit exercice :
+
+<strong>
+Ajout d'un élément de liste à puces après le deuxième élément : 
+
+$('&lt; li>Deuxième élément bis&lt; /li>').insertAfter($('li:nth-child(2)'));
+
+Ajout d'une balise &lt; hr> avant chaque titre &lt; h2> : 
+
+$('&lt; hr>').insertBefore($('h2'));
+</strong>
+
+<h2>
+IV./ Déplacer du contenu
+</h2>
+Pour déplacer un élément existant  dans le document, j'utilise les méthodes append(), prepend(), before() ou after() : 
+
+<strong>
+	-	$('sel').append(depl);
+	-	$('sel').prepend(depl);
+	-	$('sel').before(depl);
+	-	$('sel').after(depl);
+</strong>
+
+...où <strong>sel</strong> sélectionne l'élément avant ou après lequel doit se faire le déplacement et <strong>depl</strong> représente l'élément à déplacer.
+
+Les méthodes append() et after() sont comparables : elles déplacent toutes deux un élément après un autre élément. Mais attention, avec append() le déplacement se
+fait avant la balise de fin de l'élément sélectionné, alors qu'avec after(), le déplacement se fait après cette balise.
+
+Les méthodes prepend() et before() sont également comparables : elles déplacent toutes deux un élément avant un autre élément. Mais attention, avec prepend(), le 
+déplacement se fait après la balise de début de l'élément sélectionné, alors qu'avec before(), le déplacement se fait avant cette balise.
+
+Remarque : append() et prepend() font de l'élément déplacé, respectivement, son dernier ou premier enfant.
+
+<h2>
+V./ Dupliquer des éléments
+</h2>
+Si je souhaite non pas déplacer, mais dupliquer un élément existant, je dois appliquer la méthode suivante : 
+
+<strong>clone()</strong>
+
+...à un sélecteur et, selon l'effet recherché, je le ferai suivre de la méthode <strong>appendTo(), prependTo(), insertBefore()</strong> ou 
+<strong>insertAfter</strong>.
+
+A titre d'exemple, je vais dupliquer le premier paragraphe et l'insérer après le dernier paragraphe. Voici l'instruction à utiliser : 
+
+$('p:first').clone().insertAfter($('p:last'));
+
+Si l'élément dupliqué a un ou plusieurs descendants, ils font eux aussi partie du clonage. 
+
+<h2>
+VI./ Entourer des éléments
+</h2>
+La méthode <strong>wrap()</strong> permet d'entourer un élément par un ou plusieurs autres éléments créés à la volée. Voici la syntaxe : 
+
+<strong>
+$('sel').wrap('elwrap');
+</strong>
+
+...où <strong>sel</strong> est un sélecteur jQuery quelconque et <strong>elwrap</strong> représente le ou les éléments (ouvrants et fermants) à 
+insérer autour de la sélection. Ces éléments peuvent être du code HTML, un sélecteur, un élément jQuery ou un élément du DOM. Quelle que soit leur 
+nature, ils encadrent  les éléments à entourer. 
+
+Pour bien comprendre le fonctionnement de cette méthode, je vais raisonner sur le code suivant : 
+
+Réf <a href="exemple2.html" target="_blank">exemple2.html</a>
+
+Pour afficher les éléments de la liste à puces en italique, je fais :
+
+<strong>
+$('li').wrap('&lt; i>&lt; /i>');
+</strong>
+
+Et si je veux afficher les éléments de la liste en rouge, gras, italique et souligné, je fais : 
+
+Réf <a href="exemple2.html" target="_blank">exemple2.html</a>
+
+Passons maintenant à la vitesse supérieure en utilisant une fonction pour personnaliser les éléments insérés autour de la sélection. 
+
+<strong>wrap()</strong> a deux variantes : 
+
+	-	<strong>wrapInner()</strong> : pour entourer le contenu d'un élément par un autre élément créé à la volée;
+	-	<strong>wrapAll()</strong> : pour entourer d'une façon globale les éléments sélectionnés avec un autre élément créé à la volée 
+
+Pour illustrer le fonctionnement de la méthode <strong>wrapInner()</strong>, supposons qu'une page HTML définisse le paragraphe suivant : 
+
+&lt; p>Le texte d'un paragraphe&lt; /p>
+
+Si j'exécute l'instruction jQuery suivante : 
+
+<strong>
+$('p').wrapInner('&lt; i>&lt; /i>');
+</strong>
+
+...le paragraphe se transforme en : 
+
+&lt; p>&lt; i>Le texte d'un paragraphe&lt; /i>&lt; /p>
+
+Alors qu'avec la méthode <strong>wrap()</strong>, j'aurais eu : 
+
+&lt; i>&lt; p>Le texte d'un paragraphe&lt; /p>&lt; /i>
+
+Et pour illustrer le fonctionnement de la méthode <strong>wrapAll()</strong>, je vais raisonner sur le code suivant :
+
+Réf <a href="exemple3.html" target="_blank">exemple3.html</a>
+
+En appliquant la méthode <strong>wrapAll()</strong> aux paragraphes du document et pour les entourer d'une balise &lt; div>, j'ai rassemblé les paragraphes, en 
+plaçant aux extrêmités deux balises div (ouvrante et fermante), et en évacuant eh dehors tout ce qui se trouvait entre deux paragraphes. 
+
+<h2>
+VII./ Supprimer des éléments
+</h2>
+La méthode <strong>remove()</strong> permet de supprimer les éléments retournés par un sélecteur jQuery. Par exemple, pour supprimer tous les titres &lt; h2>
+du document, je fais : 
+
+<strong>
+$('h2').remove();
+</strong>
+
+Ou encore, pour supprimer la deuxième puce dans l'unique liste à puces du document, j'utilise l'instruction suivante : 
+
+<strong>
+$('li:nth-child(2)').remove();
+</strong>
+
+Un dernier exemple. Pour supprimer tous les paragraphes qui contiennent le mot "quelconque", je fais : 
+
+<strong>
+$('p').remove(':contains("quelconque")');
+</strong>
+
+<h2>
+En résumé : 
+</h2>
+Pour insérer du contenu dans un document, j'utilise les méthodes append(), prepend(), before() et after(). Pour remplacer des éléments, j'utilise la méthode 
+replaceWith(). Pour insérer des éléments dans le DOM, j'utilise les méthodes appendTo(), prependTo(), insertBefore() et insertAfter(). Enfin, pour dupliquer
+des éléments, j'utiliserai la méthode clone(), chaînée à la méthode appendTo(), prependTo(), insertBefore() ou insertAfter().
+Les méthodes wrap(), wrapInner() et wrapAll() permettent d'entourer un élément par un ou plusieurs autres éléments créés à la volée.
+Pour supprimer un élément, j'utilise la méthode remove().
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

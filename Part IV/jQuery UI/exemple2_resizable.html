@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 2 : resizable()</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css"><!-- !! imporatant !! -->
+</head>
+<body>
+
+<img src="paysage1.jpg" class="redim">
+<div id="container"></div>
+
+<button id="info">Info sur les dimensions</button>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.js"></script>
+<script>
+$(function() {
+	$('.redim').resizable();
+	$('#container').on('dblclick', '.redim', function() {
+		$(this).resizable();
+	});
+	$('#info').on('click', function() {
+		alert($('.redim:first').width() + ' x ' + $('.redim:first').height());
+		$('#container').append($('.redim:first').clone());
+	});
+});
+</script>
+</body>
+</html>

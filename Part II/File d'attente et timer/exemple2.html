@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 2</title>
+</head>
+<body>
+
+<button id="droite">Droite</button>
+<button id="gauche">Gauche</button>
+<button id="bas">Bas</button>
+<button id="haut">Haut</button>
+<button id="etatFile">Etat de la file d'attente</button><br />
+<span id="infos">Cliquez sur Etat de la file d'attente</span><br /><br />
+<img src="logo.png" style="position: relative;">
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#droite').click(function() {
+        $('img').animate({ 'left': '+=50' }, 2000);
+    });
+
+    $('#gauche').click(function() {
+        $('img').animate({ 'left': '-=50' }, 2000);
+    });
+
+    $('#bas').click(function() {
+        $('img').animate({ 'top': '+=50' }, 2000);
+    });
+
+    $('#haut').click(function() {
+        $('img').animate({ 'top': '-=50' }, 2000);
+    });
+
+    $('#etatFile').click(function() {
+        var resultat = $('img').queue();
+        $('#infos').text('Il y a ' + resultat.length + ' animations en attente d\'exécution');
+    });
+  });
+</script>
+
+</body>
+</html>

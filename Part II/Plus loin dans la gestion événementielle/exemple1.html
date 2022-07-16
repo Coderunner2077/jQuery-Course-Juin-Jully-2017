@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 1</title>
+</head>
+<body>
+Cliquer sur l'image après avoir activé le clic<br />
+<img src="canard.jpg" id='image'><br />
+<button id="activer">Activer le clic</button>
+<button id="desactiver">Désactiver le clic</button>
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		function traitement() {
+			alert('Image cliquée');
+		}
+
+		$('#activer').on('click', function() {
+			$('#image').click(traitement);
+		});
+
+		$('#desactiver').on('click', function() {
+			$('#image').off('click', traitement);
+		});
+	});
+</script>
+</body>
+</html>

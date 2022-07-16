@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>FeedEk jQuery RSS/ATOM Feed Plugin Demo | jQuery RSS/ATOM Parser Plugin FeedEk Demo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="http://momentjs.com/downloads/moment-with-langs.min.js"></script>
+  <script src="FeedEk.js"></script>
+  <link href="FeedEk.css" rel="stylesheet" type="text/css" />
+  <style>
+    body { font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;background-color: #efefef;font-size: 13px;line-height: 17px !important; }
+    #divRss, #divRss2 {float: left;padding-right: 35px;}
+    #divRss ul, #divRss2 ul{width: 400px !important;}
+  </style>
+</head>
+<body>
+  <h1>Le Monde - A la Une</h1>
+  <div id="divRss"></div>
+  <h1>Le Figaro - A la Une</h1>
+  <div id="divRss2"></div>
+  <script>
+    $(document).ready(function () {
+        $('#divRss').FeedEk({
+          FeedUrl: 'http://www.lemonde.fr/rss/une.xml',
+          MaxCount: 3
+        });
+
+        $('#divRss2').FeedEk({
+          FeedUrl: 'http://www.lefigaro.fr/rss/figaro_actualites.xml',
+          MaxCount: 3
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Exemple 3</title>
+</head>
+<body>
+Cliquer sur l'image<br />
+<img src="canard.jpg"><br />
+<span id="message"></span>
+<button>Cliquer ici</button>
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		/*
+		$('img').click(function() {
+			$('#message').text('L\'image a été cliquée.').fadeIn(1000).fadeOut(5000);
+		});
+
+		$('#button').click(function() {
+			$('img').trigger('click');
+		});
+		*/
+		/////////////////////////////////////////////////////////////////////////////////
+		$('img').click(function(event, texte) {
+			if(texte == undefined)
+				texte = 'par vous';
+			$('#message').text('L\'image a été cliquée ' + texte).fadeIn(1000).fadeOut(5000);
+		});
+		$('button').click(function() {
+			$('img').trigger('click', 'par jQuery');
+		});
+	});
+</script>
+</body>
+</html>

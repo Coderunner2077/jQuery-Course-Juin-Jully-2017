@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Exemple 4 - La fonction ajax()</title>
+  </head>
+  
+  <body>
+    <button id="action">Lancer la requête AJAX</button><br />
+
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        $('#action').click(function() {
+          $.ajax({
+            url: 'send_mail.php',
+            type: 'POST',
+            data: 'email=' + email + '&contenu=' + contenu_mail,  // Je fais passer mes variables, exactement comme en GET
+            dataType: 'html'
+          });
+        });
+      });
+      </script>
+  </body>
+</html>

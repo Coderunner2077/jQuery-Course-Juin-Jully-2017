@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Modifier le contenu d'un élément</title>
+  </head>
+<body>
+                                                                          <h2>Modifier le contenu d'un élément</h2>
+
+<h2>
+I./ Getters et setters
+</h2>
+jQuery propose la même méthode pour les getters et setters. Pour les différencier, on se réfère au nombre de paramètres. Le getter n'ayant qu'un, alors que
+le setter en aura deux. 
+En tout que, cela est valable pour les méthodes qui modifient le contenu d'un élément, comme par exemple la méthode <strong>css()</strong>.
+
+1.) Ce que renvoie un getter
+
+Un sélecteur jQuery retourne zéro, un ou plusieurs éléments. Lorqu'aucun élément n'est retourné, le getter renvoie la valeur <strong>undefined</strong>. 
+Lorsqu'un seul élément est retourné, le getter renvoie la valeur de cet élément. Enfin, lorsque plusieurs éléments sont retournés, le <strong>getter
+renvoie la valeur du premier élément</strong>. 
+
+Le getter <strong>attr()</strong> renvoie la valeur de l'attribut HTML de l'élément sélectionné.
+
+Exemple : 
+
+Réf <a href="exemple_getter.html" target="_blank">exemple_getter.html</a>
+
+2.) Ce qui peut être passé à un setter
+
+Les méthodes <strong>setters</strong> peuvent se présenter sous trois formes différentes : 
+
+	-	$('#logo').attr('src', 'logo.gif');
+	-	$('#logo').attr({src: 'logo.gif', alt: 'Logo de la société', width: '200px'});
+	-	$('a').attr({target:function() {...}});
+
+La troisième ligne utilise une fonction JavaScript pour créer ou modifier l'attribut <strong>target</strong> des balises &lt;a> du document. 
+Voici par exemple à quoi pourrait ressembler la fonction passée en deuxième argument de la méthode <storng>attr()</storng> : 
+
+<strong>
+$('a').attr('target', function() {
+	if(this.host == location.host) return '_self';
+	else return '_blank';
+});
+</strong>
+
+Explications : Si le lien (this.host) se trouve sur le même site que la page en cours (== location.host), l'attribut target  est initialisé avec la valeur
+"_self". Dans le cas contraire ==> '_blank'. 
+
+<h2>
+II./ Accéder aux attributs HTML et aux propriétés CSS
+</h2>
+1.) Accéder aux attributs des balises HTML
+
+J'utiliserai la méthode <strong>attr()</strong> pour lire, créer et modifier les attributs des balises HTML. Voici quelques exemples : 
+
+	-	$('#plus').attr('src') 
+	-	$('div').attr('class') : retourne l'attribut <strong>class</strong> du <strong>premier</strong> div.
+	-	$('div').attr('class', 'madiv') :  modifie ou crée l'attribut <strong>class</strong> dans les balises <strong>div</strong> du document et leur affecte la
+			valeur "madiv"
+	-	$('#illustr').attr('src', 'sublime.jpg') : modifie ou crée l'attribut <strong>src</strong> dans la balise d'indetifiant <strong>illustr</strong> et lui
+			affecte la valeur "sublime.jpg". 
+
+Voici comment supprimer un attribut dans une balise ou un ensemble de balises. POur cela, j'utiliserai la méthode suivante : 
+
+<strong>removeAttr('nom_attribut')</strong>.
+
+Cette méthode agit sur tous les éléments sélectionnés par le sélecteur jQuery. 
+
+Par exemple, pour supprimer l'attribut <strong>href</strong> de toutes les balises &lt;a> du document : 
+
+<strong>
+$('a').removeAttr('href');
+</strong>
+
+2.) Accéder aux propriétés CSS
+
+En ce qui concerne la méthode <strong>css()</strong>, elle peut donc être uitilisée comme un getter, pour connaître la valeur d'une propriété CSS. 
+
+Là encore, le getter renvoie la valeur du premier élément sélectionné, alors que le setter change la valeur de tous les attributs sélectionnés. TOut comme
+pour la méthode <strong>attr()</strong>. 
+
+<h2>
+III./ Travailler avec l'attribut class
+</h2>
+1.) Ajouter et supprimer des classes
+
+Trois méthodes consacrées aux classes vont me permettre d'aller plus loin : 
+
+	-	<strong>addClass()</strong> : ajoute une classe dans les éléments sélectionnés.
+	-	<strong>removeClass()</strong> : supprime (si elle existe) une classe des éléments sélectionnés.
+	-	<strong>toggleClass()</strong> : ajoute une classe si elle n'existe pas, et la supprime si elle existe.
+
+Je peux même indiquer plusieurs classes séparées par des espaces dans les méthodes addClass(), removeClass() et toggleClass(). Prenons cet exemple d'instruction: 
+
+<strong>
+$('#element').removeClass('vert').addClass('rouge').removeClass('grand').addClass('petitr');
+</strong>
+
+Voici comme on peut donc simplifier cette instruction : 
+
+<strong>
+$('#element').removeClass('vert grand').addClass('rouge petit');
+</strong>
+
+2.) Tester l'existence de classes
+
+La méthode <strong>hasClass()</strong> permet de tester si la sélection est d'une certaine classe. 
+
+<h2>
+IV./ Travailler avec des formulaires
+</h2>
+J'utiliserai la méthode <strong>val()</strong> pour tester/modifier la valeur des zones de texte, boutons radio, cases à cocher, liste déroulanes et zones de 
+liste contenues dans un document HTML. 
+
+Exemple : 
+
+Réf <a href="exemple_formulaire.html" target="_blank">exemple_formulaire.html</a>
+
+Voici le tableau des exemples d'instructions que je peux insérer dans exemple_formulaire.html : 
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+INSTRUCTION jQuery                |   EFFET
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$('#nom')                         |    Lit le nom d'utilisateur
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$('#pass').val()                  |    Lit le mot de passe
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(':radio#H:checked').val()       |    Lit l'état du bouton radio <strong>H</strong>. Renvoie la valeur value si le bouton est sélectionné. sinon undefined
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(':radio#H').prop('checked')     |    Lit l'état du bouton radio <strong>H</strong>. Renvoie true si le bouton est sélectionné. sinon false.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$('#fonction').val()              |    Lit l'élément sélectionné dans la liste déroulante 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$('#nom').val('abcde')            |    Ecrit "abcde" dans la one de texte Nom d'utilisateur
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$('pass').val('bullsh')           |    Ecrit "bullsh" dans la zone de texte <strong>Mot de pase</strong>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(':radio).val(['H'])             |    Sélectionne le bouton radio <strong>H</strong>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(':radio#H').prop('checked', true)   |    Sélectionne le bouton radio <strong>H</strong>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$('#fonction').val('retraite')    |    Sélectionné <strong>retraité</strong> dans la liste déroulantes.
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+<h2>
+V./ Travailler avec les valeurs stockées dans des éléments
+</h2>
+Je peux lire ou modifier les valeurs textuelles de l'objet jQuery en utilisant deux méthodes jQuery : 
+
+	-	<strong>text()</strong> : retourne/modifie la valeur textuelle stockée dans l'élément
+	-	<strong>html()</strong> : retourne/modifie le code HTML stocké dans l'élément.
+
+COmme toujours, je vais utiliser un exemple : 
+
+Réf <a href="exemple_getter.html" target="_blank">exemple_getter.html</a>
+
+Il y a juste une différence majeure entre les getters de ces deux méthods : 
+
+Le getter de <strong>text()</strong> (sans paramètre) renvoie les valeurs concaténés de tous les éléments sélectonnés, alors que le getter <strong>html()</strong>
+retourne seulement la valeur du premier élément sélectionné. 
+
+Mais je peux aussi accéder individuellement à chacune des valeurs, en définissant une fonction comme paramètre de la méthode <strong>text()</strong> (ou
+<strong>html()</strong> d'ailleurs), comme ceci : 
+
+$('sel').text(function(index, actuel) {
+	// action
+});
+
+...où <strong>index</strong> représente le numéro de la valeur en cours de traitement (à partir de 0), et <strong>actuel</strong> représente la
+valeur en cours de traitement.
+
+Réf exemple_getter.html
+
+Note : <strong>$('sel').html()</strong> et <strong>$('sel:first').html()</strong> sont strictement équivalents (rappel).
+
+Note2 : en ce qui concerne les setters text() et html(), ils agissent sur tous les éléments sélectionnés.
+
+<h2>
+VI./ Position et taille des éléments
+</h2>
+Pour gérer la position des éléments dans une page HTML, j'utiliserai les méthodes suivantes : 
+
+	-	<strong>offset()</strong> : position absolue d'un élément dans la page (getter et setter)
+	-	<strong>position()</strong> : position relative d'un élément par rapport à son parent (getter seulement)
+
+Ces deux méthodes ont deux propriétés, <strong>top</strong> et <strong>left</strong>, pour l'ordonnée et l'abscisse. 
+
+Réf <a href="exemple_positions.html" target="_blank">exemple_positions.html</a>
+
+1.) Connaître la position des éléments sur la page
+
+Réf exemple_positions.html
+
+Même si l'élément enfant a une <strong>position: absolute</strong> et se situe dans un élément parent qui  a lui-même 
+une <strong>position: absolute</strong>, offset() donne la position absolue de l'enfant par rapport à la page et non pas par rapport à son élément parent.
+(Contrairement aux propriétés JavaScript offsetTop et offsetLeft).
+
+2.) Modifier la position des éléments
+
+La méthode <strong>offset()</strong> peut être utilisée comme un setter et donc peut modifier les coordonnées absolues d'un élément. POur cela, il suffit
+d'indiquer les nouvelles coordonnées dans les paramètres de la méthode <strong>offset()</strong>. Par exemple, pour afficher la balise 
+<strong>&lt;div>#enfant</strong> aux coordonnées (100,100), voici le code à mettre en place :
+
+var posenfant = $('#enfant').offset();
+posenfant.top = 100;
+posenfant.left = 100;
+$('#enfant').offset(posenfant);
+
+3.) Connaître les dimensions des éléments
+
+Plusieurs méthodes jQuery permettent de connaître  les dimensions et de redimensionner les éléments de type block : 
+
+	-	<strong>width()</strong> : largeur de l'élément, de la fenêtre ou du document, sans inclure les marges (padding, margin, border). Cette méthode
+			peut être utilisée comme getter (pour connaître la largeur d'un élément) ou comme setter (pour modifier la largeur d'un élément)
+	-	<strong>innerWidth()</strong> : largeur de l'élément, en incluant le <strong>padding</strong> gauche et droit
+	-	<strong>outerWidth()</strong> : largeur de l'élément, en incluant le <strong>padding</strong> gauche et droit et la <strong>bordure</strong>
+	-	<strong>outerWidth(true)</strong> : largeur de l'élément, en incluant le <strong>padding</strong> gauche et droit, <strong>border</strong> et 
+			<strong>margin</strong> gauche et droit
+
+	-	height() : hauteur de l'élément, de la fenêtre ou du document, sans inclure les marges (padding, border et margin). Cette méthode peut être utilisée comme
+			 getter (pour connaître la hauteur d'un élément) ou comme setter (pour modifier la hauteur d'un élément).
+	-	nnerHeight() : hauteur de l'élément, en incluant le padding supérieur et inférieur.
+	-	outerHeight() : hauteur de l'élément, en incluant border et padding supérieur et inférieur.
+	-	outerHeight(true) : hauteur de l'élément, en incluant border, padding supérieur et inférieur et margin supérieur et inférieur.
+
+
+Et pour modifier les dimensions des balises &lt;div>, j'utiliserai les méthodes <strong>width()</strong> et <strong>height()</strong> en tant que setters. 
+Exemple : 
+
+$('div').width('200px');
+$('div').height('200px');
+
+<h2>
+VII./ Associer des données aux balises
+</h2>
+Utilisée en setter, la méthode jQuery <strong>$.data()</strong> permet d'associer une ou plusieurs données textuelles à n'importe quel élément du DOM. Il 
+peut s'agir de données complémentaires quelconquesque je retrouverai par la suite en utilisant la méthode <strong>$.data()</strong> en getter. Ces données
+ne surchargent pas la mémoire de l'ordinateur : elles sont détruites lorsque l'élément auquel elles sont liées est retiré du DOM ou lorsque la page Web change.
+
+La syntaxe de cette méthode est un peu particulière. Supposons que je veux associer une donnée unique à un élément, j'utiliserai la syntaxe suivante : 
+
+<strong>
+$.data(element, 'nom', nom_don: don);
+</strong>
+
+...où :
+
+	-	element : un élément du DOM (pas d'apostrohpes)
+	-	nom : est le nom (entre apostrophes) de la "variable" dans laquelle sera stockée la donnée
+	-	nom_don : est le nom (sans apostrophes) associée à la donnée. C'est un peu comme le nom d'une propriété dans les objets JavaScript
+	-	don : est une données quelconque. S'il s'agit d'un nombre, les apostrophes sont inutiles. Par contre, s'il s'agit d'une chaîne, je mets dse apostrophes.
+
+Si je veux associer plusieurs données à un élément, j'utiliserai une syntaxe légèrement différente : 
+
+<strong>
+$.data(element, 'nom', {nom_don1: don1, nom_don2: don2, nom_don3: don3});
+</strong>
+
+Pour retrouver une donnée associé à un élément, j'utilise la syntaxe suivante : 
+
+<strong>
+var uneVariable = $.data(element, 'nom').nom_don;
+</strong>
+
+...où :
+
+	-	uneVariable est une variable quelconque
+	-	element est le nom de l'élément (sans apostrophes) auquel une donnée a été associée
+	-	nom : est le nom (entre apostrophes) dans lequel a été stockée la donnée
+	-	nom_don : est le nom de la donnée à retrouver, sans apostrophes
+
+En guise d'exemple, je vais associer trois données à une balise &lt;div>, retrouver ces données et les afficher dans trois balises &lt;span> enfants du &lt;div>.
+
+Réf <a href="exemple_data.html" target="_blank">exemple_data.html</a>
+
+Les données associées aux éléments ne surchargent pas la mémoire de l'odinateur, car elles sont détruites lorsque l'élément auquel elles sont liées est
+retiré du DOM, lorsque la page Web change ou que le navigateur est fermé.
+
+Mais il existe également une méthode permettant de supprimer "manuellement" les données associées à un élément, sans avoir à supprimer l'élément ou changer
+de page : 
+
+<strong>
+$.removeData(element, 'nom');
+</strong>
+
+...où : 
+
+	-	element : est le nom de l'élément (sans apostrophes) auquel les données ont été associées
+	-	nom : est le nom (enter apostrophes) de la "variable" dans lequel les données ont été stockées
+
+Par exemple, pour supprimer la variable <strong>vals</strong> associée à la première (et unique d'ailleurs) balise <strong>div</strong> de l'exemple
+précédent, j'utiliserai les instructions suivantes : 
+
+var div = $('div')[0];
+$.removeData(div, 'vals');
+
+<h2>
+En résumé : 
+</h2>
+Un sélecteur jQuery peut retourner zéro, un ou plusieurs éléments. Lorsqu'aucun élément n'est retourné, le getter du langage jQuery renvoie la valeur 
+<strong>undefined</strong>. Lorsqu'un seul élément est retourné, le getter renvoie la valeur de cet élément. Les setters reçoivent généralement 
+plusieurs paramètres textuels qui permettent de modifier une propriété CSS, un attribut HTML ou encore d'insérer  un élément dans le code. 
+J'utiliserai la méthode <strong>attr()</strong> pour lire, créer et modifier les attributs des balises HTML.
+J'utiliserai la méthode <strong>css()</strong> pour lire, créer et modifier les propriétés CSS attachées au document.
+La méthode <strong>addClass()</strong> ajoute à la sélection l'attribut <strong>class</strong> dont le nom est indiqué entre les paramètres. La méthode
+<strong>removeClass()</strong> supprime un attribut <strong>class</strong> dans une balise. Enfin, la méthode <strong>hasClass()</strong> permet de
+tester l'existence d'une classe dans les éléments retournés par le sélecteur.
+La méthode <strong>val()</strong> permet de connaître et de modifier la valeur des zones de texte, boutons radio, cases à cocher, listes déroulantes et zones
+de liste contenues dans un document HTML.
+Les méthods <strong>text()</strong> et <strong>html()</strong> permettent de travailler avec les valeurs stockées dans des éléments HTML : <strong>text()</strong>
+retourne/modifie la valeur textuele stockée dans l'élément, et <strong>html()</strong> retourne/modifie le code HTML stocké dans l'élément.
+Pour connaître/modifier la position absolue d'une balise dans le document, j'utiliserai les méthodes <strong>offset()</strong> et <strong>position()</strong>.
+Pour connaître les dimensions d'un élément, j'utiliserai  les méthodes <strong>width()</strong> <strong>innerWidth()</strong>, <strong>outerWidth()</strong>,
+<strong>height()</strong>, <strong>innerHeight()</strong> et <strong>outerWidth()</strong>.
+En utilisant le langage jQuery, il est possible d'associer des données aux balises HTML. Pour cela, on utilise la méthode <strong>$.data()</strong>. Dans
+un premier, on affecte une ou plusieurs données à la balise en utilisant la méthode <strong>$.data()</strong> en tant que setter. Lorsque  cela est 
+nécessaire, la ou les valeurs associées à la balise sont récupérées en utilisant la méthode <strong>$.data()</strong> en getter. Lorsque les données associées
+à une balise ne sont plus nécessaires, on peut les supprimer avec la méthode <strong>$.removeData()</strong>.
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

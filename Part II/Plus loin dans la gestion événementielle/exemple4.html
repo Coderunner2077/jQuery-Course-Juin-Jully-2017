@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 4</title>
+</head>
+<body>
+
+<button id="bonjour">Cliquer ici</button>
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		/*
+		$('#bonjour').on('bonjour_jquery', function() {
+			alert('Hello from jQuery');
+		});
+
+		$('#bonjour').click(function() {
+			$('#bonjour').trigger('bonjour_jquery');
+		});
+		*/
+		//////////////////////////////////////////////////////////////////
+		$('#bonjour').on('bonjour_jquery', function(e, param) {
+			alert(param + ' Hello from jQuery');
+		});
+
+			var bool = false;
+		$('#bonjour').on('keydown keyup', function(e) {
+			var c = e.which;
+			if(String.fromCharCode(c).toUpperCase() == 'C') {
+				if(e.type == 'keydown')
+					bool = true;
+				else
+					setTimeout(function() {
+						bool = false;
+					}, 2000);
+			}
+
+		});
+		
+		$('#bonjour').on('click', function() {
+			if(bool)
+				$('#bonjour').trigger('bonjour_jquery', 'Wesch');
+		});
+	});
+</script>
+</body>
+</html>

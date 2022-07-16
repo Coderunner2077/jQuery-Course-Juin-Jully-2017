@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 2</title>
+</head>
+<body>
+<button id="affiche">Faire apparaître les images</button>
+<button id="cache">Faire disparaître les images</button><br />
+<img src="1.jpg" />
+<img src="2.png" />
+<img src="3.jpg" />
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#affiche').on('click', function() {
+      $('img').first().show('slow', function showNextOne() {
+        $(this).next('img').show('slow', showNextOne);
+      });
+    });
+
+    $('#cache').on('click', function() {
+      $('img').first().hide('slow', function hideNextOne() {
+        $(this).next('img').hide('slow', hideNextOne);
+      });
+    });
+  });
+
+</script>
+
+</body>
+</html>

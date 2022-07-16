@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Galerie d'images</title>
+<style type="text/css">
+	img {
+		padding: 5px;
+	}
+
+</style>
+</head>
+<body>
+
+<img src="miniPaysage1.jpg" id="paysage1.jpg" class="miniature" />
+<img src="miniPaysage2.jpg" id="paysage2.jpg" class="miniature" />
+<img src="miniPaysage3.jpg" id="paysage3.jpg" class="miniature" />
+<img src="miniPaysage4.jpg" id="paysage4.jpg" class="miniature" />
+<img src="miniPaysage5.jpg" id="paysage5.jpg" class="miniature" />
+<img src="paysage1.jpg" id="grand" />
+
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		$('.miniature').css('border', '5px white solid');
+		$('img:first').css('border', '5px black solid');
+		var clicked = $('img:first');
+		clicked.css('border', '5px black solid');
+		$('.miniature').click(function() {
+			clicked.css('border', '5px white solid');
+			clicked = $(this);
+			clicked.css('border', '5px black solid');
+			$('#grand').fadeOut(1000).queue(function() {
+				$(this).attr('src', clicked.attr('id')).fadeIn(1000).dequeue();
+			});
+
+		});
+	});
+</script>
+</body>
+</html>

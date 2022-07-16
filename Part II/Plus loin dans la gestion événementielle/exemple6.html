@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Exemple 6</title>
+	<style>
+	a {
+		background: yellow;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	</style>
+
+</head>
+<body>
+<div id="container">
+	<ul id="list">
+		<li><a href="http://google.com">Google</a></li>
+		<li><a href="http://youtube.com">Youtube</a></li>
+		<li><a href="exemple5.html">Exemple 5</a></li>
+	</ul>
+</div>
+<button id="suppr">Supprimer la délégation d'événements</button> 
+<button id="activate">Réactiver la délégation</button>
+
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<script>
+	$(function() {
+		$('#list').on('click', 'a', function() {
+			var item = $(this);
+			if(item.is('[href^="http"]'))
+				item.attr('target', '_blank');
+			item.parent().after('<li><a href="http://outlook.com">Outlook</a></li>');
+		});
+
+		$('#suppr').click(function() {
+			$('#list').off('click', 'a');
+		});
+
+		$('#activate').on('click', function() {
+			$('#list').on('click', 'a[href^="http"]', function() {
+				$(this).attr('target', '_blank');
+				$(this).parent().after('<li><a href="http://outlook.com">Outlook</a></li>');
+			});
+		});
+	});
+</script>
+</body>
+</html>

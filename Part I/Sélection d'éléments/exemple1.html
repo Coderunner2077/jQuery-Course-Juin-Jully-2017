@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sélecteurs CSS</title>
+  </head>
+  <body>
+    <div id="listes">
+      <ul id="ul1">
+        <li> Elément de liste 1
+          <ul id="ul2">
+            <li> Enfant 1</li>
+            <li> Enfant 2</li>
+          </ul>
+        </li>
+        <li> Elément de liste 2</li>
+        <li> Elément de liste 3</li>
+        <li> Elément de liste 4</li>
+      </ul>
+    </div>
+  
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        $('li:first-child').css('color', 'red');
+      }); 
+    </script>
+  </body>
+</html>

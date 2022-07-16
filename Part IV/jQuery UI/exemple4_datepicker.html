@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 4 : datepicker()</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css"><!-- !! imporatant !! -->
+</head>
+<body>
+
+Date <input type="text" id="datepicker" />
+<div>Ligne suivante</div>
+
+
+
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.js"></script>
+<script>
+$(function() {
+	$.datepicker.regional['fr'] = {
+		closeText: 'Fermer',
+		prevText: 'Précédent',
+		nextText: 'Suivant',
+		currentText: 'Aujourd\'hui',
+		monthNames: ['Janvier', 'Février', 'Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+		monthNamesShort: ['Janv.', 'Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+		dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+		dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+		dayNamesMin: ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S'],
+		weekHeader: 'Sem.',
+		dateFormat: 'dd/mm/yy',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''
+	};
+	$.datepicker.setDefaults($.datepicker.regional['fr']);
+	$('#datepicker').datepicker();
+});
+</script>
+</body>
+</html>

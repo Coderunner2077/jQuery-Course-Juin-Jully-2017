@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+<title>Formulaires et tableaux</title>
+</head>
+<body>
+
+                                                                            <h1>Formulaires et tableaux</h1>
+
+Ce chapitre traite, en plus des formulaires, des tableaux JavaScript, et non des tableaux HTML.
+
+<h2>
+I./ Les formulaires
+</h2>
+
+Note : certaines des techniques que je vais voir sont possibles en HTML5 et CSS3. Mailheureusement, mes visiteurs n'auront pas forcément un navigateur récent,
+aussi est-il bien de savoir comment les mettre en place en jQuery.
+
+1.) Donner le focus à un élément
+
+Si je suis amené à créer une page de login, mes utilisateurs apprécieront que la première zone de texte (celle où ils saisiront leur nom) soit sélectionnée par 
+défaut. Ceci est extrêmement simple en jQuery :
+
+<strong>
+$('#user').focus();
+</strong>
+
+...où <strong>#user</strong> estl'id d'une balise input.
+
+2.) Quel élément a le focus ?
+
+On le détermine très simplement à l'aide du gestionnaire événementiel de l'événement focus et à la méthode <strong>attr('id')</strong> : 
+
+<strong>
+var leFocus;
+$('input, textarea').focus(function() {
+	leFocus = $(this).attr('id');
+	$('#status').text(leFocus + ' a le focus');
+});
+</strong>
+
+
+3.) Mise en évidence de l'élément qui a le focus
+
+J'applique un <strong>css('background-color', color);</strong> à l'élément qui a le focus et une couleur normale à celui qui vient de perdre le focus (en passant
+par à <strong>blur()</strong>).
+
+4.) Vider le formulaire
+
+Pour annuler les données saisies dans un formulaire, il suffit d'utiliser le bouton <strong>reset</strong>. 
+
+Mais cette action peut aussi être effectuée en jQuery : 
+
+<strong>
+$('#raz').click(efface_formulaire); // où #raz est l'id d'un bouton <strong>button</strong>
+
+function efface_formulaire() {
+	$('input, textarea').not(':button, :submit, :reset, :hidden')
+						.val('')
+						.prop('checked', false)
+						.prop('selected', false);
+}
+</strong>
+
+Un sélecteur jQuery sélectionne toutes les balises <strong>input</strong> et <strong>textarea</strong> du document, en dehors des éléments <strong>button, 
+submit, reset</strong> et <strong>hidden</strong>, pour réinitialiser leur valeur. 
+
+Puis, s'ils existent, les attributs <strong>checked</strong> et <strong>selected</strong> sont supprimés grâce à la méthode <strong>prop()</strong> qui est un
+<strong>getter/setter</strong> pour les propriétés des éléments.
+
+Note : il y a une différence substantielle entre propriété et attribut. Par exemple, les propriétés <strong>selectedIndex, tagName, nodeName, nodeType, 
+ownerDocument, defaultChecked</strong> et <strong>defaultSelected</strong> doivent être obtenues et définies avec la méthode <strong>prop()</strong> et non
+<strong>attr()</strong>.
+
+Note2 : Lorsqu'une page ne contient qu'un formulaire, il suffit de la rafraîchir pour supprimer toutes les données qui auraient pu y être saisies. Pour cela, 
+j'utiliserai l'instruction JavaScript <strong>location.reload();</strong> .
+
+4.) Validation de formulaires
+
+Pour vérifier et valider les données saisies dans le formulaire, le plus simple consiste à utiliser un <em>plugin</em>. A découvrir plus tard.
+
+<h2>
+II./ Les tableaux
+</h2>
+1.) La fonction <strong>$.grep()</strong>
+
+Cette fonction trouve les éléments du tableau qui satisfont un ou plisieurs critères, et les renvoie sous forme d'un nouveau tableau. Voici sa syntaxe : 
+
+<strong>
+var tableau2 = $.grep(tableau, function(element, index) { ... }, inv);
+</strong>
+
+...où : 
+
+	-	<strong>tableau</strong> est le tableau contenant les données à filtrer
+	-	<strong>element</strong> et <strong>index</strong> sont les éléments  et l'index des éléments du tableau
+	-	<strong>inv</strong> indique si le critère doit (true) ou ne doit pas (false, qui est la valeur par défaut) être inversé
+
+Réf <a href="exemple1.html" target="_blank">Exemple 1</a>
+
+2.) La fonction <strong>$.map()</strong>
+
+Cette fonction recopie en partie ou en totalité un tableau en lui appliquant un traitement. Voici sa syntaxe : 
+
+<strong>
+tableau2 = $.map(tableau, function(elem, index) { ... });
+</strong>
+
+Réf <a href="exemple2.html" target="_blank">Exemple 2 : map</a>
+
+3.) La fonction <strong>$.inArray()</strong>
+
+La fonction <strong>$.inArray()</strong> renvoie la position de la valeur recherchée dans le tableau. Voici sa syntaxe : 
+
+<strong>
+var position = $.inArray('valeur', tableau, index);
+</strong>
+
+...où :
+
+	-	<strong>valeur</strong> est la valeur recherchée
+	-	<strong>tableau</strong> est le tableau dans lequel doit se faire la recherche
+	-	<strong>index</strong>, s'il est précisé, est le numéro de la cellule à partir duquel doit commencer la recherche
+	-	<strong>position</strong> est la position de la 1re occurence trouvée. Si la recherche est infructueuse, <strong>inArray()</strong> retourne -1
+
+4.) La fonction <strong>$.merge()</strong>
+
+Il est parfois nécessaire de regrouper les informations qui se trouvent dans deux tableaux. La fonction <strong>merge()</strong> est là pour me faciliter
+la tâche. Voici sa syntaxe : 
+
+<strong>
+$.merge(tableau1, tableau2);
+</strong>
+
+...où <strong>tableau1</strong> et <strong>tableau2</strong> sont les deux tableaux à regrouper. Cette fonction transforme directement le tableau passé en premier
+argument, en lui ajoutant les valeurs du deuxième tableau.
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

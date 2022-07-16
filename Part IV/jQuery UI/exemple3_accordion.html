@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 3 : accordion()</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css"><!-- !! imporatant !! -->
+</head>
+<body>
+
+<div id="content">
+	<h3><a href="#">Titre1</a></h3>
+	<div>Contenu1</div>
+	<h3><a href="#">Titre2</a></h3>
+	<div>Contenu2</div>
+	<h3><a href="#">Titre3</a></h3>
+	<div>Contenu3</div>
+	<h3>Titre4</h3>
+	<div>Contenu4</div>
+	<h3><a href="http://www.google.com">Titre5</a></h3> <!-- les liens ne servent apparemment à rien dans le cadre de cet accordéon -->
+	<div>Google ? Non.</div>
+</div>
+
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.12.1/jquery-ui.js"></script>
+<script>
+$(function() {
+	$('#content').accordion();
+});
+</script>
+</body>
+</html>

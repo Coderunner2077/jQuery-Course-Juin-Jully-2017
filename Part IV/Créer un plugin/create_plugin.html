@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<title>Créer un plugin</title>
+</head>
+<body>
+                                                                            <h1>Créer un plugin</h1>
+
+<h2>I./ Le squelette d'un plugin</h2>
+
+<h3>1.) Aborder la création de plugin</h3>
+
+jQuery a été pensé dans les moindres détails. Y compris en ce qui concerne la création de plugins. Tout ce qu'il y a à savoir, c'est que les objets jQuery reposent
+tous sur le prototype <strong>jQuery.fn</strong>. En d'autres termes, si j'ajoute une nouvelle fonction JavaScript à l'objet <strong>jQuery.fn</strong>, elle
+devient une méthode jQuery !Par exemple, le code suivant définit la méthode <strong>gis()</strong> :
+
+<strong>
+jQuery.fn.gis = function(param1, param2, param3, ...) {
+	// Du code
+};
+</strong>
+
+Si je sauvegarde ce code dans un fichier d'extension <strong>.js</strong> et que j'y fais référence dans une page Web à l'aide d'une balise &lt; script>, je peux 
+directement l'utiliser en faisant quelque chose comme ceci :
+
+<strong>
+$('p').gis(5, 'abc', 10);
+</strong>
+
+Cette instruction applique la méthode <strong>gis()</strong> à toutes les balises &lt; p> du document en lui transmettant les trois paramètres spécifiés entre
+les parenthèses. Et voilà, je viens de créer mon premier plugin !
+
+A quelques détails près, tous les autres plugins sont construits sur ce modèle.
+
+<h3>2.) Conflits entre plusieurs bibliothèques JavaScript</h3>
+
+De nombreuses bibliothèques JavaScript utilisent le signe $ pour faire réference à une variable ou une fonction qui leur est propre. Lorsqu'une page Web utilise une
+bibliothèque de ce type ainsi que jQuery, il se produit un conflit qui peut entraîner des dysfonctionnements de l'une ou l'autre des bibliothèques. 
+
+Heureusement, il est possible de demander à jQuery de ne pas utiliser l'alias "$" à la place du mot "jQuery". Pour cela, on utilise la méthode noConflict() :
+
+<strong>
+jQuery.noConflict()
+</strong>
+
+Une fois cette instruction exécutée, il est possible d'utiliser le signe $ en accord avec l'autre bibliothèque. 
+Voici un exemple de code :
+
+<strong>
+&lt;script src="uneBibliothèqueJavaScript.js">&lt;/script>
+&lt;script src="jquery.js">&lt;/script>
+&lt;script>
+	$.noConflict();
+	// Ici, je peux insérer une ou plusieurs instructions
+	// Qui utilisent le signe $ en accord avec les spécifications
+	// De la bibliothèque uneBibliothèqueJavaScript.js
+&lt;/scrpt>
+</strong>
+
+En utilisant <strong>$.noConflict()</strong> dans mes plugins, je rends ces derniers utilisables avec d'autres bibliothèques JavaScript. C'est donc une bonne 
+pratique à mettre en oevure systématiquement dans mes plugins. 
+
+Cela signifie qu'en utilisant <strong>$.noConflict()</strong>, je n'utiliserai pas l'alias $ pour à la place du mot "jQuery". Cette situation est parfaitement 
+tolérable si je développe de petits plugins qui ne dépassent pas une centaine de lignes de code. Mais elle devient vite insupportable au-delà.
+
+<h3>3.) Continuer à utiliser l'alias "$" dans un plugin jQuery</h3>
+
+Tous les programmeurs jQuery sont habitués à utiliser l'alias "$" à la place de "jQuery", et il y a justement une astuce pour que cela reste possible, même après
+l'instruction <strong>$.noConflict()</strong>. Ce tour de force réside dans l'utilisation d'une closure avec comme argument l'objet <strong>jQuery</strong> :
+
+<strong>
+(function($) {
+	// Code de mon plugin
+})(jQuery);
+</strong>
+
+Avec cela, il est donc possible de continuer à utiliser  l'alias <strong>"$"</strong> dans le plugin si j'inclus son code à l'intérieur de la closure. En
+l'occurence, le code devient ceci :
+
+<strong>
+(function($) {
+	$.gn.gis = function(paramètres) {
+		// Code
+	};
+})(jQuery);
+</strong>
+
+<h3>4.) Parcourir les éléments issus du sélecteur</h3>
+
+Les méthodes jQuery sont appliqués à un sélecteur. Ainsi par exemple, l'instruction suivante applique la méthode <strong>gis()</strong> à toutes les 
+balises de classe <strong>premier</strong> :
+
+<strong>
+$('.premier').gis();
+</strong>
+
+Il se peut que le document ne comporte qu'une balise de classe <strong>premier</strong>, mais il se peut aussi qu'il en comporte plusieurs. Pour passer en
+revue les différents éléments susceptibles d'être retournés par le sélecteur, j'utiliserai l'instruction <strong>each()</strong> : 
+
+<strong>
+this.each(function() {
+	// Code
+});
+</strong>
+
+Le code du plugin devient le suivant :
+
+<strong>
+(function($) {
+	$.fn.gis = function(paramètres) {
+		this.each(function() {
+			// Code
+		});
+	};
+})(jQuery);
+</strong>
+
+<h3>5.) Ne pas rompre la chaîne</h3>
+
+Pour pouvoir continuer à enchaîner les méthodes jQuery, comme c'est d'habitude le cas, je dois simplement retourner l'objet sur lequel a été appliquée ma méthode
+du plugin. Ceci est exrêmement simple, je fais :
+
+<strong>
+return this;
+</strong>
+
+Voici donc (enfin !) le squelette de mes futurs plugins jQuery :
+
+<strong>
+(function($) {
+	$.fn.gis = function(paramètres) {
+		this.each(function() {
+			// Code
+		});
+
+		return this;
+	};
+})(jQuery);
+</strong>
+
+<h2>I./ Un premier plugin</h2>
+
+Maintenant, il est temps de passer à la pratique en écrivant mon premier plugin. Je vais d'abord créer un plugin qui affecte les attributs gras, italique et
+souligné au contenu des balises sur lesquelles il est appliqué. Appelons ce plugins "gis" pour changer. 
+
+Réf <a href="jquery-gis.js" target="_blank">Fichier "jquery-gis.js"</a>
+Réf <a href="exemple1_gis.html" target="_blank">Exemple 1 : gis</a>
+
+Place aux choses sérieuses maintenant.
+
+<h2>III./ Un plugin plus ambitieux</h2>
+
+Développons maintenant un plugin qui effectue un rebond multiple amorti sur un élément (un peu comme une bille qu'on laisse tomber au sol). Mais d'abord, un
+détour mathématique s'impose : voyons ce qu'est un sinus cardinal...
+
+Sous ce nom se cache une fonction mathématique bien sympathique dont la représentation produira l'effet du rebond recherché : 
+
+<strong>
+y = abs(sin(x)) / x
+</strong>
+
+Voici la représentation graphique de cette fonction :
+
+<figure>
+<figcaption>Représentation graphique de la fonction y = abs(sin(x)) / x</figcaption>
+<img src="graph_sin.png" />
+</figure>
+
+Pour corser un peu le code, je vais utiliser deux paramètres dans le plugin : l'amplitude du déplacement horizontal et l'amplitude du délplacement vertical. je 
+vais appeler ce plugin "rebond", donc voici le code :
+
+Réf <a href="rebond.js" target="_blank">Fichier rebond.js</a>
+Réf <a href="exemple2_rebond.html" target="_blank">Exemple 2 : rebond()</a>
+
+Note : Si je veux un rebond vertical et non horizontal, j'utiliserai cette instruction : <strong>$('img').rebond(0, 100);</strong>
+
+Et si je veux mettre mes création à la disposition des autres développeurs jQuery, je dois soigner particulièrement la documentation. Je montre comment utiliser
+mon plugin, j'indique comment fonctionnent ses paramètres et je donne plusieurs exemples d'appel.
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Exemple 5</title>
+	<style>
+	div {
+		background: yellow;
+		font-weight: bold;
+		cursor: pointer;
+		padding: 8px;
+	}
+	</style>
+
+</head>
+<body>
+
+<div id="master" class="deleg">Cliquer ici pour insérer un autre&lt;div&gt;</div>
+<button id="suppr">Supprimer la délégation d'événements</button> 
+<button id="activate">Réactiver la délégation</button>
+
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<script>
+	$(function() {
+		/*
+		$('#master').on('click', 'div', function() {
+			alert('ok');
+			($(this)).after('Ce &lt;div&gt; a les mêmes caractéristiques que son parent');
+		});
+
+		$('#suppr').click(function() {
+			$('#master').off('click', 'div');
+		});
+		//marche pas
+		*/
+		$('body').on('click', 'div.deleg', function() {
+			$(this).after('<div class="deleg">Ce div a les mêmes caractéristiques que son jumeau</div>');
+		});
+
+		$('#suppr').click(function() {
+			$('body').off('click', 'div.deleg');
+		});
+
+		$('#activate').on('click', function() {
+			$('body').on('click', 'div.deleg', function() {
+				$(this).after('<div class="deleg">Ce div a les mêmes caractéristiques que son jumeau</div>');
+			});
+		});
+
+
+	});
+</script>
+</body>
+</html>

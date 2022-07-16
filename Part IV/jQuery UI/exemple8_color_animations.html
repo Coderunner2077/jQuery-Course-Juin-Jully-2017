@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 8 : Animations de couleurs</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css"><!-- !! imporatant !! -->
+<style>
+#contenu 
+{
+  border: 4px gray solid; 
+  background-color: #aaeae1; 
+  color: black; 
+  width: 100px;
+  position: relative;
+}
+#contenu h3 
+{
+  margin: 0; 
+  padding: 0.4em; 
+  text-align: center; 
+  background-color: #777;
+}
+</style>
+</head>
+
+<body>
+<div id="contenu">
+  <h3>Cliquez ici</h3>
+  At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+</div>
+
+<script src="jquery.js"></script>
+<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script> 
+<script>
+  $(function() {
+    $('#contenu').animate({
+      backgroundColor: '#fff',
+      color: 'red',
+      left: '+=200',
+      width: 500
+    }, 1000).delay(2000)
+      .animate({
+      backgroundColor: '#aaeae1',
+      color: 'black', 
+      left: '-=200',
+      width: 100,
+    }, 1000);
+
+    $('#contenu').hide('slow').show('clip', null, 2000,
+      function() {
+        $('#contenu').show('slow').animate({
+          backgroundColor: '#ffff00',
+          color: 'blue',
+          top: '+=200',
+          width: 500
+        }, 1000);
+      });
+
+    $('#contenu').animate({
+      backgroundColor: '#0000ff',
+      color: 'yellow',
+      top: '+=100',
+      left: '+=300',
+      height: 600,
+      width: 100
+      }, 1000, function() {
+        $('#contenu').hide('scale', 'slow');
+      }
+    );
+  });
+</script>
+
+</body>
+</html>

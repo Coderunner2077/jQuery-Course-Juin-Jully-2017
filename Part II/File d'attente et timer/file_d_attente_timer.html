@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+<title>File d'attente et timer</title>
+</head>
+<body>
+
+                                                                        <h1>File d'attente et timer</h1>
+
+<h2>
+I./ Les files d'attente jQuery
+</h2>
+Les animations jQuery sont asynchrones, c'est-à-dire qu'elles s'exécutent en tâche de fond. Si j'enchaîne deux animations en utilisant une instruction du type
+suivant : 
+
+<strong>
+$('sel').animate(...).animate(...);
+</strong>
+
+...alors la deuxième animation commence quand la première est terminée. Il s'agit là du comporement par défaut de jQuery : les animations sont placés dans une 
+file d'attente et s'enchaînent, les unes à la suite des autres. Si je souhaite que plusieurs animations s'exécutent en même temps, il suffit d'indiquer les 
+propriétés CSS à modifier dans le premier argument de la méthode <strong>animate()</strong> : 
+
+<strong>
+$('sel').animate({ prop1: val1, prop2: val2, } ...);
+</strong>
+
+Mais, dans ce cas, la vitesse d'exécution de chaque animation est commune. Si je veux exécuter plusieurs animations en même temps, chacun ayant une vitesse
+d'exécution qui lui est propre, je dois utiliser une technique particulière, basée sur l'utilisation de la propriété <strong>queue</strong> dans la 
+deuxième syntaxe de la méthode <strong>animate()</strong> : 
+
+<strong>
+$('sel').animate({ prop1: val1, prop2: val2, prop3: val3, etc. }, {queue: ... });
+</strong>
+
+Voyons tout cela en raisonnat sur un exemple pratique. Je vais appliquer deux animations à une image : la première augmentera progressivement la largeur de la 
+bordure et la 2e diminuera progressivement la taille de l'image. Voici le code utilisé : 
+
+Réf <a href="exemple1.html" target="_blank">Exemple 1</a>
+
+Dans cet exemple, il y a deux façons de faire pour obtenir le même effet : 
+
+<strong>
+$('img').animate({ 'border-width': '100' }, {queue: false, duration: 1500 })
+		.animate({ 'width': '-=100' }, 1500);
+</strong>
+et
+<strong>
+$('img').animate({ 'border-width': '100', 'width': '-=100' }, 1500);
+</strong>
+
+Même si ces deux instruction produisent le même effet, il y a une distinction capitale entre elles : si les deux animations produisent le même effet, c'est 
+uniquement les deux animations ont une durée identique. Donc dans le premier cas, on peut définir deux animations concomitantes mais à vitesses différentes.
+
+<h2>
+II./ Etat de la file d'attente
+</h2>
+Quand plusieurs animations s'enchaînent sur un même objet, elles sont placés dans une file d'attente, prêtes à s'exécuter les unes après les autres. Plus
+concrètement, en employant le jargon technique, c'est simplement un tableau qui va lister les fonctions et les exécuter une à une jusqu'à arriver au terme. En
+anglais, on l'appelera <em>queue</em>. 
+Pour connaître l'état de la file d'attente pour un objet particulier, je lui appliquerai la méthode <strong>queue()</strong> sans aucun argument. Par exemple, 
+pour connaître l'état de la file d'attente pour un élément d'identifiant <strong>#monElement</strong>, j'utiliserai cette instruction : 
+
+<strong>
+var resultat = $('#monElement').queue();
+</strong>
+
+La méthode <strong>queue()</strong> retourne un tableau. Le nombre d'animations en attente d'exécution est égal au nombre d'éléments du tableau, et donc à 
+<strong>resultat.length</strong>.
+
+Pour illustrer cette méthode je vais m'appuyer sur quelques lignes de code jQuery. Je vais lui appliquer une ou plusieurs animations à une image et tester le
+nombre d'animations en attente d'exécution en cliquant sur un bouton. Voici le code utilisé : 
+
+Réf <a href="exemple2.html" target="_blank">Exemple 2</a>
+
+Note : Dans la méthode <strong>queue()</strong>, on peut spécifier le nom de la file d'attente dans le premier argument. Le nom par défaut est "fx".
+
+<h2>
+III./ Manipuler la file d'attente
+</h2>
+Dans les sections précédentes, j'ai appris à utiliser la propriété <strong>queue</strong> pour indiquer si une animation devait ou ne devait pas être placée 
+dans la file d'attente, et la méthode <strong>queue()</strong> pour connaître l'état de la file d'attente. Je vais maintenant apprendre à utiliser les méthodes
+<strong>queue(), dequeue()</strong> et <strong>clearQueue()</strong> pour manipuler la file d'attente :
+
+	-	<strong>queue()</strong> ajoute une animation dans la file d'attente
+	-	<strong>dequeue()</strong> enlève la prochaine animation de la file d'attente puis l'exécute
+	-	<strong>clearQueue()</strong> vide la file d'attente
+
+Voilà ce que je vais faire dans le prochain exemple : 
+
+	-	Jouer une animation, puis, lorsqu'elle sera terminée, ajouter d'autres animations  dans la file d'attente avec la méthode <strong>queue()</strong>
+	-	Supprimer le contenu de la file d'attente
+	-	Remplacer le contenu de la file d'attente
+	-	Ajouter une fonction de retour à la file d'attente
+
+Réf <a href="exemple3.html" target="_blank">Exemple 3</a>
+
+Remarque1 : Dans le premier cas, après exécution de l'instruction <strong>$('#bon').toggle(5000)</strong>, quatre autres animations sont placées dans la file 
+d'attente à l'aide de la méthode <strong>queue()</strong> : 
+
+<strong>
+.queue(function() {
+	$('#mauvais').animate({ left: '+=200' }, 'slow')
+				 .animate({ top: '+=200' }, 'slow')
+				 .animate({ top: '-=200' }, 'slow')
+				 .animate({ left: '-=200' }, 'slow');
+	});
+});
+</strong>
+
+<h3>One more thing about queue()</h3>
+
+Il est également possible de carrément remplacer le tableau par un nouveau, que j'aurai créé directement. Cela n'a pas énormément d'intérêt, mais c'est
+notamment utile lorsqu'on veut vider l'array, ce qui a pour effet d'annuler toute animation 
+
+<strong>
+$('p').queue('fx', []); 	// fait disparaître le paragraphe, puis vide la file d'attente
+</strong>
+
+<h2>
+IV./ Répéter une animation sans fin
+</h2>
+Je vais maintenant exécuter une animation en boucle.
+
+Le principe repose sur la définition d'une fonction JavaScript dans laquelle on insère un ou plusieurs appels à la méthode <strong>animate()</strong>. Le
+dernier de ces appels utilise une fonction de rappel qui exécute... cette même fonction JavaScript !
+
+Pour illustrer tout cela, je vais déplacer indéfiniment une balise &lt; div> sur un carré de 200 pixels de côté. Voici le code utilisé : 
+
+Réf <a href="exemple4.html" target="_blank">Exemple 4</a>
+
+<h2>
+V./ Arrêter et reprendre une animation
+</h2>
+La méthode <strong>stop()</strong> permet d'arrêter une animation. Selon les paramètres qui lui sont passés, cette méthode peut supprimer ou non les animations
+en attente et/ou afficher l'état final de l'animation. 
+
+Voici sa syntaxe : 
+
+<strong>
+$('sel').stop(efface, fin);
+</strong>
+
+...où :
+
+	-	<strong>sel</strong> est un sélecteur jQuery
+	-	<strong>efface</strong> est une valeur booléenne qui indique si les animations en attente d'exécution doivent être (<strong>true</strong>) ou 
+				non (<strong>false</strong>) supprimées de la file d'attente
+	-	<strong>fin</strong> est une valeur booléenne qui indique si l'animation doit prendre son état final (<strong>true</strong>) ou 
+				non (<strong>false</strong>). Si ce paramètre n'est pas spécifié, l'animation reste dans l'état où elle se trouvait au moment de son arrêt
+
+Les cas que je pourrai définir sont donc les suivants : 
+
+	-	<strong>$('p:animated').stop();</strong> arrête l'animation courante
+	-	<strong>$('p:animated').stop(true);</strong> annule toutes les animations suivantes, dont l'animation courante
+	-	<strong>$('p:animated').stop(false, true);</strong> arrête l'animation courante, mais fait prendre à l'élément son état final
+	-	<strong>$('p:animated').stop(true, true);</strong> annule toutes les animations suivantes, mais laisse l'élément courant aller à son état final
+
+Note : Le sélecteur <strong>:animated</strong> cible tous les objets jQuery actuellement animés
+
+Dans l'exemple suivant, deux animations sont appliquées à une image : un décalage vers la droite, puis un décalage vers le bas. A tout moment, 
+l'utilisateur peut arrêter l'animation en cours en cliquant sur un bouton de commande. Trois types d'arrêt sont proposés : 
+
+	-	Arrêt et positionnement à la fin de l'animation en cours
+	-	Arrêt de l'animation en cours, annulation des animations en attente et déplacement à la fin de l'animation en cours
+	-	Simple arrêt de l'animation
+
+Un autre bouton permet de reprendre l'animation comme à l'ouverture de la page. Voici le code utilisé : 
+
+Réf <a href="exemple5.html" target="_blank">Exemple 5</a>
+
+<h2>
+VI./ Mettre en place un timer
+</h2>
+1.) La fonction à utiliser
+
+Pour boucler une animation, il existe une autre technique. Cette technique consiste à utiliser un <em>timer</em> JavaScript via la fonction 
+<strong>setInterval</strong> que je connais déjà. 
+
+Remarque : Info à vérifier. Car ce que j'ai appris: d'un côté, il valait mieux privilégier la méthode setTimeout(), plus stable que setInterval(), d'un autre 
+côté, lorsqu'il s'agit d'animations, il valait mieux utiliser la méthode <strong>requestAnimationFrame()</strong>. 
+
+2.) Une horloge élémentaire
+
+Je vais utiliser une horloge numérique élémentaire en utilisant la fonction JavaScript <strong>setInterval()</strong>. L'heure sera mise à jour toutes les secondes
+dans une balise &lt; span> en utilisant une instruction jQuery. Voici le code utilisé : 
+
+Réf <a href="horloge.html" target="_blank">Exemple d'horloge</a>
+
+Remarque : dans ce genre de cas précis, il vaut effectivement mieux utiliser la méthode setInterval(), puisqu'il n'est besoin d'appeler la fonction qu'un fois
+toutes les secondes (et non pas une soixantaine de fois comme le fait requestAnimationFrame()).
+
+3.) Une animation sans fin
+
+Cet exemple reprend l'animation de la section "Répéter une animation sans fin" et l'exécute en boucle avec la fonction <strong>setInterval</strong>. Voici
+le code utilisé : 
+
+Réf <a href="last_example.html" target="_blank">Dernier exemple</a>
+
+Une question se pose : pourquoi avoir choisi 2400 ms en second paramètre de la fonction <strong>setInterval()</strong> ? 
+
+==> La valeur <strong>slow</strong>, passée en deuxième argument des quatre méthodes <strong>animate</strong>, correspond à une durée de 600 millisecondes. Etant 
+donné que l'on enchaîne quatre animations, je n'ai besoin d'appeler la fonction que toutes les 2400 millisecondes.
+
+<h2>
+En résumée : 
+</h2>
+Les animations jQuery sont asynchrones. Si je lance plusieurs animations, elles seront placées dans une file d'attente. La énième animation ne pourra être lancée 
+que lorsque la précédente  sera terminée... à moins que je n'agisse sur la file d'attente. Pour cela, j'utiliserai la deuxième syntaxe de la méthode <strong>
+animate()</strong> pour déclencher simultanément plusieurs animations.
+Pour connaître le nombre d'animations qui se trouvent dans la file d'attente, j'utilise la méthode <strong>queue()</strong> sans argument, pour tester sa
+propriété <strong>length</strong>.
+Je peux utiliser les méthodes <strong>queue(), dequeue()</strong> et <strong>clearQueue()</strong> pour manipuler la file d'attente : <strong>queue()</strong>
+ajoute une animation dans la file d'attente, <strong>dequeue()</strong> joue puis supprime une animation de la file d'attente, <strong>clearQueue()</strong>
+vide la file d'attente.
+La méthode <strong>stop()</strong> met fin à l'animation en cours. Selon les paramètres qui lui sont passés, les animations suivantes sont ou ne sont pas
+effacées de la file d'attente et l'animation est affichée dans son état final ou s'arrête simplement.
+Deux technique permettent de répéter une série d'animations sans fin. Après avoir inclus les animations dans une fonction, je peux : 
+
+	-	Utiliser la fonction de rappel de la dernière animation pour rappeler la fonction
+	-	Appeler la fonction en mettant en place un <em>timer</em> JavaScript.
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

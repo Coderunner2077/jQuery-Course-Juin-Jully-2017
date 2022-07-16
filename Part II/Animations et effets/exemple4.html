@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 4</title>
+</head>
+<body>
+<button id="enBas">Faire défiler vers le bas les images</button><br :>
+<img src="1.jpg" /><br />
+<img src="2.png" /><br />
+<img src="3.jpg" /><br />
+<img src="1.jpg" /><br />
+<img src="2.png" /><br />
+<img src="3.jpg" /><br />
+<button id="enHaut">Faire défiler vers le haut</button>
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    var i = 1;
+    $('#enBas').click(function() {
+        //$(window).scrollTop($(document).height());
+        $('html, body').animate({ scrollTop: $(document).height() - $(window).height() }, 1500, 'linear', function() {
+          alert('scrollTop : ' + $(document).scrollTop());
+        });
+    });
+
+    $('#enHaut').click(function() {
+      $('html, body').animate({ scrollTop: 0 }, 1500);
+      //$('body').animate({ scrollTop: 0 }, 1500); // ça marche pas juste avec body
+      //$(window).scrollTop(0); // pas d'animation ici
+    });
+  });
+
+</script>
+
+</body>
+</html>

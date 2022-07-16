@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exemple 3 - Clavier</title>
+</head>
+<body>
+
+<style type="text/css">
+  #lumiere {
+    width: 10px;
+    height: 10px; 
+    background-color: white; }
+</style>
+
+<div id="lumiere"></div>
+<textarea id="target"></textarea>
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#target').keydown(function(){
+      $('#lumiere').css('background-color', 'green');
+    });
+    $('#target').keyup(function(){
+        $('#lumiere').css('background-color', 'white');
+    });
+    $('#target').keypress(function() {
+        $('#lumiere').css('background-color', 'red');
+    });
+  });
+</script>
+</body>
+</html>

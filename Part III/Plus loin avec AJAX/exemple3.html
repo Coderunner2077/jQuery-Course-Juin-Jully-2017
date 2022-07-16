@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Exemple 3 - Les événements jQuery liés à l'ajax</title>
+</head>
+  
+<body>
+<button id="action">Lancer la requête AJAX</button><br /><br />
+<div id="donnees" style="background-color: yellow"></div><br />
+<div id="message"></div>
+
+<script src="jquery.js"></script>
+<script>
+  $(function() {
+    $('#action').click(function() {
+      $(document).ajaxStart(function() {
+        $('#message').html('Méthode ajaxStart exécutée<br />');
+      });
+
+      $(document).ajaxSend(function(ev, req, options) {
+        $('#message').append('Méthode ajaxSend exécutée, ');
+        $('#message').append('nom du fichier : ' + options.url + '<br />');
+      });
+
+      $(document).ajaxSuccess(function(ev, req, options) {
+        $('#message').append('Méthode ajaxSuccess exécutée<br />');
+      });
+
+      $(document).ajaxComplete(function(ev, req, options) {
+        $('#message').append('Méthode ajaxComplete exécutée<br />');
+      });
+
+      $(document).ajaxError(function(ev, req, options, erreur) {
+        $('#message').append('Méthode ajaxError exécutée, ');
+        $('#message').append('erreur : ' + erreur + '<br />');
+      });
+
+      $(document).ajaxStop(function() {
+        $('#message').append('Méthode ajaxStop exécutée');
+      });
+
+      $('#donnees').load('affiche.htm');
+    });  
+  });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Exemple 1</title>
+</head>
+<body>
+<h2>Exemple 1</h2>
+<input type="text" id="texte" />
+<button id="action">Cliquer ici</button>
+<pre id="resultat"></pre>
+<hr />
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		$('#action').click(function() {
+			var texte = $('#texte').val();
+			$('#resultat').html('Texte original : "' + texte + '"' 
+								+ '<br />Après la fonction $.trim() : "' + $.trim(texte) + '"');
+
+			// $('hr').replaceWith($('h2')); // déplace l'élément h2
+			$('hr').replaceWith('<h2>L\'élément représenté par l\'objet jQuery qu\'on met (éventuellement) en argument de replaceWith(), va être déplacé</h2>');
+		});
+	});
+</script>
+</body>
+</html>

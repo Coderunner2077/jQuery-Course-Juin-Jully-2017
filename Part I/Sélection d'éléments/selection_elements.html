@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>Sélection d'éléments</title>
+</head>
+<body>
+
+                                                                                  SELECTION D'ELEMENTS
+
+<h2>
+I./ Fonctionnement de base de jQuery
+</h2>
+jQuery repose sur une seule et même fonction: jQuery(), ou son alias $(). Cette fonction accepte un ou plusieurs paramètres et retourne un objet que j'appelerai
+"objet jQuery". Les paramètres peuvent être d'un des types suivants: 
+
+	-	Une fonction, qui sera exécutée dès que le DOM est disponible. Cette technique est très largement utilisée par tous les programmeurs jQuery
+	-	Un sélecteur CSS : l'élément (ou les éléments) qui correspondent au sélecteur sont retournés. 
+	-	Un élément HTML, un document ou l'objet <strong>window</strong> : un objet jQuery correspondant à cet élément est retourné
+	-	Une (ou plusieurs) balises HTML : un objet correspondant à cette balise est retourné. Je peux lui appliquer des méthodes jQuery, par exemple pour ajouter
+			cette balise dans un élément HTML.
+
+<h2>
+II./ Sélection d'éléments
+</h2>
+Une des grandes forces de jQuery est d'intégrer la syntaxe des sélecteurs CSS. Par cet intermédiaire, il est élémentaire de sélectionner des noeuds DOM qui 
+m'intéressent, en utilisant la syntaxe <strong>$(sélection)</strong> où <strong>sélection</strong> représente un sélecteur CSS.
+
+1.) Ce que je ne savais pas sur les sélecteurs
+
+Pour sélectionner une balise possédant un attribut classe, je fais :
+
+<strong>.uneClasse</strong>
+{
+
+}
+
+Et pour différencier des balises, disons, <strong>h2</strong> de classe <strong>rouge</strong> des balises <strong>p</strong> de classe <strong>rouge</strong>, 
+j'utilise les sélecteurs <strong>h2.rouge</strong> et <strong>p.rouge</strong>. 
+
+Et pour sélectionner une balise <strong>li</strong> contenue dans une balise <strong>ul</strong>, elle-même contenue dans une balise <strong>div</strong>, et
+dont l'attribut <strong>class</strong> vaut <strong>pair</strong>, je fais : 
+
+<strong>$('div ul li[class="pair"]')</strong>.
+
+2.) La nature de l'objet retourné
+
+Le résultat retourné par la fonction $() est un objet jQuery. Cet objet ressemble à un tableau : il a une propriété <strong>length</strong> et les éléments
+sélectionnés peuvent être accédés par un indice. Par exemple : 
+
+	-	<strong>$('a').length</strong> : retourne le nb de liens hypertextes contenus dans la page
+	-	<strong>$('ul.bleu').length</strong> : le nb de balises <strong>ul</strong> de classe <strong>bleu</strong>
+	-	<strong>$('body').length</strong> : retourne 1 car le document contient une seule balise <strong>body</strong>
+
+Et pour accéder à un des éléments sélectionnés : 
+
+	-	<strong>$('a')[0]</strong> retourne le 1er lien hypertexte
+	-	<strong>$('body')[0]</strong> est équivalent à <strong>document.body</strong>
+
+Remarque: Si j'ai bien compris, <strong>$(selecteur)</strong> serait l'équivalent à <strong>document.querySelectorAll(selecteur)</strong>.
+
+3.) Appliquer une méthode à la sélection
+
+Je fais un truc du genre : 
+
+<strong>$(sélecteur).action</strong>
+
+Par exemple : 
+
+<strong>$('#idSpan').html('texte écrit dans une balise span');</strong>
+
+4.) Sélection parmi une sélection
+
+Je fais un truc du genre :
+
+<strong>
+$('sel1', 'sel2');
+</strong>
+
+...pour choisir une sélection <strong>sel1</strong> parmi une sélection <strong>sel2</strong>.
+
+Ou encore, le second argument peut également être un objet jQuery représentant une sélection d'éléments du DOM, ou un élément du DOM, ou encore un tableau 
+d'éléments du DOM.
+
+Réf <a href="exemple_extra.html" target="_blank">Exemple : extra</a>
+
+<h2>
+III./ Notions indispensables
+</h2>
+1.) Fonctions de rappel
+
+Une fonction de rappel (ou <em>callback</em>) est une fonction exécutée lorsqu'une autre fonction a terminé de s'exécuter. En jQuery, les fonctions de rappel sont
+essentiellement utilisées pour réaliser des animations  et des appels AJAX. 
+
+Voici un exemple de fonction de rappel, appliquée aux éléments de classe rouge : 
+
+<strong>
+$(function() {
+	$('.rouge').fadeOut('slow', function() {
+		$(this).fadeIn('slow');
+	});
+});
+</strong>
+
+Ce code fait disparaître puis réapparaître les balises de classe <strong>rouge</strong>.
+
+2.) Chaînage de méthodes
+
+Etant donné que les méthodes jQuery retournent un objet jQuery, il est possible de les "chaîner", ie de les exécuter les unes à la suite des autres.
+
+Ainsi, les deux premières instructions sont évuivalentes à la troisième : 
+
+<strong>
+$('.rouge').css('background', 'red');
+$('.rouge').css('color', 'yellow');
+
+$('.rouge').css('background', 'red').css('color', 'yellow');
+</strong>
+
+La méthode <strong>css()</strong> admet deux paramètres : le premier est une propriété CSS et le deuxième, la valeur à affecter à cette propriété. 
+
+<h2>
+VI./ Filtrer les éléments
+</h2>
+<h3>1.) filter()</h3>
+La méthode <strong>$('sel').contents()</strong> permet d'obtenir les noeuds enfants (includins text nodes and comment nodes) de chacun des éléments 
+<strong>sel</strong> sélectionnés. 
+Et lorsque l'on enchaîne cette méthode avec la méthode <strong>filter()</strong>, on peut filtrer les noeuds pour obtenir des noeuds enfants spécifiques.
+Par exemple, pour filtrer tous les noeuds textuels contenus dans le document pour les entourer des balises <strong>&lt;p></strong> et supprimer les balises 
+<strong>&lt;br /></strong>, on fait :
+
+<strong>
+$('body').contents().filter(function(index) {
+	return this.nodeType === 3; // Text nodes
+}).wrap('&lt; p >&lt; /p >') 
+  .end()
+.filter('br')
+.remove();
+</strong>
+
+Ici, la méthode <strong>end()</strong> met fin à l'opération de filtrage et fait en sorte qu'on ait la sélection d'éléments juste avant le filtrage.
+
+Réf <a href="exemple_filter.html" target="_blank">Exemple : contents().filter()</a>
+
+En argument de la méthode filter, on peut passer un sélecteur CSS (une chaîne de caractères), une fonction (comme ici), un ou plusieurs éléments du DOM, ou encore 
+un objet jQuery représentant une sélection d'éléments.
+
+Note : When a CSS selector string is passed to <strong>.filter()</strong>, text and comment nodes will always be removed from the resulting jQuery object  during 
+the filtering process. When a specific node or an array of nodes are provided, a text or comment node will be included in the resulting jQuery object only if 
+it matches one of the nodes in the filtering array.
+
+<h3>2.) find()</h3>
+
+La méthode <strong>find()</strong> renvoie les descendants de chaque élément sélectionné en fonction du critère défini en argument de cette méthode. Ce qui 
+différence cette méthode de <strong>filter()</strong>, c'est que celle-ci inclut dans sa recherche tous les éléments sélectionnés, alors que 
+<strong>find()</strong> n'inclut que les descendants. Cette méthode accepte un sélecteur CSS, un élément DOM ou un objet jQuery représentant une sélection 
+d'éléments. 
+
+Réf <a href="exemple_filter_find.html" target="_blank">Exemple : filter() vs find()</a>
+
+<h3>3.) children()</h3>
+
+Cette méthode renvoie les noeuds enfants (sauf les noeuds textuels) de chacun des éléments sélectionnés par l'objet jQuery. 
+Cette méthode possède un paramètre facultatif : un sélecteur CSS (ie une chaîne de caractères). Et lorsqu'on fournit un argument à cette méthode, alors elle 
+devient similaire à <strong>find()</strong>, la seule différence étant que la recherche d'éléments ne se fait que parmi les noeuds enfants 
+des éléments sélectionnés.
+
+Réf <a href="exemple_find_children.html" target="_blank">Exemple : find() vs children()</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>
+            

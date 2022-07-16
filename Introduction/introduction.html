@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Introduction au jQuery</title>
+</head>
+<body>
+<pre>
+                                                                          Introduction à jQuery
+
+jQuery est une bibliothèque conçue pour simplifier l'écriture de codes JavaScript et AJAX. Créée ne 2006 par John Resig, cette bibliothèque est la plus célèbre et 
+la plus utilisée à ce jour.
+
+La devise de jQuery : "Write less, do more". Une seule inscruction de jQuery peut remplacer une dizaine de lignes de JavaScript. 
+Voici le lien de la <a href="http://learn.jquery.com/">documentation officielle de jQuery</a>.
+
+Avec jQuery, je n'ai pas à me préoccuper du navigateur utilisé, ni de la version du langage de JavaScipt compatible avec ce navigateur. Le cas échéant, tous les 
+tests nécessaires sont réalisés de façon transparente par jQuery. En ce qui me concerne, je n'ai qu'à me préoccuper du code. 
+
+Lorsqu'une nouvelle version de JavaScript voit le jour, eh bien, les instructions jQuery sont complétées en conséquence. Je peux continuer à utiliser les 
+instructions avec lesquelles j'ai l'habitude de travailler et/ou consulter la documentation sur les nouvelles instructions disponibles. Quelle que soit ma
+démarche, toutes les instructions jQuery utilisées fonctionneront dans tous les navigateurs disponibles.
+
+Voici les autres avantages de jQuery : 
+
+	-	La documentation officielle est très fournie et de grande qualité
+	-	La communauté qui gravite autour de jQuery est en perpétuelle expansion et elle fournit un support de qualité
+	-	De nombreux actuers de premier plan du du Web (Microsoft, Google, Amazon, Twitter, Mozilla, etc.) utilisent jQuery
+	-	Une multitude de plugins est disponible afin d'augmenter les possibilités de base de jQuery.
+
+<h2>
+I./ Installer jQuery
+</h2>
+jQuery est une bibliothèque JavaScript. En d'autres termes, un fichier d'extension <strong>.js</strong>. Pour l'utiliser dans une page HTML, il me suffit d'y faire 
+référence en utilisant une balise <strong>&lt;script></strong>, comme pour JavaScript.
+
+Je peux soit télécharger le code source de la bibliothèque jQuery et l'inclure depuis mon ordinateur, soit faire référence à la bilbiothèque jQuery en indiquant 
+une adresse Web.
+
+1.) Téléchargement de jQuery sur mon ordinateur
+
+N'ayant pas pu télécharger directement le fichier, j'ai fait un copier-coller du contenu de jQuery non compressé. Le fichier jQuery minimisé est à utiliser non 
+pas en développement mais en production. 
+
+2.) Faire référence à jQuery en ligne
+
+Le plus simple consiste à faire référence  au fichier <strong>jquery.js</strong>  sur un <strong>CDN</strong> (pour Content Delivery Network). Constitués 
+d'oridnateurs reliés au réseau vie internet, ces éléments d'infrastructure coopèrent pour mettre à disposition aussi vite que possible la bibliothèque jQuery. Je 
+peux utiliser les CDN jQuery, Google ou Microsoft. Pour ces trois CDN, à quaque fois, il y a une version non minimisée et une version minimisée. Version minimisée
+signifie simplement que le code est dépourvu de tout caractère d'échappement.
+CDN jQuery ==> <a href="https://code.jquery.com/jquery-3.2.1.js">https://code.jquery.com/jquery-3.2.1.js</a>
+CDN Microsoft ==> <a href="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js">http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js</a>
+
+Attention : Les CDN jQuery et Google donnent directement accès à la dernière version de jQuery. Quand au CDN Microsoft, je dois préciser la version à utiliser dans
+l'adresse. Cela peut être pratique  si je veux utiliser une version particulière de jQuery. 
+
+Remarque : sur le site officiel de jQuery, j'ai lu que la meilleure façon d'intégrer la biblio jQuery est celle-ci : 
+Au lieu d'écrire simplement une adresse URL vers la biblio jQuery dans l'attribut <strong>src</strong> de la balise <strong>script</strong>, j'ajoute encore deux
+attributs, <strong>integrity</strong> et <strong>crossorigin</strong>, dont le rôle sera, si j'ai bien compris, de vérifier l'intégrité des données dans un contexte
+où la same origin policy est sensée être respectée.
+Ainsi, voilà ce que j'inclus dans la balise <strong>script</strong> : 
+
+&lt;script>src="https://code.jquery.com/jquery-3.2.1.js"
+integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+crossorigin="anonymous">&lt;/script>
+
+En faisant référence à un fichier externe à mon site, je n'entame pas sa bande passante, ils sont très réactifs. Enfin, le fichier <strong>jquery.min.js</strong>
+issu d'un CDN est bien souvent déjà présent dans la mémoire cache du navigateur. Ces trois raisons font que ma page se chargera plus rapidement.
+
+D'après ce cours, en phase de développement, c'est-à-dire lorsque je mets au point mon code jQuery sur mon ordinateur local, je télécharge le fichier 
+<strong>jquery.js</strong> pour y faire référence localement. En effet, même si les CDN ont une excellente bande passante, l'utilisation d'un fichier local sera 
+bien plus rapide.
+
+En règle générale, jQuery s'exécute sur les ordinateurs clients. Cependant, il peut parfois demander à un serveur de mettre à jour une partie d'une page en
+utilisant du code AJAX.
+Lorsque mon code sera testé et débogué, je le placerai sur un serveur Web avec mon client FTP et ferai référence au fichier <strong>jquery.min.js</strong> stocké
+sur un CDN pour améliorer les temps de réponse sans grignoter la bande passante de mon serveur.
+
+<h2>
+II./ Premiers pas
+</h2>
+1.) Le vocabulaire à connaître
+a./ DTD
+
+Le <em>Document TYPE Declaration</em> fait référence à la balise &lt;!DOCTYPE>. Cette dernière doit apparaître en tête des documents HTML. Elle indique  au 
+navigateur les règles d'écriture utilisées dans le document. Dans ce cours, j'utiliserai systématiquement les règles d'écriture du lanage HTML5.
+Le DTD correspondant sera &lt;!DOCTYPE html>.
+
+b./ Fonction jQuery
+
+C'est le point d'entrée de la bibliothèque jQuery. Je peux utiliser au choix l'instruction <strong>jQuery</strong> ou son alias <strong>$()</strong>. 
+
+c./ Méthodes jQuery
+
+La bibliothèque jQuery est constituée d'un ensemble de blocs de codes autonomes appelés méthodes. Ce qui fait la puissance de cette biblio, c'est avant tout
+la diversité des méthodes proposées. Pour exécuter une méthode jQuery, il suffit de préciser son nom à la suite d'un sélecteur en le séparant de ce dernier par un
+point : 
+
+<strong>$(sélecteur).méthode(paramètres);</strong>
+
+d./ Objet jQuery
+
+On appelle "objet jQuery" l'entitée retournée par la fonction jQuery, c'est-à-dire par <strong>$()</strong>. Cet objet représente un ensemble de zéro, un ou 
+plusieurs éléments issus du document.
+
+2.) Le squelette HTML typique
+a./ Phase de développement / phase de production
+
+Eh bien, c'est un squelette  d'une page HTML, avec de préférence une feuille de style externe (dans un balise <strong>&lt;link rel type href></strong>), avec cette
+différence près qu'il faudra ajouter deux paires de balises script à la fin, une pour le code source de la bibliothèque jQuery, et une autre pour le code source
+en rapport avec le document. 
+
+Le seul bémole, c'est qu'en phase de développement, je vais utiliser un fichier <strong>jquery.js</strong> local, et en phase de production je vais charger
+la version minimisée de la bibliothèque jQuery sur un CDN, comme montré plus haut. 
+
+b./ Optimisation de code
+
+Voici quelques recommendations qui augementeront les performances des pages, qui contiennt du code jQuery : 
+
+	-	J'invoque la bibliothèque <strong>jquery.js</strong> à la fin du document, juste avant la balise &lt;/body>
+	-	J'insère le code jQuery rattaché à la page dans un fichier annexe et je fais référence à ce fichier juste après la balise qui indique où se trouve
+			la balise jQuery.
+
+Ces positions stratégiques optimisent le temps de chargement de la page. Pareil que pour JavaScript tout court en gros.
+
+
+3.) Attendre la disponibilité du DOM
+
+Le langage jQuery est utilisé pour manipuler (en lecture et écriture) le DOM, ie l'arborescence du document. Dans le cas où ces manipulations commencent avant 
+que l'arbre n'a pas encore été complétent obtenu, il y aura des problèmes d'affichage, des erreurs, voire même des bugs bloquant le navigateur.
+
+Pour éviter d'en arriver là, je dois attendre que l'arbre soit complet. En jQuery, cela se traduit par le code suivant : 
+
+jQuery(document).ready(function() {
+	// Ici, le DOM est entièrement défini
+});
+
+Cette écriture peut se simplifier en remplaçant <strong>jQuery</strong> par son alias, <strong>$</strong>, ce qui donne : 
+
+$(document).ready(function() {
+	// Ici, le DOM est entièrement défini
+});
+
+Enfin, <strong>(document).ready</strong> peut être omis pour arriver au code suivant : 
+
+$(function() {
+	// Ici, le DOM est entièrement défini
+});
+
+Ces trois instructions sont strictement équivalentes. Dans ce cours, j'utiliserai systématiquement la dernière. 
+
+L'instruction <strong>$(function() {}) </strong> s'assure que le DOM est entièrement défini, et cela concerne aussi les styles CSS du document ainsi que les feuilles
+de style. 
+
+4.) "Hello world"
+
+Réf <a href="hello-world.html" target="_blank">Exemple : hello world</a>
+
+Décomposons ce code : 
+
+	-	<strong>$('#texteJQ')</strong> : cette partie  agit comme un sélecteur. Un équivalent à <strong>document.querySelectorAll('#texteJQ')</strong> ?
+	-	<strong>html('Hello world. Blabla')</strong> : modifie le contenu de la balise. Un équivalent à la propriété <strong>innerHTML</strong> ?
+
+Voilà.
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+</pre>
+<script></script>
+</body>
+</html>

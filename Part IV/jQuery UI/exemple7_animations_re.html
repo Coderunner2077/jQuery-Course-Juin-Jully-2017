@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Exemple 7 : Animations (show, hide, toggle)</title>
+<meta http-quiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css"><!-- !! imporatant !! -->
+<style type="text/css">
+  #contenu 
+  { 
+    width: 240px; 
+    height: 135px; 
+    border: 1px gray solid; 
+    background-color: #aaeae1;
+  }
+  #contenu h3 
+  { 
+    margin: 0; 
+    padding: 0.4em; 
+    text-align: center; 
+    background-color: #777;
+  }
+</style>
+</head>
+<body>
+  <div id="effet"></div>
+  <div id="contenu" style="width: 400px;">
+    <h3 id="titre">Nom de l'effet</h3>
+    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+  </div>
+
+<script src="jquery.js"></script>
+<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script> 
+<script>
+  $(function() {
+    var pos = $('#contenu').offset();
+    pos.top = 200;
+    pos.left = 500;
+
+    $('#contenu').offset(pos);
+
+    $('#effet').offset(pos);
+    var po = $('#effet').offset();
+    po.top = 180;
+    po.left = 540;
+
+    $('#effet').offset(po);
+
+    var tab = ['fold', 'explode', 'puff', 'blind', 'drop', 'size', 'scale', 'pulsate'];
+  
+    for(var i = 0; i < tab.length; i++) {
+      (function(i) {
+          var cont = $('#contenu');
+          setTimeout(function() {
+             $('#effet, #titre').html('<div>' + tab[i] + '</div>');
+          }, 2200 * (i + 1));
+          cont.delay(2000);
+         if(i % 2) 
+           cont.show(tab[i], null, 200);
+         else
+           cont.hide(tab[i], null, 200);
+      })(i);
+    }
+
+    /*
+    var _oldhide = $.fn.hide;
+    $.fn.hide = function(effect, callback) {
+      $(this).trigger('hide');
+
+      return _oldhide.apply(this, [effect, callback]);
+    };
+
+    var _oldshow = $.fn.show;
+    $.fn.show = function(effect, callback) {
+      $(this).trigger('show');
+     
+      return _oldshow.apply(this, [effect, callback]);
+    }
+    */
+    //$('#contenu').delay(2000).hide('fold', affiche).delay(2000).show('explode', affiche).delay(2000).hide('puff', affiche).delay(2000).show('blind', affiche);
+   // $('#contenu').delay(2000).hide('drop', affiche).delay(2000).show('size', affiche).delay(2000).hide('scale', affiche).delay(2000).show('pulsate', affiche);
+  });
+</script>
+
+</body>
+</html>

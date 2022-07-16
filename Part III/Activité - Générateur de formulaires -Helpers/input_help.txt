@@ -1,0 +1,2 @@
+Utilisez la zone de texte pour définir l'id de la zone de texte à insérer, puis cliquer sur <strong>OK</strong> pour l'afficher dans la partie gauche de la page ou 
+sur <strong>Annuler</strong> pour annuler l'insertion de la zone de texte.

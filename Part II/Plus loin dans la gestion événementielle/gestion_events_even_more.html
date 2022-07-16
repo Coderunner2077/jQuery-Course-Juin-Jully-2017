@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>Plus loin dans la gestion événementielle</title>
+</head>
+<body>
+
+
+                                                                    <h1>Plus loin dans la gestion événementielle</h1>
+
+<h2>
+I./ Evénements personnalisés
+</h2>
+1.) A propos
+
+Sans le savoir, j'ai utilisé la version simplifiée de la méthode <strong>on()</strong> dans toutes les méthodes événementielles étudiées jusqu'ici. Le tableau
+suivant donne quelques correspondances entre les méthodes traditionnelles et les méthodes <strong>on()</strong> équivalentes : 
+
+<pre>
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+METHODE TRADITIONNELLE            |    METHODE on() EQUIVALENTE
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(sel).click(function() {...})    |    $(sel).on('click', function() {...})
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(sel).scroll(function() {...})   |    $(sel).on('scroll', function() {...})
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(sel).keydown(function() {...})  |    $(sel).on('keydown', function() {...})
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(sel).focus(function() {...})    |    $(sel).on('focus', function() {...})
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+$(sel).load(function() {...})     |    $(sel).on('load', function() {...})
+___________________________________________________________________________________________________________________________________________________________________
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
+
+Donc, il suffit de spécifier le nom de l'événement dans le premier argument, entre apostrophes, et de spécifier la fonction événementielle dans le deuxième
+argument.
+
+Il y a de nombreuses raisons pour privilégier la méthode <strong>on()</strong> au détriment des méthodes traditionnelles.
+
+En effet, la méthode <strong>on()</strong> a plusieurs avantages. Elle permet de :
+
+	-	Limiter l'écriture en associant une même méthode événementielle à plusieurs éléments
+	-	Relier plusieurs méthodes événementielles à un élément en une seule instruction
+	-	Désactiver une méthode événementielle précédemment attachée avec la méthode <strong>on()</strong>
+	-	Relier plusieurs méthodes événementielles entre elles. Par la suite, je pourrai toutes les déclencher, ou toutes les désactiver en une seule
+			instruction jQuery
+
+2.) Une méthode pour gérer plusieurs événements
+
+Supposons que je veux relier les méthodes événementielles <strong>mouseenter()</strong> et <strong>mousemove()</strong> aux balises &lt; img>. Traditionnellement,
+j'utiliserais les instructions suivantes : 
+
+<strong>
+$('img').mouseenter(function() { ... })
+$('img').mousemove(function() { ... })
+</strong>
+
+Si je passe par la méthode <strong>on()</strong>, une seule instruction suffira : 
+
+<strong>
+$('img').on('mouseenter mousemove', function() { ... })
+</strong>
+
+Il suffit donc de passer les méthodes événementielles dans le premier argument de la méthode <strong>on()</strong> en les mettant entre apostrophes et en les
+séparant par une espace.
+
+3.) Plusieurs méthodes en une seule instruction
+
+Et si je veux associer des fonctions différentes aux événements se rapportant à un seul et même sélecteur, je peux le faire en une seule instruction. Supposons 
+que je veux associer <strong>traitement1</strong> et <strong>traitement2</strong> aux événements <strong>mouseenter</strong> et <strong>mousemove</strong> des
+balises &lt; img> de classe <strong>grand</strong>. Voilà le code :
+
+<strong>
+$('img.grand').on({mouseenter:traitement1, mousemove:traitement2});
+</strong>
+
+C'est plus court que de faire : 
+
+<strong>
+$('img.grand').mouseenter(traitement1);
+$('img.grand').mousemove(traitement2);
+</strong>
+
+Ce cas particulier se généralise : pour associer plusieurs événements et plusieurs fonctions de traitement aux éléments sélectionnés par un sélecteur jQuery,
+je spécifie les différens événemenets en paramètres de la méthode <strong>on()</strong> en respectant les règles suivantes : 
+
+	-	Chaque événement doît être suivi du caractère <strong>":"</strong> et de la fonction de traitement associée
+	-	Les événements sont séparés par une virgule
+	-	Les événements sont mis entre accolades
+
+4.) Désactiver une méthode de gestion événementielle
+
+Si la méthode <strong>on()</strong> attache un événement à un élément, il existe aussi une méthode détache ce même événement. La voici : 
+
+<strong>
+off()
+</strong>
+
+Je vais autoriser puis interdire l'événement <strong>click</strong> sur une image  en utilisant les méthodes <strong>on()</strong> et <strong>off()</strong>.
+
+Réf <a href="exemple1.html" target="_blank">exemple1.html</a>
+
+5.) Etiqueter plusieurs méthodes événementielles
+
+Par exemple, pour attacher une méthode événementielle correspondant à l'événement "début de suvol" aux balises &lt; img>, j'utilise cette instruction : 
+
+<strong>
+$('img').on('mouseenter', function() { ... })
+</strong>
+
+Pour supprimer cette méthode événementielle, j'utilise cette instruction : 
+
+<strong>
+$('img').off('mouseenter');
+</strong>
+
+Tout ceci fonctionne parfaitement tant que j'utilise la bibliothèque jQuery sans aucun plugin.
+
+Par contre, si un ou plusieurs plugins sont utilisés (un chapitre y est consacré), il se peut qu'ils définissent leurs propres méthodes événementielles et 
+qu'ils les attachent aux mêmes sélecteurs que moi. Si j'utilise la méthode <strong>off()</strong> en précisant  un nom d'événement, comme dans l'exemple
+précédent, toutes les méthodes événementielles correspondant à cet événement seront supprimés : les miennes, mais aussi celles qui sont peut-être définies
+dans les plugins que j'utilise. Du coup, ces plugins risquent de ne plus fonctionner !
+
+Sinon, pour supprimer tous les gestionnaires de n'importe quel événement associés à un sélecteur, je fais : 
+
+<strong>
+$('sel').off();
+</strong>
+
+6.) Première parade
+
+La première chose que je peux faire, c'est de ne pas utiliser de fonction anonyme lors de l'ajout d'un event listener, mais de passer le nom d'une fonction 
+spécifique ou une référence à une fonction, pour ensuite pouvoir repasser cette même référence en second argument de la méthode <strong>off()</strong>.
+
+De cette façon, je ne supprimerai que les event listeners qui sont ajoutés avec cette fonction spécifique, sans toucher aux éventuels autres event listeners
+qui auraient pu être associés au même événement. 
+
+Illustration : 
+
+<strong>
+$(sel).off('mouseenter', nomDeLaFonction);
+</strong>
+
+7.) Deuxième parade
+
+Je peux affecter un "espace de noms" (<em>namespace</em> en anglais) à mes méthodes événementielles. Une fois mes méthodes événementielles ainsi 
+étiquetées (par un espace de noms), je pourrai facilement les supprimer  sans que cela nuise aux méthodes événementielles qui auraient pu être 
+définies dans les plugins que j'utilise.
+
+Supposons que mon espace de nom soit "depanPC" pour toutes les méthodes événementielles que je définis. Cet espace de noms sera alors systématiquement 
+ajouté chaque que je fais appel à la méthode <strong>on()</strong>. Par exemple : 
+
+<strong>
+$('img').on('mouseenter.depansPC', function() { // traitement })
+$('img').on('mouseleave.depansPC', function() { // traitement })
+$('img').on('mousemove.depansPC', function() { // traitement })
+</strong>
+
+Ainsi, il suffit d'ajouter un point suivi de l'espace de noms à chaque événement. Lorsque je voudrai supprimer la méthode événementielle 
+<strong>mouseleave()</strong> que j'ai mise en place, j'utiliserai l'instruction suivante : 
+
+<strong>
+$('img').off('mouseleave.depansPC');
+</strong>
+
+Cette instruction ne supprimera pas les événtuelles autres méthodes événementielles qui auraient pu être définies dans les plugins que j'utilise. Je peux
+supprimer plusieurs méthodes événementielles liées à un espace de noms en une seule instruction. Supposons que je désire supprimer les méthodes événementielles
+<strong>mouseenter()</strong> et <strong>mouseleave()</strong> liées à l'espace de noms "depansPC". J'utiliserai l'instruction suivante : 
+
+<strong>
+$('img').off('mouseenter.depansPC mouseleave.depansPC');
+</strong>
+
+Supposons maintenant que je désire supprimer toutes les méthodes événementielles rattachées à l'espace de noms "depansPC". Pour cela, j'utiliserai l'instruction
+suivante : 
+
+<strong>
+$('img').off('.depansPC');
+</strong>
+
+Enfin, je peux supprimer les méthodes événementielles liées à plusieurs espaces de noms en une seule instruction. Par exemple, pour supprimer des espaces de
+noms "depansPC" et "depansMAC" de toutes les méthodes événementielles liées à l'événement <strong>click</strong> et appliquées aux balises &lt; img>, 
+j'utiliserai l'instruction suivante : 
+
+<strong>
+$('img').off('click.depansPC.depansMAC');
+</strong>
+
+Ou encore, pour supprimer des espaces de noms "depansPC" et "depansMAC" de toutes les méthodes événementielles appliquées aux balises &lt; a>, j'utiliserai
+l'instruction suivante : 
+
+<strong>
+$('a').off('.depansPC.depansMAC');
+</strong>
+
+<h2>
+II./ Gestion événementielle unique
+</h2>
+
+Il est parfois nécessaire de réagir à un événement la première fois qu'il se produit, puis de l'ignorer par la suite. jQuery possède une méthode pour cela :
+
+<strong>
+one()
+</strong>
+
+Voyons comment mettre en oeuvre cette méthode avec quelques lignes de code. Dans cet exemple, l'utilisateur pourra cliquer sur une image. Le premier clic
+sera pris en compte, les autres seront ignorés : 
+
+Réf <a href="exemple2.html" target="_blank">exemple2.html</a>
+
+<h2>
+III./ Déclenchement d'événements
+</h2>
+
+Généralement, les événements sont déclenchés par l'utilisateur. Mais dans certains cas, il peut être nécessaire de déclencher un événement sans le concours 
+de l'utilisateur, en utilisant une instruction jQuery. Pour cela, je ferai appel à la méthode <strong>trigger()</strong>, dont voici la syntaxe : 
+
+<strong>
+$(sel).trigger('ev');
+</strong>
+
+...où <strong>sel</strong> est un sélecteur jQuery quelconque et <strong>ev</strong> est l'événement à déclencher.
+
+<strong>
+Attention</strong> : seuls les événements suivants sont déclenchables : <strong>blur, change, click, dblclick, error, focus, keydown, keypress, keyup, select
+</strong> et <strong>submit</strong>.
+
+Voyons comment utiliser la méthode <strong>trigger()</strong> en pratique. Cet exemple demande à l'utilisateur de cliquer sur une image. Un message 
+est alors affiché dans une balise &lt; span>. L'utilisateur peut également cliquer sur un bouton. Dans ce cas, c'est la procédure événementielle liée
+au clic sur le bouton qui déclenche l'affichage du message.
+
+Réf <a href="exemple3.html" target="_blank">exemple3.html</a>
+
+En effet, voici comment on simule le clic sur l'image : 
+
+<strong>
+$('img').trigger('click');
+</strong>
+
+Toujours dans l'exemple 3, la méthode événementielle liée au clic sur le bouton simule toujours un clic sur l'image, mais cette fois-ci le texte "par jQuery"
+est passée à la méthode <strong>$('img').trigger()</strong> pour modifier le texte affiché dans la balise &lt; span> : 
+
+<strong>
+$('#button').click(function() {
+	$('img').trigger('click', 'par jQuery');
+});
+</strong>
+
+Il est parfois nécessaire de passer plusieurs arguments à la méthode <strong>trigger()</strong>. Dans ce cas, je les mets entre crochets, comme ceci : 
+
+<strong>
+$(sel).trigger('ev', ['param1', 'param2', 'param3', 'etc.']);
+</strong>
+
+...où :
+
+	-	<strong>sel</strong> est un sélecteur jQuery quelconque
+	-	<strong>ev</strong> est l'événement à simuler
+	-	<strong>param1, param2, param3</strong> et les suivants s'ils existent sont les paramètres à passer à la méthode événementielle déclenchée
+			par la méthode <strong>trigger()</strong>
+
+<h2>
+IV./ Créer des événements personnalisés
+</h2>
+La méthode <strong>on()</strong> peut également être utilisée pour définir des méthodes événementielles personnalisées. Ici par exemple, je définis
+l'événement personnalisé <strong>bonjour_jquery</strong> et je l'associe à un élément d'identifiant <strong>#bonjour</strong> : 
+
+<strong>
+$('#bonjour').on('bonjour_jquery', function() {
+	alert('jQuery me dit bonjour !');
+});
+</strong>
+
+Pour déclencher l'événement personnalisé <strong>bonjour_jquery</strong> lors du clic sur un élément d'identifiant <strong>#bonjour</strong>, j'utiliserai
+la méthode <strong>trigger()</strong> : 
+
+<strong>
+$('img').trigger('bonjour_jquery');
+</strong>
+
+Voici le code complet : 
+
+Réf <a href="exemple4.html" target="_blank">exemple4.html</a>
+
+Il est également possible de passer des paramètres à une procédure événementielle personnalisée. 
+
+Réf <a href="exemple4.html" target="_blank">exemple4.html</a>
+
+<h2>
+V./ Délégation d'événements
+</h2>
+jQuery est fréquemment utilisé pour ajouter des éléments dans une page Web. Plutôt que d'attacher un gestionnaire d'événements à chacun des éléments 
+insérés, je peux définir un écouteur d'événements  sur le parent. Pour cela, je dois utiliser la méthode <strong>on()</strong> en lui transmettant trois
+arguments : 
+
+<strong>
+$('#del').on('ev', 'sel', function() {
+	// Une ou plusieurs instructions
+});
+</strong>
+
+...où : 
+
+	-	<strong>del</strong> est l'élément sur lequel les enfants seronts écoutés
+	-	<strong>ev</strong> est le nom de l'événement concerné
+	-	<strong>sel</strong> est un sélecteur qui indique le type des enfants écoutés
+	-	<strong>function()</strong> est la fonction à exécuter  lorsque l'événement <strong>ev</strong> est détecté.
+
+Lorsque l'événement <strong>ev</strong> se produit sur un enfant <strong>sel</strong> de l'élément <strong>$('#del')</strong>, la fonction est exécutée. 
+
+Voyons comment fonctionne cette méthode en pratique. Dans l'exemple suivant, je vais définir une balise &lt; div>, modifier ses caractéristiques à l'aide de
+quelques instructions CSS et affecter une gestion événementielle à ses enfants &lt; div> sur l'événement <strong>click</strong>. Lorsque  cet événement
+surviendra, une balise de même type sera créée à la suite cliquée, et donc, la gestion événementielle de la balise cliquée lui sera affectée puisqu'elle 
+se situe au même niveau. 
+
+Voici le schéma de clonage du comportement de l'élément d'origine : 
+
+<img src="schema_delegation.png" alt="Schéma de clonage" />
+
+Réf <a href="exemple5.html" target="_blank">Exemple 5</a>
+
+Le corps du document contient deux balises &lt; div> imbriquées. La balise conteneur (#master) est celle dont on désire reproduire le comportement des enfants
+&lt; div>. Le code CSS met en forme les balises &lt; div> du document : arrière-plan de couleur jaune, graisse de caractères initialisée à <strong>bold</strong>,
+pointeur de la souris transformé en une main et marges intérieures fixées à 8 pixels.
+
+Je pourrai indifféremment cliquer sur la balise &lt; div> d'origine ou sur une des balises &lt; div> insérées pour ajouter une nouvelle balise &lt; div>
+après la dernière. La gestion événementielle a donc bien été clonée.
+
+La délégation événementielle apporte un avantage indéniable : elle permet de réduire dans de larges proportions le nombre de gestionnaires d'événements
+définis dans le code. Si par exemple j'avais plusieurs dizaines d'éléments insérés dans le conteneur pendant l'exécution du code jQuery. Sans la 
+délégation d'événements, je devrai définir un gestionnaire événementiel pour chacun d'entre eux ! 
+
+Pour supprimer une délégation d'événements, j'utiliserai la méthode <strong>off()</strong> : 
+
+<strong>
+$('#del').off('ev', 'sel');
+</strong>
+
+...où : 
+	
+	-	del : est l'élément à partir duquel le ou les gestionnaires ont été clonés
+	-	ev : est le nom de l'événement concerné
+	-	sel : est un sélecteur qui agit comme un filtre
+
+Je vais ajouter un bouton de commande dans le code précédent pour supprimer la délégation d'événements. Ensuite, je mets en place l'instruction
+permettant de supprimer la mise en place de la délégation d'événements en faisant appel à la méthode <strong>off()</strong> de cette manière : 
+
+<strong>
+$('#master').off('click', 'div');
+</strong>
+
+Sinon, pour supprimer tous les gestionnaires d'évènements délégués, je fais : 
+
+<strong>
+$('#master').off('click', '**');
+</strong>
+
+Un autre exemple, plus parlant, de la délégation évenementielle : 
+
+Réf <a href="exemple6.html" target="_blank">Exemple 6</a>
+
+<h2>
+En résumé : 
+</h2>
+Certains événements peuvent être déclenchés par une instruction, en utilisant la méthode <strong>trigger()</strong> : <strong>blue, change, click, 
+dblclick, error, focus, keydown, keypress, keyup, select et submit</strong>. Par contre, les événements suivants ne sont pas déclenchables : load, 
+mousedown, mouseout, mouseover, mousemove, mouseup, resize et unload.
+Il est possible de définir des événements  personnalisés en jQuery, en utilisant la méthode <strong>on()</strong>. L'événement ainsi créé peut être 
+déclenché avec la méthode <strong>trigger()</strong>.
+La délégation d'événements permet de cloner la gestion événementielle d'un élément à un ou plusieurs de ses enfants  créés à la volée dans le code jQuery.
+Peu importe le nombre d'éléments créés : ils se comportenet tous (d'un point de vue événementiel) comme leur parent. Et ce, sans qu'aucun code 
+supplémentaire ne soit écrit.
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+
+</body>
+</html>

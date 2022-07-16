@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>TP : un petit chat en jQuery</title>
+    <style>
+    	#main {
+    		padding: 10px;
+    		width: 400px;
+    		height: 600px;
+    	}
+    	#field {
+    		background-color: rgb(198,193,38);
+    		padding: 10px 10px 5px 5px;
+    	}
+
+    	#content {
+    		height: 500px;
+    		width: 396px;
+    		border: 1px black solid;
+    		padding: 2px;
+    		overflow-y: scroll;
+    		background-color: rgb(237,235,163);
+    		color: black;
+    	}
+
+    	#input {
+    		margin: 3px;
+    	}
+
+    	input[type="image"] {
+    		position: relative;
+    		top: 6px;
+    	}
+    </style>
+  </head>
+<body>
+<div id="main">
+<fieldset id="field">
+	<legend>Un chaton en jQuery</legend>
+	<div id="content">
+	</div>
+	<form id="myForm" method="post">
+		<p>
+			<input type="text"  id="pseudo" size="6" />
+			<input type="text" id="message" size="27" />
+	
+			<input type="image" src="send.png" />
+		</p>
+	</form>
+</fieldset>
+</div>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#myForm').submit(function(e) {
+			e.preventDefault();
+			var pseudo = $('#pseudo').val(),
+				message = $('#message').val();
+			if(((pseudo != '') && (message != ''))) {
+				$.ajax({
+					url: 'chaton.php',
+					type: 'POST',
+					data: 'pseudo=' + pseudo + '&message=' + message,
+					error: function(resultat, statut, erreur) {
+						alert(resultat.statusText == statut ? 'yeah' : 'nein');
+						alert(erreur);
+					}
+				});
+				$('#message').val('');
+			}
+		});
+
+		function recharger() {
+			/*
+			$.get('ac.htm', 'false', function(code_html) {
+				$('#content').html(code_html);
+			}, 'html');
+			*/
+			$('#content').load('ac.htm');
+			$('#message').focus();
+			setTimeout(recharger, 8000);
+		}
+
+		recharger();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Manipulation de l'attribut class</title>
+  </head>
+  <body>
+  <div id="mondiv">
+  Les valeurs stockées dans la balise &lt;div&gt; sont : <span id="sp1"></span>, <span id="sp2"></span> et <span id="sp3"></span>.
+  </div>
+    
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        var div = $('div')[0];
+        var div2 = document.querySelector('div');
+        $.data(div, 'vals', {premier: 'bonjour', deuxieme: 12, troisieme: 'http://google.com'});
+        var val1 = $.data(div, 'vals').premier;
+        var val2 = $.data(div, 'vals').deuxieme;
+        var val3 = $.data(div, 'vals').troisieme;
+        $('#sp1').text(val1);
+        $('#sp2').text(val2);
+        $('#sp3').text(val3);
+        if(div === div2)
+          alert('C\'est le même élément du DOM');
+        else
+          alert('Ce n\'est pas le même élément');
+        }); 
+    </script>    
+  </body>
+</html>

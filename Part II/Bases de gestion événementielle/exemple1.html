@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<title>Exemple 1, gesion événementielle</title>
+</head>
+<body>
+
+<img id="target" src="petitchat.jpg" />
+
+<script src="jquery.js"></script>
+<script>
+	$(function() {
+		var largeur = $(window).width() - 130;
+		var hauteur = $(window).height() - 130;
+
+		var p = $('#target').offset();
+		p.left = 100;
+		p.top = 100;
+		$('#target').offset(p);
+
+		$('img').mouseenter(function() {
+			var p = $('#target').offset();
+			p.left = Math.floor(Math.random() * largeur);
+			p.top = Math.floor(Math.random() * hauteur);
+
+			$('#target').offset(p);
+		});
+	});
+</script>
+</body>
+</html>

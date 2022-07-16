@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Exemple 1 : gis()</title>
+</head>
+<body>
+
+<p class="grasItaliqueSouligne">Ce texte devrait apparaître en gras, italique, souligné après avoir cliqué sur le bouton</p>
+<p>Ce texte devrait rester inchangé</p>
+<p class="grasItaliqueSouligne">Ce texte devrait apparaître en gras, italique, souligné après avoir cliqué sur le bouton</p>
+<p>Ce texte devrait rester inchangé</p><br />
+<button id="action">Cliquez ici pour utiliser le plugin gis</button>     
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-gis.js"></script>
+<script>
+
+jQuery.noConflict();
+(function($) {
+	$(function() {
+		$('#action').click(function() {
+			$('.grasItaliqueSouligne').gis();
+		});
+	});
+})(jQuery);
+</script>
+</body>
+</html>

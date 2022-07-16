@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<title>Annimations et effets</title>
+</head>
+<body>
+
+
+                                                                        <h1>Animations et effets</h1>
+
+<h2>
+I./ Apparition et disparition
+</h2>
+1.) Apparition/disparition avec une animation
+a./ Les trois méthodes
+
+J'ai déjà abordé rapidement les méthodes <strong>show()</strong> et <strong>hide()</strong>. Mais il existe une troisième méthode que je n'ai pas vue : 
+
+<strong>toggle()</strong>
+
+Cette méthode agin sur l'objet jQuery <strong>en fonction de l'état courant de celui-ci</strong>: s'il est caché, elle l'affiche, s'il est affiché, elle le
+cache. Cette méthode accepte aussi un argument de condition. Je peux agir dessus grâce à un booléen, par exemple. Si on lui indique <strong>true</strong>, elle
+affichera l'élément, si on lui indique <strong>false</strong>, elle fera l'inverse :
+
+<strong>
+$('p').toggle(true); // équivalent à show()
+
+$('p').toggle(false); // équivalent à hide()
+</strong>
+
+b./ Définir une durée de progression
+
+
+Si je passe une durée à ces trois méthodes, l'apparition ou la disparition s'animent en agissant de concert sur la hauteur, la largeur et l'opacité du ou des 
+objets concernés. Je peux passer une valeur numérique à ces méthodes pour indiquer le temps de l'animation en millisecondes ou passer la chaîne 
+<strong>fast</strong> pour fixer la durée de l'animation à 200 ms, ou la chaîne <strong>slow</strong> pour la fixer à 600 ms. 
+
+VOici un exemple d'animation basé sur l'utilisation de ces méthodes.
+
+Réf <a href="exemple1.html" target="_blank">exemple1.html</a>
+
+Si les valeurs prédéfinies <strong>fast</strong> et <strong>slow</strong> ne me suffisent pas, je peux les redéfinir, voire même en ajouter d'autres. J'agirai
+pour cela sur l'objet <strong>jQuery.fx.speeds</strong>. Par exemple, l'instruction suivante redéfinit la valeur <strong>slow</strong> : 
+
+<strong>
+jQuery.fx.speeds.slow = 1500;
+</strong>
+
+L'instruction suivante ajoute la valeur <strong>super-slow</strong> et lui affecte une durée de 3000 millisecondes : 
+
+<strong>
+jQuery.fx.speeds['super-slow'] = 3000;
+</strong>
+
+Ces valeurs pourront être utilisés dans les méthodes <strong>show()</strong> et <strong>hide()</strong>, mais également dans les méthodes 
+<strong>fadeIn(), fadeOut(), fadeTo(), slideDown(), slideUp(), slideToggle()</strong> et <strong>animate()</strong>, qui seront étudiées un peu plus loin dans le
+chapitre.
+
+2.) Animation avec un modèle de progression
+
+En précisant un deuxième paramètre dans les méthodes <strong>show()</strong> et <strong>hide()</strong>, je peux choisir un modèle de progression de l'animation.
+Deux modèles sont disponibles dans jQuery : le modèle par défaut (<strong>swing</strong>) et le modèle de progression linéaire (<strong>linear</strong>). Voici
+comment les incorporer  aux méthodes <strong>hide()</strong> et <strong>show()</strong> : 
+
+<strong>
+$('sel').show('slow', 'linear');
+$('sel2').hide(1000, 'swing');
+</strong>
+
+Le modèle <strong>swing</strong> est utilisé par défaut s'il n'est pas spécifié.
+
+Note : en faisant appel aux plugins jQuery, je pourrai utiliser d'autres modèles de progression.
+
+3.) Apparition/disparition en cascade
+
+Il est possible d'utiliser une fonction de rappel dans les méthodes <strong>show()</strong> et <strong>hide()</strong>. Cette méthode est appelée lorsque 
+l'affichage/la dissimulation est terminée : 
+
+<strong>
+$('img').hide('slow', function message() {
+	alert('Les images sont maintenant cachées');
+});
+</strong>
+
+En faisant référence au premier élément lors de l'exécution de la fonction <strong>hide()</strong>, et en définissant une fonction de rappel qui fait référence
+aux autres éléments avec la méthode <strong>next()</strong>, il est possible de faire disparaître un à un les éléments concernés par un sélecteur.
+
+Réf <a href="exemple2.html" target="_blank">exemple2.html (apparition/disparition en cascade)</a>
+
+<h2>
+II./ Fondu enchaîné
+</h2>
+Les méthodes <strong>fadeIn()</strong> et <strong>fadeOut()</strong> sont complémentaires des méthodes <strong>hide()</strong> et <strong>show()</strong>. Elles
+agissent toutes deux progressivement sur l'opacité d'un élément. La première affiche l'élément, et la 2e fait disparaître l'élément.
+
+1.) Apparition/disparition
+
+Dans leur forme la plus simple, les méthodes <strong>fadeIn()</strong> et <strong>fadeOut()</strong> ne demandent aucun paramètre. Dans ce cas, l'apparition
+ou la disparition se fait en 400 millisecondes : 
+
+<strong>
+$('sel').fadeIn();
+$('sel').fadeOut();
+</strong>
+
+En ce qui concerne les paramètres de ces méthodes, c'est exactement pareil que pour les méthodes hide() et show().
+
+Note : tout comme pour show() et hide(), je pourrai faire appel à des plugins jQuery pour utiliser d'autres modèles de progression que <strong>swing</strong>
+et <strong>linear</strong>
+
+Note : il y a aussi la méthode <strong>fadeToggle()</strong> affichant ou cachant l'élément en fonction de l'état de celui-ci
+
+2.) Modification de l'opacité
+
+POur modifier progressivement l'opacité d'un élément sans aller jusqu'à sa disparition ou sa complète opacité, j'utiliserai la méthode <strong>fadeTo()</strong>,
+dont voici la syntaxe : 
+
+<strong>
+$('sel').fadeTo(duree, opacite);
+</strong>
+
+...où <strong>opacite</strong> est un nombre décimal compris entre 0 (transpaent) et 1 (opaque).
+
+Si nécessaire, je peux définir une fonction de rappel, qui sera appelée à la fin de l'animation :
+
+<strong>
+$('sel').fadeTo(duree, opacite, function() {
+	// Une ou plusieurs instructions
+});
+</strong>
+
+3.) Un diaporama en deux instructions 
+
+Mettons cela en pratique : empiler plusieurs images en les faisant disparaître grâce à la méthode <strong>fadeOut()</strong> ==>
+
+Réf <a href="exemple3.html" target="_blank">exemple3.html</a>
+
+Plus tard, je verrai comment boucler sur la première image pour faire un diaporama sans fin.
+
+<h2>
+III./ Aller plus loin
+</h2>
+1.) Déplier/replier des éléments
+
+Pour déplier et replier des éléments en modifiant simultanément leur hauteur et largeur . Pour cela, j'utiliserai les méthodes <strong>slideDown()</strong>,
+<strong>slideUp()</strong> et <strong>slideToggle()</strong>  : 
+
+	-	<strong>slideDown()</strong> augmente la hauteur et la largeur  de la sélection jusqu'à atteindre la dimension "native" de chaque élément
+	-	<strong>slideUp()</strong> diminue la hauteur et la largeur de la sélection jusqu'à ce qu'elle disparaisse
+	-	<strong>slideToggle()</strong> inverse l'animation, ie si les objets sélectionnés ont une taille nulle, leur auteur et leur largeur sont augmentées
+					jusqu'à ce qu'ils atteignent leur dimension. Par contre, s'ils ont une taille non nulle, leur hauteur et leur largeur sont diminués jusqu'à
+					ce qu'ils disparaissent
+
+Tout comme pour les autres méthodes d'animation étudiées jusqu'ici, il est possible de passer zéro, un ou plusieurs paramètres à ces méthodes. 
+
+2.) Désactiver les animations
+
+Il est conseillé d'insérer un lien permettant de désactiver les animations de son site s'il y en a, car ces dernières peuvent être irritantes pour certains
+visiteurs. 
+
+Rien de plus simple que de désactiver toutes les animations, il me suffit d'affecter la valeur <strong>true</strong> à l'objet <strong>jQuery.fx.off</strong> :
+
+<strong>
+jQuery.fx.off = true;
+</strong>
+
+Et si, par la suite, je veux réactiver les animations, j'affecterai la valeur <strong>false</strong> à ce même objet. 
+
+Réf <a href="exemple3.html" target="_blank">Exemple 3</a>
+
+3.) Définir un délai avant une animation
+
+Il est parfois nécessaire de définir un délai avant d'exécuter une animation. Pour ce faire, le plus simple consiste à utiliser la méthode jQuery 
+<strong>delay()</strong>, en précisant le délai souhaité en millisecondes. Par exemple, supposons que je veuille afficher un message avec la méthode fadeIn(), 
+le laisser afficher pendant deux secondes, puis l'effacer avec fadeOut(). Voilà ce que ça donnerait : 
+
+<strong>
+$('#message').fadeIn('slow').delay(2000).fadeOut('slow');
+</strong>
+
+3.) Définir une animation personnalisée
+
+Les méthodes passées en revue jusqu'ici étaient basées sur des effets préprogrammés dans la bibliothèque jQuery. Dans cette section, je vais voir comment créer
+des animations personnalisées en agissant sur une ou plusieurs propriétés CSS via la méthode  <strong>animate()</strong>. Cette méthode admet deux syntaxes.
+
+a./ Première syntaxe
+
+Cette syntaxe est la plus fréquemment utilisée. Elle permet de faire évoluer plusieurs propriétés de concert. Il est possible de choisir la durée de l'animation,
+le modèle de progression de l'animation et, si cela est nécessaire, d'exécuter une fonction lorsque l'animation est terminée :
+
+ <strong>
+ $('sel').animate({ prop1: val1, prop2: val2, prop3: val3, etc. }, durée, modèle, function() {
+ 	// instruction(s)
+ });
+</strong>
+
+...où :
+
+	-	sel est un sélecteur jQuery
+	-	 <strong>prop1, prop2</strong> et  <strong>prop3</strong> sont des propriétés CSS et  <strong>val1, val2</strong> et  <strong>val3</strong> les 
+					valeurs associées. Une valeur numérique sera interprétée comme un nombre de pixels. Une valeur du type "+=50"/"-=50" demandera 
+					d'ajouter/soustraire 50 pixels à la propriété. Je peux également utiliser les chaînes  <strong>show, hide</strong> et  <strong>toggle</strong>
+					pour respectivement afficher, dissimuler et inverser la propriété
+	-	 <strong>durée</strong> est la durée de l'animation (entier en ms ou chaîne  <strong>fast, normal</strong> ou  <strong>slow</strong>)
+	-	 <strong>modèle</strong> est le modèle de progression de l'animation ( <strong>swing, linear</strong> ou un modèle issu d'un plugin)
+	-	 <strong>function() </strong> contient une ou plusieurs instructions qui seront exécutées lorsque l'animation se terminera
+
+Note : Dans cette syntaxe,  <strong>durée, modèle</strong> et la  <strong>fonction</strong> sont facultatifs. Si je ne spécifie qu'un ou plusieurs couples
+propriétés/valeurs CSS, l'animation durera 400 ms.
+
+b./ Deuxième syntaxe
+
+Dans cette syntaxe, le deuxième argument de la méthode  <strong>animate()</strong> est un objet pour contenir une ou plusieurs options identifiées par des 
+mots-clés. Elle est utilisée dans des cas particuliers, comme par exemple l'exécution d'une fonction à chaque étape de l'animation, la gestion des files 
+d'attente d'animations ou encore l'utilisation de plusieurs modèles de progression pour faire évoluer les différentes propriétés CSS :
+
+ <strong>
+ $('sel').animate({ prop1: val1, prop2: val2, prop3: val3, etc. }, { options });
+ </strong>
+
+ ...où :
+
+ 	-	...
+ 	-	 <strong>options</strong> est un objet qui peut contenir une ou plusieurs  des propriétés suivantes : 
+
+ 		* <strong>duration</strong> : durée de l'animation (entier en millisecondes, ou chaîne  <strong>fast, normal</strong> ou  <strong>slow</strong>)
+ 		* <strong>easing</strong> : modèle de progression ( <strong>swing, linear</strong> ou un modèle issu d'un plugin)
+ 		* <strong>complete</strong> : fonction appelée lorsque l'animation est terminée
+ 		* <strong>step</strong> : fonction appelée à chaque étape de l'animation
+ 		* <strong>queue</strong> : valeur booléenne qui indique si l'animation doit (<strong>true</strong>) ou ne doit pas (<strong>false</strong>) être
+ 					placée dans une file d'attente réservée aux animations. Si la valeur <strong>false</strong> est attribuée à cette propriété, l'animation
+ 					démarre immédiatement. Dans le cas contraire, elle est en attente de déclenchement
+ 		* <strong>specialEasing</strong> : un ou plusieurs couples propriétés CSS/modèles de progression
+
+c./ Informations complémentaires
+
+Il est possible que je veuille attribuer une accélération à chaque propriété CSS animée. C'est tout à fait  possible de faire cela depuis la version
+1.4 de jQuery ! On utilisera en général la 1re façon de faire, mais il faut savoir qu'il en existe deux : on peut passer par un tableau (<em>array</em>) ou une
+propriété dans le second argument (<em>object</em>).
+
+Pour la 1re méthode, je dois donner la nouvelle valeur de la propriété CSS dans un tableau, suivie du type d'accélération (<em>swing</em> ou <em>linear</em>
+pour le moment) :
+
+<strong>
+$('p').animate({
+	fontSize: ['50px', 'linear'],	// cette propriété s'animera de façon linéaire
+	width: '200px'	// les autres s'animeront de la façon définie ensuite : swing
+}, 'swing');
+</strong>
+
+La seconde méthode est un peu plus compliquée à mettre en place, dans le sens où je devrai donner un objet à un identifiant d'un objet (qui, rappelons-le,
+est lui-même un argument de la méthode d'animation). La propriété à définir se nomme <strong>specialEasing</strong> :
+
+<strong>
+$('p').animate({
+	fontSize: '50px',
+	width: '200px'
+}, {
+	easing: 'swing',
+	specialEasing: {	// on définit la propriété
+		fontSize: 'linear'	 // puis on liste toutes les propriétés CSS dans un objet en donnant leur évolution
+	}
+})
+</strong>
+
+d./ Astuces et cas spéciaux
+
+<h3>Animer les couleurs</h3>
+
+jQuery ne me permet pas encore de traiter les animations sur les couleurs. C'est bien dommage, car elles sont un élément important du style d'une page
+Web. Pas de panique, car un développeur jQuery a créé un petit plugin <em>open-source</em> permettant de faire cela. 
+
+Je le téléchargé à cette <a href="https://github.com/jquery/jquery-color" target="_blank">adresse</a> (fichier <strong>jquery.color.js</strong>) à inclure dans ma page. Une
+fois inclus, je pourrai animer toutes les couleurs de n'importe quelle propriété : 
+
+<strong>
+$('p').animate({
+	color: 'red',
+	backgroundColor: 'green'
+});
+</strong>
+
+<h3>Animer les barres de défilement</h3>
+
+En CSS, il est impossible d'agir sur les barres de défilement. C'est différent en JavaScript, et surtout en jQuery, qui met un point d'honneur à pouvoir les
+animer ! Les deux propriétés à influencer sont donc les suivantes : 
+
+	-	<strong>scrollTop</strong>, qui agit sur la barre de défilement verticale
+	-	<strong>scrollLeft</strong>, qui agit sur la barre de défilement horizontale (si elle existe)
+
+Elles s'animent exactement de la même façon que les autres propriétés
+
+Note : il existe les méthodes jQuery scrollTop() et scrollBar(), qui renvoient (ou définissent, si on leur fournit un nombre en argument) la position
+actuelle de la barre de défilement. Lorsqu'on est tout en haut de la page, cette position est égale à 0.
+
+Réf <a href="exemple4.html" target="_blank">Exemple 4 : scrollTop</a>
+
+<h3>Les trois états additionnels</h3>
+
+Pas vraiment utilisés ni très connus, ces trois états ne sont autres que <strong>show, hide</strong> et <strong>toggle</strong>. Et pourquoi ne sont-ils
+pas très utilisés ? Parce que des méthodes spéciales existent, et sont bien plus rapides à mettre en place pour avoir le même résultat.
+
+Ces états permettent d'agir seulement sur la propriété qui les utilise. Concrètement, ils réalisent ces actions : 
+
+	-	<strong>show</strong> affiche la propriété
+	-	<strong>hide</strong> se charge de la cacher
+	-	<strong>toggle</strong>, lui, va faire la navette entre les deux : si la propriété est cachée, il l'affiche, et vice versa
+
+Ils s'utilisent donc de cette façon : 
+
+<strong>
+$('p').animate({
+	width: 'show'	// anime la largeur pour afficher le paragraphe
+});
+
+$('p').animate({
+	width: 'hide'	// anime la largeur pour cacher le paragraphe
+});
+
+$('p').animate({
+	width: 'toggle'	// anime la largeur pour cacher ou afficher le paragraphe
+});
+</strong>
+
+
+
+
+
+<script src="jquery.js"></script>
+    <!-- Javascript de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../my_bootstrap.js" type="text/javascript"></script>
+</body>
+</html>

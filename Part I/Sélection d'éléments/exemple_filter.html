@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Exemple : filter</title>
+  </head>
+  <body>
+    <p>Paragraphe 1</p>
+    <p>Paragraphe 2</p>
+    <p>Paragraphe 3</p>
+    <p>Paragraphe 4</p>
+    <p>Paragraphe 5</p>
+    Texte 6 <br />
+    Texte 7 <br />
+    <p>Paragraphe 8</p>
+    Texte 9 <br />
+
+    <script src="jquery.js"></script>
+    <script>
+      $(function() {
+        $('body').contents().filter(function() {
+          return this.nodeType == 3;
+        }).wrap('<p></p>')
+          .end()
+        .filter('br')
+        .remove();
+
+         $('p').css('color', 'red');
+      }); 
+    </script>
+  </body>
+</html>

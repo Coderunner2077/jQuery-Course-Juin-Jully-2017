@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body { margin: 0; }
+
+      #gauche {
+        float: left;
+        width: 60%;
+        height: 645px;
+        background-color: #EFECCA;
+      }
+      #droite {
+        background-color: #CEFFF8;
+        height: 645px;
+        width: 40%;
+        display: inline-block;
+      }
+
+      input, button, label { margin: 5px 5px 15px 10px; }
+
+      #gauche button { margin: 10px 5px 20px 5px; }
+
+      #insert { margin: 10px; }
+
+      #wtext {
+        display: inline-block;
+        white-space: nowrap;
+      }
+    </style>
+    <title>Activité - Générateur de formulaires - Avec AJAX</title>
+  </head>
+  <body>
+    <div id="gauche">
+    </div>
+    <div id="droite">
+      <span id="wtext">Utilisez ces boutons pour créer votre formulaire</span><br><br>
+      <button id="label" class="gen">Label</button>
+      <button id="zone" class="gen">Zone de texte</button>
+      <button id="bouton" class="gen">Bouton</button>
+    </div>
+
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="widetext.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      $('#droite').append('<div id="insert"></div>');
+      $('#insert').append('<hr />');
+      $('#insert').append('<label></label>');
+      $('#insert').append('<input type="text" />');
+      $('#insert').append('<button id="ok">OK</button>');
+      $('#insert').append('<button id="cancel">Annuler</button><br />');
+      $('#insert').append('<label>Avec retour à la ligne</label>');
+      $('#insert').append('<input type="checkbox" /><br />');
+      $('#insert').append('<div id="help"></div>');
+      $('#insert').hide();
+      $(':button').hover(
+          function(){
+            if($(this).prop('enabled') != false)
+              $(this).css('box-shadow', '3px 3px 10px #333');
+          },
+          function() {
+            $(this).css('box-shadow', 'none');
+          }
+      );
+      
+
+      function insert(texte, type) {
+        $('#insert').fadeIn('slow');
+        $('#insert hr + label').text(texte);
+        $('#insert :input').not(':checkbox').attr('id', type).val('');
+        $('.gen').prop('enabled', false);
+        $('#help').load(type + '_help.txt');
+      }
+
+      $('#label').click(function() {
+        if($(this).prop('enabled') != false) {
+          insert('Texte du label', 'lab');
+          $('#insert input:checkbox').prop('checked', false);
+        }
+      });
+
+      $('#zone').click(function() {
+        if($(this).prop('enabled') != false) {
+          insert('id de la zone de texte', 'input');
+          $('#insert input:checkbox').prop('checked', true);
+        }        
+      });
+
+      $('#bouton').click(function() {
+        if($(this).prop('enabled') != false) {
+          insert('Texte du bouton', 'butt');
+          $('#insert input:checkbox').prop('checked', true);
+        }
+      });
+
+      $('#ok').click(function() {
+        var type = $('#insert input').attr('id');
+        $('.gen').prop('enabled', true);
+        switch(type) {
+          case 'lab':
+            $('#gauche').append('<label>' + $('#lab').val() + '</label>');
+            break;
+          case 'input':
+            $('#gauche').append('<input type="text" id="' + $('#input').val() + '" />');
+            break;
+          case 'butt':
+            $('#gauche').append('<button>' + $('#butt').val() + '</button>');
+            break;
+        }
+        if($('#insert input:checkbox').prop('checked') == true)
+          $('#gauche').append('<br />');
+        $('#' + type).val('');
+        $('#insert').fadeOut('slow');
+      });
+
+      $('#cancel').click(function() {
+        $('.gen').prop('enabled', true);
+        $('#insert').fadeOut('slow');
+      });
+
+      $('#wtext').wideText();
+
+    });
+  </script>
+  </body>
+</html>
